@@ -9,9 +9,10 @@
 | Logic | Vanilla JavaScript |
 | Data | Static JSON files |
 | Hosting | GitHub Pages |
+| Local dev | Lightweight local web server |
 | Build tool | None |
 
-No framework. No build step. No compilation. You write files, open them in a browser, and they work.
+No framework. No build step. No compilation. You write files, serve them locally with a lightweight web server, and they work.
 
 ---
 
@@ -19,6 +20,7 @@ No framework. No build step. No compilation. You write files, open them in a bro
 
 - **Familiar languages** — HTML, CSS, and JavaScript are readable and understandable without a framework layer in between.
 - **No tooling overhead** — no Node, no bundler, no config files to wrestle with.
+- **Simple local workflow** — use a lightweight local server such as VS Code Live Server so browser `fetch()` calls to `data/*.json` work reliably during development.
 - **GitHub Pages ready** — a folder with an `index.html` and supporting files deploys directly, no extra steps.
 - **Capable enough** — modern CSS handles animations natively. Tailwind handles utility styling. Vanilla JS handles state logic cleanly for a game this size.
 - **AI-assisted friendly** — generated code is easier to read and understand without framework abstractions on top.
@@ -42,8 +44,10 @@ No framework. No build step. No compilation. You write files, open them in a bro
     ├── questions.json  # Question prompts, options, and profile weights
     ├── profiles.json   # Student motivation types with labels and descriptions
     ├── interests.json  # College/field interest branches
-    └── results.json    # Profile + interest combination result mappings
+    └── results.json    # ContentMapping records for profile + interest results
 ```
+
+Contributors should run the game through a lightweight local server during development, not by opening `index.html` via `file://`. Static JSON assets in `data/*.json` are loaded at runtime, and browsers commonly block or inconsistently handle those requests from disk.
 
 ---
 
@@ -73,7 +77,7 @@ Each question has a prompt, a list of options, and weights that nudge toward one
 College/field branches the student selects from (e.g. Engineering, Humanities, Health Sciences). Maps to University of Utah college structure.
 
 ### `results.json`
-A lookup table keyed by `profile_id + interest_id` that returns a personalized headline, body copy, and CTA for the result screen.
+Canonical `ContentMapping` records as defined in `PLAN.md` and `docs/spec/DATA-CONTRACTS.md`. Each record should use `profile_id`, `interest_tag_id`, `message_modules[]`, and `cta_modules[]` so result content stays aligned with the rest of the repo contracts.
 
 ---
 
