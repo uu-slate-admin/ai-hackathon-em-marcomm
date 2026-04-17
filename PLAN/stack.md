@@ -1,118 +1,89 @@
-# Stack Decision: Student Discovery Game
+# Stack Decision: Campus Exploration Game
 
 ## Chosen Stack
 
 | Layer | Choice |
-|---|---|
-| Markup | HTML |
-| Styling | CSS + Tailwind CSS (via CDN) |
-| Logic | Vanilla JavaScript |
-| Data | Static JSON files |
+| --- | --- |
+| Runtime | Browser-based 2D game |
+| Markup shell | HTML |
+| Styling/UI | CSS |
+| Logic | JavaScript modules |
+| Game rendering | Canvas-based scene rendering |
+| Content | Static JSON or JS data modules |
 | Hosting | GitHub Pages |
 | Local dev | Lightweight local web server |
-| Build tool | None |
+| Build tool | None for v1 unless engine choice forces one |
 
-No framework. No build step. No compilation. You write files, serve them locally with a lightweight web server, and they work.
+The repo should now be prepared for a real map-driven game loop rather than a screen-by-screen survey flow.
 
----
+## Why This Direction
 
-## Why This Stack
+- Free movement is central to the concept, so the architecture should center map scenes, trigger zones, and exploration state.
+- A browser-based 2D stack keeps the prototype lightweight enough for hackathon speed.
+- Static content files are still a good fit for landmarks, interactions, items, and result mappings.
+- GitHub Pages remains viable if the prototype stays client-side.
 
-- **Familiar languages** — HTML, CSS, and JavaScript are readable and understandable without a framework layer in between.
-- **No tooling overhead** — no Node, no bundler, no config files to wrestle with.
-- **Simple local workflow** — use a lightweight local server such as VS Code Live Server so browser `fetch()` calls to `data/*.json` work reliably during development.
-- **GitHub Pages ready** — a folder with an `index.html` and supporting files deploys directly, no extra steps.
-- **Capable enough** — modern CSS handles animations natively. Tailwind handles utility styling. Vanilla JS handles state logic cleanly for a game this size.
-- **AI-assisted friendly** — generated code is easier to read and understand without framework abstractions on top.
+## Runtime Structure
 
-### What Was Considered and Why It Was Set Aside
-
-- **SvelteKit** — good framework, but requires learning new conventions under time pressure. GitHub Pages deployment also requires extra adapter configuration.
-- **React + Vite** — familiar to many, but introduces a build pipeline and module system that adds complexity without meaningful benefit at this scale.
-- **TypeScript** — adds type safety, but also a compilation step and config overhead. Can be introduced later if complexity grows.
-
----
-
-## File Structure
-
-```
+```text
 /
-├── index.html          # Entry point, game shell
-├── style.css           # Custom styles (Tailwind supplements, animations)
-├── app.js              # All game logic and state management
-└── data/
-    ├── questions.json  # Question prompts, options, and profile weights
-    ├── profiles.json   # Student motivation types with labels and descriptions
-    ├── interests.json  # College/field interest branches
-    └── results.json    # ContentMapping records for profile + interest results
+  index.html              # Game shell and bootstrapping
+  src/
+    game/                 # Loop, scenes, movement, collision, triggers
+    content/              # Map data, dialogues, items, interests, results
+    ui/                   # HUD, dialogue boxes, overlays, handoff screens
+  assets/
+    maps/                 # Campus map art and collision layers
+    sprites/              # Player, Swoop, item, and landmark art
+    audio/                # Optional ambient and UI audio
 ```
 
-Contributors should run the game through a lightweight local server during development, not by opening `index.html` via `file://`. Static JSON assets in `data/*.json` are loaded at runtime, and browsers commonly block or inconsistently handle those requests from disk.
+## Gameplay Flow
 
----
+The target loop is:
 
-## How the Game Works (State Flow)
-
-The game is a simple state machine. One variable (`state`) controls what screen is shown. JavaScript watches it and redraws the screen when it changes.
-
-```
-intro → question (×5-7) → branch (college selector) → result → form (Slate RFI)
+```text
+boot -> map exploration -> landmark interaction -> reward/progression -> results -> slate handoff
 ```
 
-As the player answers questions, their choices add points to profile buckets tracked in a plain JavaScript object. At the end, the bucket with the most points determines their profile.
-
----
+Core systems needed in v1:
+- Tile or grid-aware player movement
+- One campus map scene with collision boundaries
+- Trigger zones for 5-8 landmarks
+- Dialogue or prompt overlays for interactions
+- `Swoop` growth progression
+- Collectible tracking
+- `academic_interest` scoring
+- Final result screen
+- Optional Slate handoff screen
 
 ## Data Files
 
-Each JSON file maps to one of the four core data contracts defined in `PLAN.md`.
+Recommended content modules:
 
-### `questions.json`
-Each question has a prompt, a list of options, and weights that nudge toward one or more profiles.
-
-### `profiles.json`
-3–5 student motivation types (e.g. Explorer, Builder, Connector) with a label, short summary, and result copy.
-
-### `interests.json`
-College/field branches the student selects from (e.g. Engineering, Humanities, Health Sciences). Maps to University of Utah college structure.
-
-### `results.json`
-Canonical `ContentMapping` records as defined in `PLAN.md` and `docs/spec/DATA-CONTRACTS.md`. Each record should use `profile_id`, `interest_tag_id`, `message_modules[]`, and `cta_modules[]` so result content stays aligned with the rest of the repo contracts.
-
----
-
-## Animations and Visual Polish
-
-Modern CSS is fully capable of the animations and transitions needed:
-
-- `transition` — smooth state changes between screens
-- `@keyframes` — entrance/exit animations for questions and results
-- `@starting-style` — enter animations without JavaScript
-- Tailwind utility classes handle spacing, color, and typography
-
-University of Utah brand colors (crimson `#CC0000`, white `#FFFFFF`, and neutrals) will be defined as CSS custom properties in `style.css`.
-
----
+- `map-scenes.json`: scene bounds, landmark positions, collision references
+- `location-triggers.json`: trigger metadata, linked dialogue, rewards, scoring
+- `dialogue-events.json`: short interaction content and choice outcomes
+- `collectible-items.json`: item metadata and unlock conditions
+- `academic-interests.json`: result IDs, labels, and destination copy
+- `result-mappings.json`: result modules keyed by `academic_interest`, `swoop_stage`, and items
 
 ## Slate RFI Handoff
 
-The game ends by passing non-PII metadata to an embedded Slate RFI form via URL query parameters:
+If the player continues to Slate, the game should pass only:
 
 | Field | Source |
-|---|---|
-| `game_profile` | Computed at result screen |
-| `game_interest` | Selected in college branch |
-| `game_version` | Hardcoded in `app.js` |
+| --- | --- |
+| `game_academic_interest` | Computed at result screen |
+| `game_version` | Game/content contract version |
 | `game_session_id` | Generated at game start |
-| `game_completed_at` | Timestamp at result screen |
+| `game_completed_at` | Timestamp at result completion |
 
-No PII is passed via query parameters. Student contact fields are collected directly by Slate.
-
----
+No PII, `swoop_stage`, or collectible data should be passed via query parameters in v1.
 
 ## Next Steps
 
-1. Draft content for all four JSON data files (questions, profiles, interests, results) using University of Utah branding and college structure.
-2. Build a minimal working `app.js` state machine with placeholder data.
-3. Layer in CSS animations and Tailwind polish.
-4. Integrate Slate RFI embed and hidden field handoff.
+1. Build the gameplay and content contracts.
+2. Implement a one-map vertical slice with movement and trigger zones.
+3. Add `Swoop` growth, collectibles, and result mapping.
+4. Add the final Slate handoff screen and query payload builder.

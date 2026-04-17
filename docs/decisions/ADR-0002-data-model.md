@@ -2,26 +2,26 @@
 title: ADR-0002-DATA-MODEL
 owner: team
 status: draft
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: false
 ---
 
 # ADR-0002: Data Model Direction
 
 ## Purpose
-Capture the rationale for data model choices once IDs and structures are finalized.
+Capture the rationale for gameplay data model choices once IDs and structures are finalized.
 
 ## Inputs
 - `docs/spec/DATA-CONTRACTS.md`
 
 ## Outputs
-- Decision record for contract object and ID strategy.
+- Decision record for map, trigger, progression, and result data design.
 
 ## Constraints
 - Must remain aligned with canonical scope and Slate contract files.
 
 ## Examples
-- Candidate decision: maintain human-readable IDs for `game_profile` and `game_interest` in v1.
+- Candidate decision: keep human-readable slugs for `academic_interest`, `swoop_stage`, `collectible_item`, and `location_trigger` IDs.
 
 ## Open Questions
-- Should IDs be human-readable slugs or opaque identifiers?
+- Should scene and trigger positions live in JSON assets or in JS modules tuned by the runtime?

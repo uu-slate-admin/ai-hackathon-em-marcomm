@@ -2,7 +2,7 @@
 title: ADR-0001-SCOPE
 owner: team
 status: canonical
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: true
 ---
 
@@ -10,7 +10,7 @@ source_of_truth: true
 
 ## Purpose
 
-Record the scope decision for v1 so implementation and planning stay aligned across product, engineering, and agent work.
+Record the v1 scope decision so implementation stays aligned across product, engineering, and agent work.
 
 ## Inputs
 
@@ -20,21 +20,23 @@ Record the scope decision for v1 so implementation and planning stay aligned acr
 
 ## Decision
 
-For v1, the product will ship a single shared discovery game flow with a college exploration branch, compute two primary outcomes (`profile`, `academic_interest`), and hand off to embedded Slate RFI using the defined hidden-field contract.
+For v1, the product will ship a single-map campus exploration game, compute three in-product outcomes (`academic_interest`, `swoop_stage`, `collected_items`), and optionally hand off to embedded Slate RFI using a minimal hidden-field contract.
 
 Out of scope for v1:
 
+- Multiple maps or large open-world traversal
 - Separate in-state and out-of-state game experiences
-- Deep adaptive branching that rewrites the whole journey
-- Full custom content for every profile x interest combination
-- In-game PII form collection
-- CRM routing/automation logic beyond Slate submission boundary
+- Combat or full RPG systems
+- Deep adaptive branching that rewrites the entire journey
+- Full custom content for every collectible combination
+- In-game PII collection
+- CRM routing or automation beyond Slate submission
 
 ## Outputs
 
 This decision establishes:
 
-- A narrow v1 execution target
+- A narrow vertical-slice target
 - A stable game-to-Slate handoff boundary
 - Clear non-goals to reduce scope creep
 
@@ -49,31 +51,31 @@ This decision establishes:
 
 Positive:
 
-- Faster implementation and testing path
-- Lower integration risk for first release
-- Clear QA and demo boundary
+- Stronger alignment between concept and implementation
+- Lower risk of building a dressed-up survey instead of a game
+- Clearer system boundaries for map, progression, and handoff work
 
 Tradeoffs:
 
-- Limited personalization depth in v1
-- Deferred CRM sophistication and audience-specific journey versions
+- Less content breadth in v1
+- Only one map scene at launch
+- Slate remains intentionally minimal
 
 ## Last Verified
 
-- Verified against `PLAN/PLAN.md` and `slate/field-dictionary.md` on 2026-04-15.
+- Verified against `PLAN/PLAN.md` and `slate/field-dictionary.md` on 2026-04-17.
 
 ## Examples
 
 In-scope example:
 
-- Student completes one shared game flow, sees `profile + academic_interest`, then submits Slate form with required hidden fields.
+- Student walks the campus map, triggers landmark interactions, grows `Swoop`, sees an `academic_interest`, and can continue to Slate.
 
 Out-of-scope example:
 
-- Student is routed into a completely different game experience based on early state prediction.
+- Student is routed into a separate multi-map or combat-heavy game based on an early answer.
 
 ## Open Questions
 
-- What criteria will trigger ADR-0002 for expanding beyond the single-flow model?
-- When should multi-version audience experiences be reconsidered?
-- What minimum evidence is required to move CRM routing from out-of-scope to in-scope?
+- What criteria will justify a second map scene after the first vertical slice?
+- When should save persistence move from optional to required?

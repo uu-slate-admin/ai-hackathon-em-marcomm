@@ -2,7 +2,7 @@
 title: DEMO-SCRIPT
 owner: team
 status: draft
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: false
 ---
 
@@ -17,13 +17,13 @@ Provide a repeatable live demo narrative.
 - `MILESTONES.md`
 
 ## Outputs
-- Step-by-step speaking/demo flow.
+- Step-by-step speaking and demo flow.
 
 ## Constraints
 - Demo must use real project artifacts, not slides only.
 
 ## Examples
-- Demo path: entry -> gameplay decisions -> profile/interest result -> Slate handoff.
+- Demo path: title screen -> campus exploration -> landmark interaction -> `Swoop` growth -> result screen -> Slate handoff.
 
 ## Open Questions
-- Which single user journey should be the primary demo path?
+- Which single landmark path should be the primary demo route?

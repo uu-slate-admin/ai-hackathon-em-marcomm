@@ -1,11 +1,6 @@
 {
-  "game_profile": "achiever",
-  "game_interest": "engineering_technology",
+  "game_academic_interest": "engineering_technology",
   "game_version": "v1.0.0",
   "game_session_id": "550e8400-e29b-41d4-a716-446655440000",
-  "game_completed_at": "2026-04-15T18:24:31Z",
-  "game_top_signals": "career_readiness,challenge",
-  "game_predicted_segment": "in_state",
-  "game_confidence": "medium"
+  "game_completed_at": "2026-04-17T18:24:31Z"
 }
-

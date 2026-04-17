@@ -2,14 +2,14 @@
 title: TEST-MATRIX
 owner: team
 status: draft
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: false
 ---
 
 # Test Matrix
 
 ## Purpose
-Outline key test scenarios for gameplay completion and Slate handoff.
+Outline key test scenarios for the campus exploration loop and Slate handoff.
 
 ## Inputs
 - `../../PLAN/PLAN.md`
@@ -17,22 +17,25 @@ Outline key test scenarios for gameplay completion and Slate handoff.
 - `../../slate/field-dictionary.md`
 
 ## Outputs
-- Shared test scenario baseline for current and future validation.
+- Shared validation baseline for gameplay completion and handoff integrity.
 
-## Matrix (Draft)
+## Matrix
 
 | Area | Scenario | Expected Result |
 | --- | --- | --- |
-| Completion | Student completes full flow | `profile` + `academic_interest` produced |
-| Handoff | Required hidden fields passed | Slate receives required metadata |
+| Movement | Player traverses the map | Player moves within bounds and respects collision rules |
+| Interaction | Player reaches a landmark trigger | Overlay opens and interaction can complete |
+| Progression | Player finishes multiple landmarks | `Swoop` growth advances deterministically |
+| Results | Student completes full flow | `academic_interest`, `swoop_stage`, and `collected_items` are produced |
+| Handoff | Required hidden fields passed | Slate receives `game_academic_interest`, `game_version`, `game_session_id`, `game_completed_at` |
 | Privacy | URL inspection | No PII in query params |
-| Failure | Abandon mid-flow | Graceful fallback / no bad handoff |
+| Failure | Player exits before completion | Session fails gracefully without broken results or handoff |
 
 ## Constraints
 - Keep expected results aligned with canonical scope and field contracts.
 
 ## Examples
-- Validate that `game_profile` and `game_interest` are present on completed handoff.
+- Validate that a completed session resolves exactly one `game_academic_interest` value for Slate.
 
 ## Open Questions
-- Which matrix rows should be automated first?
+- Which matrix rows should be automated first in the prototype?

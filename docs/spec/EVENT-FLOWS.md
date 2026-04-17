@@ -2,14 +2,14 @@
 title: EVENT-FLOWS
 owner: team
 status: draft
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: false
 ---
 
 # Event Flows
 
 ## Purpose
-Define key event sequences from entry to Slate handoff.
+Define key runtime event sequences from game boot to Slate handoff.
 
 ## Inputs
 - `PLAN/PLAN.md`
@@ -17,13 +17,30 @@ Define key event sequences from entry to Slate handoff.
 - `../../slate/field-dictionary.md`
 
 ## Outputs
-- Event flow definitions for gameplay and submission events.
+- Event flow definitions for gameplay, progression, results, and handoff events.
 
 ## Constraints
-- Keep naming consistent with contract fields.
+- Keep names aligned with the 2D exploration loop and handoff contract.
 
-## Examples
-- `game_started` -> `question_answered` (repeat) -> `game_completed` -> `slate_handoff_started` -> `slate_handoff_submitted`
+## Candidate Canonical Events
+
+- `game_booted`
+- `session_started`
+- `scene_loaded`
+- `player_moved`
+- `trigger_entered`
+- `interaction_started`
+- `interaction_completed`
+- `collectible_earned`
+- `swoop_stage_changed`
+- `academic_interest_resolved`
+- `results_viewed`
+- `slate_handoff_started`
+- `slate_handoff_opened`
+
+## Example Flow
+
+`game_booted` -> `session_started` -> `scene_loaded` -> `trigger_entered` -> `interaction_completed` -> `collectible_earned` -> `swoop_stage_changed` -> `academic_interest_resolved` -> `results_viewed` -> `slate_handoff_started`
 
 ## Open Questions
-- Which analytics event names should be canonicalized first?
+- Which of these events are analytics-only versus state-machine events?

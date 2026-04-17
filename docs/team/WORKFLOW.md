@@ -2,7 +2,7 @@
 title: WORKFLOW
 owner: team
 status: canonical
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: true
 ---
 
@@ -10,7 +10,7 @@ source_of_truth: true
 
 ## Purpose
 
-Define how the team collaborates in the current project phase, focused on context alignment and asset contribution.
+Define how the team collaborates while building the first playable campus exploration slice.
 
 ## Inputs
 
@@ -21,73 +21,57 @@ Define how the team collaborates in the current project phase, focused on contex
 
 ## Outputs
 
-- Team-aligned understanding of project scope and goals
-- Organized asset and content additions in the repository
-- Clear review loop before implementation work begins
+- Team-aligned gameplay, content, and UI contributions
+- Predictable placement for code, content, and assets
+- Clear review loop before new systems are merged
 
 ## Current Phase Workflow
 
-1. Review context first.
-2. Add assets/content to the repo in the correct location.
-3. Notify the lead developer of changes for review.
-4. Resolve feedback and finalize placement/naming.
+1. Review canonical docs first.
+2. Decide whether the work belongs in gameplay, content, UI, or assets.
+3. Add or update files in the correct repo area.
+4. Notify the lead developer of any canonical or contract impact.
+5. Resolve review feedback before starting dependent work.
 
-## Context Review Workflow
+## Contribution Lanes
 
-Each team member should review:
+- Gameplay: `src/game/`
+- Content/data: `src/content/` and `docs/spec/`
+- UI/UX: `src/ui/`
+- Runtime assets: `assets/`
+- Canonical docs and handoff rules: `PLAN/`, `slate/`, `docs/spec/`
 
-1. `README.md`
-2. `CONTEXT.md`
-3. `PLAN/PLAN.md`
-4. `slate/field-dictionary.md` (high level only for non-developer roles)
+## Asset Placement Rules
 
-Goal:
+- Put runtime map art in `assets/maps/`.
+- Put character, `Swoop`, item, and landmark art in `assets/sprites/`.
+- Put ambient or UI audio in `assets/audio/`.
+- Keep brand-source/reference assets under `SKILLS/uofu-enrollment-branding/assets/`.
 
-- Everyone can explain what v1 is, what is out of scope, and what the handoff contract means.
+## Naming Rules
 
-## Asset Contribution Workflow
-
-Use these contribution lanes:
-
-- Copywriter: add/edit messaging drafts and copy docs under `docs/` or designated copy files.
-- Photographer: add approved photos/source files to the appropriate `SKILLS/.../assets/` pack.
-- Graphic designer: add design assets/elements to `SKILLS/.../assets/` with clear naming.
-- Developers: organize structure, validate references, and keep canonical docs aligned.
-
-### Asset Placement Rules
-
-- Keep assets under `SKILLS/uofu-enrollment-branding/assets/` unless instructed otherwise.
-- Use existing asset packs when possible (`campaign-badge`, `patterns`, `textures`, `typography`, etc.).
-- If a new asset type is needed, create a clearly named folder and document it in:
-  - `SKILLS/uofu-enrollment-branding/references/asset-library.md`
-  - `SKILLS/uofu-enrollment-branding/SKILL.md` (assets section)
-
-### Naming Rules
-
-- Use descriptive, consistent filenames.
-- Avoid vague names like `final.png` or `image1.jpg`.
-- Include color space or channel markers when relevant (`RGB`, `CMYK`, `print`, `web`).
+- Use descriptive, stable filenames tied to game concepts.
+- Prefer slug-style names such as `campus-core.png`, `swoop-hatchling.png`, `union-plaza-trigger.json`.
+- Avoid temporary names like `final`, `new-map`, or `sprite2`.
 
 ## Review and Approval Workflow
 
 - Lead developer reviews:
-  - file placement
+  - system boundary fit
   - naming consistency
-  - alignment to scope and brand references
-- Changes to canonical files (`PLAN/PLAN.md`, `slate/field-dictionary.md`) require explicit approval before merge.
+  - alignment to scope and contracts
+- Changes to canonical files (`PLAN/PLAN.md`, `slate/field-dictionary.md`, `docs/spec/DATA-CONTRACTS.md`) require explicit review.
 
 ## Constraints
 
-- Do not introduce PII into query-parameter examples or metadata docs.
+- Do not introduce PII into runtime payloads or query-parameter examples.
 - Do not change scope boundaries without approval.
-- Do not change required Slate handoff fields without approval.
+- Do not broaden the Slate payload beyond the canonical fields without approval.
 
 ## Examples
 
-- Photographer adds approved images to the correct asset pack, then lead developer reviews naming and placement before merge.
+- Designer adds `assets/sprites/swoop-hatchling.png`, then developer wires it into `SwoopStage` data and requests review.
 
 ## Open Questions
 
-- Should we require branch-per-contributor now, or keep direct commits during planning phase?
-- Do we want a weekly “asset intake and cleanup” pass led by the design/development pair?
-- Should we add role-specific intake folders (`incoming/copy`, `incoming/photo`, `incoming/design`)?
+- Should map content live entirely in data files, or may the engine define some triggers in code during prototyping?

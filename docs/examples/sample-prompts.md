@@ -2,7 +2,7 @@
 title: SAMPLE-PROMPTS
 owner: team
 status: draft
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: false
 ---
 
@@ -20,14 +20,14 @@ Provide reusable prompt starters for recurring team tasks.
 
 ## Examples
 
-- Update question bank:
-  - "Propose 5 new question variants that still map cleanly to existing profile IDs."
+- Add landmark interactions:
+  - "Propose 5 new landmark interactions that fit the current campus map and score toward existing academic-interest IDs."
 - Validate Slate mapping:
   - "Compare hidden-field mappings in docs/spec and slate/field-dictionary, then list mismatches."
-- Organize assets:
-  - "Review new files under SKILLS assets and suggest final folder placement + naming fixes."
+- Organize runtime assets:
+  - "Review new files under assets/ and suggest final folder placement and naming fixes."
 - Draft result copy:
-  - "Generate 3 short result variants for profile=achiever and interest=engineering_technology."
+  - "Generate 3 short result variants for `academic_interest=engineering_technology` with `swoop_stage=growing`."
 
 ## Constraints
 - Prompts must preserve canonical field names and scope boundaries.

@@ -2,7 +2,7 @@
 title: AGENT-START-HERE
 owner: team
 status: canonical
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: true
 ---
 
@@ -17,36 +17,35 @@ Provide the minimum required context for an agent to make safe, high-value chang
 Read these files in order before editing:
 
 1. [PLAN/PLAN.md](../../PLAN/PLAN.md)
-2. [slate/field-dictionary.md](../../slate/field-dictionary.md)
-3. [CONTEXT.md](../../CONTEXT.md)
-4. [README.md](../../README.md)
-
-If working on brand/copy/design tasks, also read:
-
-5. [SKILLS/uofu-enrollment-branding/SKILL.md](../../SKILLS/uofu-enrollment-branding/SKILL.md)
+2. [docs/spec/DATA-CONTRACTS.md](../spec/DATA-CONTRACTS.md)
+3. [slate/field-dictionary.md](../../slate/field-dictionary.md)
+4. [CONTEXT.md](../../CONTEXT.md)
+5. [README.md](../../README.md)
 
 ## Outputs
 
 Every change should produce:
 
-- A clear file-level update aligned to current scope
-- Preserved data-contract compatibility with Slate handoff
+- A clear file-level update aligned to current game scope
+- Preserved compatibility with canonical gameplay and handoff contracts
 - A concise summary of what changed and how it was verified
 
 ## Constraints
 
 Safe to edit without prior approval:
 
-- `docs/**` (except files marked otherwise later)
+- `docs/**` except files marked otherwise later
 - `README.md`
 - `CONTEXT.md`
-- `SKILLS/uofu-enrollment-branding/**` for skill improvements
+- `src/**`
+- `assets/**`
 
 Requires explicit human approval before changing:
 
-- `PLAN/PLAN.md` (scope source of truth)
-- `slate/field-dictionary.md` (Slate field source of truth)
-- Any file that changes required field names, enums, or handoff semantics
+- `PLAN/PLAN.md`
+- `slate/field-dictionary.md`
+- `docs/spec/DATA-CONTRACTS.md`
+- Any file that changes required field names or handoff semantics
 
 Must-not-break rules:
 
@@ -58,23 +57,22 @@ Must-not-break rules:
 
 Before finalizing:
 
-1. Confirm changed docs still match canonical sources (`PLAN/PLAN.md`, `slate/field-dictionary.md`).
-2. Confirm links added/edited resolve to real files.
-3. If contracts changed, flag explicitly and request review.
+1. Confirm changed docs still match canonical sources.
+2. Confirm links added or edited resolve to real files.
+3. If contracts changed, flag them explicitly in the handoff summary.
 
 ## Examples
 
 Appropriate:
 
-- Add a new docs file under `docs/team/` that references existing canonical scope.
-- Improve `SKILLS/uofu-enrollment-branding/references/*` without changing Slate field names.
+- Add a gameplay spec under `docs/spec/`.
+- Add runtime placeholder files under `src/game/`, `src/content/`, or `src/ui/`.
 
 Not appropriate without approval:
 
 - Changing required hidden fields in the Slate contract.
-- Updating scope boundaries in `PLAN/PLAN.md`.
+- Expanding v1 beyond the one-map exploration slice.
 
 ## Open Questions
 
-- Which additional files should be treated as approval-required once `docs/spec/` and ADRs are created?
-- Should we formalize a docs lint/check command for link and heading consistency?
+- Which runtime files should become approval-required once implementation starts?

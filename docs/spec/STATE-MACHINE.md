@@ -2,14 +2,14 @@
 title: STATE-MACHINE
 owner: team
 status: draft
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: false
 ---
 
 # State Machine
 
 ## Purpose
-Describe game states and transitions at a high level.
+Describe game states and transitions for the campus exploration vertical slice.
 
 ## Inputs
 - `PLAN/PLAN.md`
@@ -20,10 +20,27 @@ Describe game states and transitions at a high level.
 - Draft state map for implementation planning.
 
 ## Constraints
-- Keep state names aligned to user journey.
+- Keep state names aligned to exploration gameplay rather than survey flow.
 
-## Examples
-- `ENTRY` -> `IN_GAME` -> `RESULTS` -> `SLATE_HANDOFF` -> `SUBMITTED`
+## Core States
+
+- `BOOT`
+- `TITLE`
+- `MAP_EXPLORATION`
+- `INTERACTION`
+- `REWARD`
+- `RESULTS`
+- `SLATE_HANDOFF`
+- `COMPLETE`
+
+## Example Transition Path
+
+`BOOT` -> `TITLE` -> `MAP_EXPLORATION` -> `INTERACTION` -> `REWARD` -> `MAP_EXPLORATION` -> `RESULTS` -> `SLATE_HANDOFF` -> `COMPLETE`
+
+## Recovery States
+
+- From `INTERACTION`, resume to `MAP_EXPLORATION` if the player closes the overlay.
+- From `SLATE_HANDOFF`, allow exit back to `RESULTS` without losing the completed session.
 
 ## Open Questions
-- What are terminal and recovery states for abandoned sessions?
+- Should the prototype support pause and resume via local storage in v1?

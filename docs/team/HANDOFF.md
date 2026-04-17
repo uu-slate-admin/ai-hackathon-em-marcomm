@@ -2,7 +2,7 @@
 title: HANDOFF
 owner: team
 status: canonical
-last_updated: 2026-04-15
+last_updated: 2026-04-17
 source_of_truth: true
 ---
 
@@ -10,7 +10,7 @@ source_of_truth: true
 
 ## Purpose
 
-Define what must be true before handing off work between contributors and before moving from planning/assets phase to implementation planning.
+Define what must be true before handing off gameplay, content, UI, or asset work between contributors.
 
 ## Inputs
 
@@ -22,8 +22,8 @@ Define what must be true before handing off work between contributors and before
 ## Outputs
 
 - Consistent and reviewable handoff packets
-- Fewer misunderstandings between team roles
-- Clear phase-transition readiness signals
+- Fewer misunderstandings between contributors
+- Clear readiness signals for system-level integration
 
 ## Handoff Packet (Required)
 
@@ -31,56 +31,52 @@ Each handoff should include:
 
 1. **What changed**
    - File paths changed
-   - Brief summary of additions/updates
+   - Brief summary of additions or updates
 
 2. **Why it changed**
-   - Scope/goal tie-back
-   - Related context or requirement
+   - Gameplay, content, UI, or handoff rationale
+   - Related contract or scope tie-back
 
 3. **What to review**
-   - Priority review points for the next person
-   - Any sensitive/canonical impacts
+   - Specific review points
+   - Any canonical or runtime integration risk
 
-4. **Open questions**
+4. **What is still open**
    - Explicit unresolved items
-   - Suggested owner for decision
+   - Suggested owner for each decision
 
 ## Role-Based Handoff Guidance
 
-Copywriter -> Developer/Reviewer:
+Content -> Gameplay/UI:
 
-- Include intended audience and message intent.
-- Mark draft vs final status of copy blocks.
+- Include trigger IDs, intended tone, and any scoring assumptions.
 
-Photographer -> Designer/Developer:
+Designer -> Gameplay/UI:
 
-- Include usage intent (hero, supporting, background, etc.).
-- Include any constraints on usage/selection.
+- Include asset paths, intended state usage, and dimensions if relevant.
 
-Graphic Designer -> Developer/Reviewer:
+Gameplay -> Team:
 
-- Include asset pack location and intended channel (web/print/social).
-- Call out if assets require vector fidelity or specific color space.
+- Confirm state changes, trigger behavior, and content dependencies.
 
 Developer -> Team:
 
-- Confirm structure, path consistency, and canonical alignment.
-- Flag any scope/contract risk immediately.
+- Flag any canonical contract impact immediately.
 
-## Phase Transition Handoff (Planning -> Implementation Planning)
+## Phase Transition Handoff
 
-Before moving phases, confirm:
+Before moving from setup into broader implementation, confirm:
 
-- `PLAN/PLAN.md` is stable for current review cycle.
-- `slate/field-dictionary.md` is stable for current review cycle.
-- `docs/spec/DATA-CONTRACTS.md` reflects current contract definitions.
-- `SKILLS/uofu-enrollment-branding/references/asset-library.md` is current with asset packs.
-- High-priority open questions are either resolved or clearly assigned.
+- `PLAN/PLAN.md` is stable for the current review cycle.
+- `slate/field-dictionary.md` is stable for the current review cycle.
+- `docs/spec/DATA-CONTRACTS.md` reflects current gameplay and handoff schemas.
+- `src/` and `assets/` structure is in place for gameplay, content, UI, and runtime assets.
+- High-priority open questions are resolved or clearly assigned.
 
 ## Constraints
 
 - No handoff is complete if canonical-impacting changes are undocumented.
-- No hidden assumptions: unresolved decisions must be written in `Open Questions`.
+- No hidden assumptions: unresolved decisions must be written in files, not only in chat.
 - Do not treat chat-only context as sufficient handoff documentation.
 
 ## Example Handoff Template
@@ -91,18 +87,13 @@ Handoff Summary
   - path/to/file1
   - path/to/file2
 - Reason:
-  - aligns with [scope/goal]
+  - aligns with gameplay or contract goal
 - Review Focus:
-  - verify [specific item]
+  - verify specific runtime or contract behavior
 - Open Questions:
-  - [question] (owner: [name/role])
+  - question (owner: role)
 ```
-
-## Examples
-
-- Copy handoff example: include audience intent, draft/final status, and target file paths for reviewer.
 
 ## Open Questions
 
-- Should we enforce this handoff template via PR description format?
-- Should we add a handoff log file for milestone checkpoints?
+- Should we add a running handoff log once multiple contributors start touching runtime code?
