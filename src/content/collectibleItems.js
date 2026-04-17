@@ -1,28 +1,28 @@
 export const collectibleItems = [
   {
-    id: "union_pin",
-    label: "Union Pin",
-    unlockCopy: "A keepsake from the pulse of campus life.",
+    id: "major-map",
+    label: "Major Map",
+    unlockCopy: "A keepsake from the moment your options started to take shape.",
   },
   {
-    id: "research_patch",
-    label: "Research Patch",
-    unlockCopy: "Proof you followed curiosity into discovery.",
+    id: "support-badge",
+    label: "Support Badge",
+    unlockCopy: "A reminder that the right support changes the whole journey.",
   },
   {
-    id: "city_postcard",
-    label: "City Postcard",
-    unlockCopy: "A reminder that campus and city move together.",
+    id: "transit-pass",
+    label: "Transit Pass",
+    unlockCopy: "Proof that campus and city are both part of your route.",
   },
   {
-    id: "granite_pass",
-    label: "Granite Pass",
-    unlockCopy: "You unlocked a path shaped by support and resilience.",
+    id: "stadium-pennant",
+    label: "Stadium Pennant",
+    unlockCopy: "A marker for the energy and tradition that pull people together.",
   },
   {
-    id: "launch_badge",
-    label: "Launch Badge",
-    unlockCopy: "A marker for ambition and momentum.",
+    id: "trail-postcard",
+    label: "Trail Postcard",
+    unlockCopy: "A snapshot of the wider landscape waiting just past campus.",
   },
 ];
 

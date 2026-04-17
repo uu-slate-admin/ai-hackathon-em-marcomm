@@ -12,6 +12,13 @@ export function showDialogue({ trigger, eventData, onSelect }) {
   rootElement.classList.add("is-active");
   rootElement.innerHTML = `
     <div class="overlay-card">
+      ${eventData.image
+        ? `
+          <div class="overlay-card__media">
+            <img src="${eventData.image}" alt="${eventData.title}" />
+          </div>
+        `
+        : ""}
       <div class="overlay-card__body">
         <span>${trigger.label}</span>
         <h2>${eventData.title}</h2>

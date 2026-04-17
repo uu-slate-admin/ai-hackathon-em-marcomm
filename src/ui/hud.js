@@ -67,7 +67,7 @@ function renderHud() {
       </div>
       <div class="intel-item">
         <strong>Goal</strong>
-        <p>Reach all five landmarks to unlock your final result.</p>
+        <p>Reach all ${totalStops} landmarks to unlock your final result.</p>
       </div>
     </div>
   `;

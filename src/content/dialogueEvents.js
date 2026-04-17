@@ -1,53 +1,117 @@
+import { campusPhotoAssets } from "./media";
+
 export const dialogueEvents = {
-  union_plaza: {
-    title: "Student Union Plaza",
-    body: "The center of campus is buzzing. Clubs are setting up, music is drifting through the air, and students are inviting people into spaces where they can belong fast.",
-    prompt: "What pulls you in first?",
+  undergraduate_studies: {
+    title: "Undergraduate Studies",
+    image: campusPhotoAssets.undergraduateStudies.url,
+    body: "A counselor points toward the many directions a Utah education can take. The question is not whether there is a path for you here. It is which path you want to start exploring first.",
+    prompt: "What do you want your first academic move to feel like?",
     options: [
       {
-        id: "union_lead",
-        label: "Join the teams creating the energy",
-        description: "You want to build communities, events, and momentum.",
-        reaction: "Swoop perks up. This path points toward leadership and shared purpose.",
+        id: "undergrad_build",
+        label: "Hands-on, future-facing, and problem-solving",
+        description: "You want to turn curiosity into builds, research, and real systems.",
+        reaction: "Swoop leans in. That instinct points toward a builder's path.",
         interestWeights: {
-          business_community_leadership: 3,
-          arts_media_storytelling: 1,
+          engineering_technology: 3,
+          health_human_sciences: 1,
         },
         growthPoints: 1,
       },
       {
-        id: "union_find_people",
-        label: "Find the groups that make campus feel like home",
-        description: "You care about support systems and real belonging.",
-        reaction: "Swoop nudges closer. You noticed the people-first side of campus.",
+        id: "undergrad_people",
+        label: "Flexible, creative, and driven by people",
+        description: "You want room to shape ideas, stories, and community impact.",
+        reaction: "Swoop perks up. You are following the human side of possibility.",
         interestWeights: {
-          health_human_sciences: 2,
-          business_community_leadership: 1,
+          arts_media_storytelling: 2,
+          business_community_leadership: 2,
         },
         growthPoints: 1,
       },
     ],
   },
-  library_walk: {
-    title: "Library Walk",
-    body: "Study groups spill onto the path outside the library. Screens glow, ideas move fast, and the line between questions and inventions feels thin.",
-    prompt: "How do you want to spend your time here?",
+  student_services: {
+    title: "Student Services Building",
+    image: campusPhotoAssets.studentServices.url,
+    body: "Staff here talk about scholarships, advising, and the kind of support that helps students move from interest to action without feeling lost in the process.",
+    prompt: "Which part of that support matters most to you?",
     options: [
       {
-        id: "library_make",
-        label: "Prototype the ideas that could change something real",
-        description: "You like turning questions into systems, builds, and solutions.",
-        reaction: "Swoop cracks the shell a little wider. Curiosity is becoming motion.",
+        id: "services_afford",
+        label: "Knowing the path is practical and financially possible",
+        description: "You want the plan behind the dream to make sense.",
+        reaction: "Swoop settles in. A good path needs real support behind it.",
         interestWeights: {
-          engineering_technology: 3,
+          business_community_leadership: 2,
+          engineering_technology: 1,
         },
         growthPoints: 1,
       },
       {
-        id: "library_story",
-        label: "Follow the stories hidden inside research and people",
-        description: "You want to understand ideas deeply and communicate them clearly.",
-        reaction: "Swoop tilts its head. You noticed the human meaning inside the data.",
+        id: "services_belong",
+        label: "Having people, guidance, and care around you",
+        description: "You want a campus that helps you feel supported while you grow.",
+        reaction: "Swoop relaxes. You noticed how support changes the whole experience.",
+        interestWeights: {
+          health_human_sciences: 3,
+          arts_media_storytelling: 1,
+        },
+        growthPoints: 1,
+      },
+    ],
+  },
+  transportation_hub: {
+    title: "Campus Transit",
+    image: campusPhotoAssets.transportation.url,
+    body: "At the TRAX stop, the city suddenly feels close. Your student ID opens up transit across campus and beyond, turning daily movement into access, independence, and possibility.",
+    prompt: "What feels most exciting about that?",
+    options: [
+      {
+        id: "transit_city",
+        label: "Using the city as part of your education",
+        description: "You are thinking about internships, arts, food, and opportunities beyond the classroom.",
+        reaction: "Swoop looks outward. You noticed how movement can widen your world.",
+        interestWeights: {
+          business_community_leadership: 2,
+          arts_media_storytelling: 1,
+        },
+        growthPoints: 1,
+      },
+      {
+        id: "transit_routine",
+        label: "A smoother day-to-day life on a connected campus",
+        description: "You like systems that make it easier to keep moving.",
+        reaction: "Swoop speeds up. You are paying attention to how a campus works.",
+        interestWeights: {
+          engineering_technology: 2,
+          health_human_sciences: 1,
+        },
+        growthPoints: 1,
+      },
+    ],
+  },
+  rice_eccles: {
+    title: "Rice-Eccles Stadium",
+    image: campusPhotoAssets.riceEccles.url,
+    body: "Game day energy spills across campus. School spirit here is not just about sports. It is about showing up, belonging to something bigger, and sharing momentum with everyone around you.",
+    prompt: "What part of that energy feels most like you?",
+    options: [
+      {
+        id: "rice_people",
+        label: "The feeling of community and shared momentum",
+        description: "You are drawn to teams, leadership, and campus traditions.",
+        reaction: "Swoop lifts its wings. You found the pulse that brings people together.",
+        interestWeights: {
+          business_community_leadership: 3,
+        },
+        growthPoints: 1,
+      },
+      {
+        id: "rice_story",
+        label: "How a big moment can become a memory and a story",
+        description: "You notice the atmosphere, visuals, and emotion around the experience.",
+        reaction: "Swoop turns toward the crowd. You followed the feeling behind the moment.",
         interestWeights: {
           arts_media_storytelling: 2,
           health_human_sciences: 1,
@@ -56,87 +120,30 @@ export const dialogueEvents = {
       },
     ],
   },
-  innovation_hub: {
-    title: "Innovation Hub",
-    body: "Labs, project rooms, and studio spaces are all colliding here. Teams are building, testing, revising, and pitching future-facing ideas.",
-    prompt: "Which part of that energy feels most like you?",
+  red_butte: {
+    title: "Red Butte Garden",
+    image: campusPhotoAssets.redButte.url,
+    body: "The trails open into a wider view of Salt Lake City and the mountains beyond. It feels like a reminder that campus life here is tied to the outdoors, the landscape, and room to breathe.",
+    prompt: "What does this stop make you want more of?",
     options: [
       {
-        id: "hub_build",
-        label: "The design-build cycle",
-        description: "You like making ideas tangible and iterating until they work.",
-        reaction: "Swoop fully hatches. Momentum suits you.",
-        interestWeights: {
-          engineering_technology: 3,
-          business_community_leadership: 1,
-        },
-        growthPoints: 1,
-      },
-      {
-        id: "hub_pitch",
-        label: "The people, stories, and strategy behind what gets built",
-        description: "You see how communication and leadership move ideas forward.",
-        reaction: "Swoop stretches new wings. You followed the spark behind the build.",
-        interestWeights: {
-          business_community_leadership: 2,
-          arts_media_storytelling: 2,
-        },
-        growthPoints: 1,
-      },
-    ],
-  },
-  health_commons: {
-    title: "Health Commons Garden",
-    body: "Students are meeting in a calm courtyard beside health and support spaces. The pace shifts. It feels grounded, intentional, and deeply connected to people.",
-    prompt: "What stands out most here?",
-    options: [
-      {
-        id: "health_support",
-        label: "The chance to help people feel stronger and more supported",
-        description: "You are drawn to care, growth, and human wellbeing.",
-        reaction: "Swoop settles into your orbit. This path is steady and people-centered.",
-        interestWeights: {
-          health_human_sciences: 3,
-        },
-        growthPoints: 1,
-      },
-      {
-        id: "health_systems",
-        label: "The systems that help entire communities thrive",
-        description: "You think about health as something built at scale.",
-        reaction: "Swoop steadies itself. You see how support can become structure.",
+        id: "red_butte_balance",
+        label: "A life that stays grounded, healthy, and connected to place",
+        description: "You want a campus experience that supports wellbeing and perspective.",
+        reaction: "Swoop slows down and takes it in. You found the calm inside the momentum.",
         interestWeights: {
           health_human_sciences: 2,
-          business_community_leadership: 1,
-          engineering_technology: 1,
+          arts_media_storytelling: 1,
         },
         growthPoints: 1,
       },
-    ],
-  },
-  skyline_terrace: {
-    title: "Skyline Terrace",
-    body: "From here, campus opens into the city and the mountains beyond it. The view feels like possibility: close to opportunity, wide enough for ambition.",
-    prompt: "What does this moment make you think about?",
-    options: [
       {
-        id: "skyline_future",
-        label: "What I can build with access to a bigger world",
-        description: "You are thinking about trajectory, opportunity, and what comes next.",
-        reaction: "Swoop rises higher. Your path is about momentum and scale.",
+        id: "red_butte_adventure",
+        label: "A campus that keeps opening into adventure and discovery",
+        description: "You are energized by access, movement, and what else might be out there.",
+        reaction: "Swoop glides forward. You followed the part of campus that keeps expanding.",
         interestWeights: {
           engineering_technology: 2,
-          business_community_leadership: 2,
-        },
-        growthPoints: 1,
-      },
-      {
-        id: "skyline_voice",
-        label: "How place and perspective can shape the stories I tell",
-        description: "You notice how environment changes expression and meaning.",
-        reaction: "Swoop takes a confident glide. You turned the view into perspective.",
-        interestWeights: {
-          arts_media_storytelling: 3,
           business_community_leadership: 1,
         },
         growthPoints: 1,

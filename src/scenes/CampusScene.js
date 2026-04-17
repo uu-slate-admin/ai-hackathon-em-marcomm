@@ -4,6 +4,7 @@ import { academicInterestsById } from "../content/academicInterests";
 import { collectibleItemsById } from "../content/collectibleItems";
 import { dialogueEvents } from "../content/dialogueEvents";
 import { locationTriggers } from "../content/locationTriggers";
+import { swoopStageAssets } from "../content/media";
 import { campusScene } from "../content/mapScenes";
 import { resultMappings } from "../content/resultMappings";
 import { drawCampusMap } from "../game/drawBackdrop";
@@ -110,7 +111,9 @@ export class CampusScene extends Phaser.Scene {
     this.player.body.setOffset(9, 9);
     this.physics.add.collider(this.player, this.obstacles);
 
-    this.swoop = this.add.image(this.player.x - 54, this.player.y + 34, "swoop-egg").setDepth(9);
+    this.swoop = this.add.image(this.player.x - 54, this.player.y + 34, swoopStageAssets.egg.key).setDepth(9);
+    this.swoop.setOrigin(0.5, 0.82);
+    this.syncSwoopSprite("egg");
     this.swoopTween = this.tweens.add({
       targets: this.swoop,
       y: this.swoop.y - 10,
@@ -203,7 +206,7 @@ export class CampusScene extends Phaser.Scene {
       marker.center.setAlpha(0.35);
     }
 
-    this.swoop.setTexture(`swoop-${stage.id}`);
+    this.syncSwoopSprite(stage.id);
 
     hideDialogue();
     this.isBusy = false;
@@ -244,5 +247,12 @@ export class CampusScene extends Phaser.Scene {
         this.scene.restart();
       },
     });
+  }
+
+  syncSwoopSprite(stageId) {
+    const asset = swoopStageAssets[stageId] ?? swoopStageAssets.egg;
+
+    this.swoop.setTexture(asset.key);
+    this.swoop.setDisplaySize(asset.displaySize.width, asset.displaySize.height);
   }
 }
