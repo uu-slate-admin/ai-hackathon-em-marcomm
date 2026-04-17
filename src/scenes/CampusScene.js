@@ -16,6 +16,13 @@ import { hideDialogue, showDialogue } from "../ui/dialogueOverlay";
 import { updateHud } from "../ui/hud";
 import { hideResults, showResults } from "../ui/resultOverlay";
 
+function getLandmarkTextureKeys(isVisited) {
+  return {
+    pulse: isVisited ? "landmark-node-visited" : "landmark-node-unvisited",
+    center: isVisited ? "landmark-core-visited" : "landmark-core-unvisited",
+  };
+}
+
 export class CampusScene extends Phaser.Scene {
   constructor() {
     super("CampusScene");
@@ -78,13 +85,14 @@ export class CampusScene extends Phaser.Scene {
   }
 
   createLandmarks() {
+    const session = getSession();
+
     locationTriggers.forEach((trigger) => {
-      const pulse = this.add.image(trigger.x, trigger.y, "landmark-node").setDepth(6);
-      pulse.setTint(trigger.color);
+      const textureKeys = getLandmarkTextureKeys(session.visitedTriggerIds.includes(trigger.id));
+      const pulse = this.add.image(trigger.x, trigger.y, textureKeys.pulse).setDepth(6);
       pulse.setAlpha(0.92);
 
-      const center = this.add.image(trigger.x, trigger.y, "landmark-core").setDepth(7);
-      center.setTint(0xffffff);
+      const center = this.add.image(trigger.x, trigger.y, textureKeys.center).setDepth(7);
 
       center.setInteractive({ useHandCursor: true });
       center.on("pointerdown", () => {
@@ -114,9 +122,12 @@ export class CampusScene extends Phaser.Scene {
     this.swoop = this.add.image(this.player.x - 54, this.player.y + 34, swoopStageAssets.egg.key).setDepth(9);
     this.swoop.setOrigin(0.5, 0.82);
     this.syncSwoopSprite("egg");
+    this.swoopFollowDirection = new Phaser.Math.Vector2(0, 1);
+    this.swoopFollowPhase = Math.random() * Math.PI * 2;
+    this.swoopBob = { offsetY: 0 };
     this.swoopTween = this.tweens.add({
-      targets: this.swoop,
-      y: this.swoop.y - 10,
+      targets: this.swoopBob,
+      offsetY: -10,
       duration: 900,
       yoyo: true,
       repeat: -1,
@@ -140,8 +151,24 @@ export class CampusScene extends Phaser.Scene {
     movement.normalize().scale(speed);
     this.player.setVelocity(movement.x, movement.y);
 
-    this.swoop.x = Phaser.Math.Linear(this.swoop.x, this.player.x - 56, 0.06);
-    this.swoop.y = Phaser.Math.Linear(this.swoop.y, this.player.y + 30, 0.06);
+    const velocity = this.player.body.velocity;
+    if (velocity.lengthSq() > 1) {
+      this.swoopFollowDirection.copy(velocity).normalize();
+      this.swoopFollowPhase += 0.11;
+    } else {
+      this.swoopFollowPhase += 0.04;
+    }
+
+    const followDirection = this.swoopFollowDirection;
+    const sideDirection = new Phaser.Math.Vector2(-followDirection.y, followDirection.x);
+    const trailingDistance = 48;
+    const sideDrift = 10 + Math.sin(this.swoopFollowPhase) * 18;
+    const swoopTargetX = this.player.x - (followDirection.x * trailingDistance) + (sideDirection.x * sideDrift);
+    const swoopTargetY =
+      this.player.y + 26 - (followDirection.y * (trailingDistance * 0.55)) + (sideDirection.y * sideDrift * 0.35);
+
+    this.swoop.x = Phaser.Math.Linear(this.swoop.x, swoopTargetX, 0.08);
+    this.swoop.y = Phaser.Math.Linear(this.swoop.y, swoopTargetY + this.swoopBob.offsetY, 0.08);
 
     const nearby = this.findNearbyTrigger();
     this.activeTrigger = nearby;
@@ -202,8 +229,11 @@ export class CampusScene extends Phaser.Scene {
     const stage = resolveSwoopStage(session.growthPoints);
 
     if (marker) {
-      marker.pulse.setAlpha(0.22);
-      marker.center.setAlpha(0.35);
+      const textureKeys = getLandmarkTextureKeys(true);
+      marker.pulse.setTexture(textureKeys.pulse);
+      marker.center.setTexture(textureKeys.center);
+      marker.pulse.setAlpha(0.92);
+      marker.center.setAlpha(1);
     }
 
     this.syncSwoopSprite(stage.id);
@@ -217,7 +247,7 @@ export class CampusScene extends Phaser.Scene {
       nearbyTrigger: null,
     });
 
-    if (result.completed) {
+    if (result.newlyCompleted) {
       this.showResultState(session);
     }
   }
@@ -242,6 +272,14 @@ export class CampusScene extends Phaser.Scene {
       collectedItems,
       payload,
       slateHref,
+      onContinue: () => {
+        this.isBusy = false;
+        updateHud({
+          session: getSession(),
+          mode: "play",
+          nearbyTrigger: this.findNearbyTrigger(),
+        });
+      },
       onRestart: () => {
         resetSession();
         this.scene.restart();

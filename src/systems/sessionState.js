@@ -1,6 +1,6 @@
 import { academicInterests } from "../content/academicInterests";
 import { collectibleItemsById } from "../content/collectibleItems";
-import { locationTriggers } from "../content/locationTriggers";
+import { REQUIRED_STOPS } from "../content/tourStops";
 import { resolveAcademicInterest } from "./academicInterest";
 import { resolveSwoopStage } from "./swoopProgression";
 
@@ -65,6 +65,7 @@ export function applyInteraction(trigger, option) {
       stageChanged: false,
       unlockedItem: null,
       completed: Boolean(state.completedAt),
+      newlyCompleted: false,
     };
   }
 
@@ -86,9 +87,10 @@ export function applyInteraction(trigger, option) {
     unlockedItem = collectibleItemsById[trigger.collectibleId];
   }
 
-  const completed = state.visitedTriggerIds.length >= locationTriggers.length;
+  const completed = state.visitedTriggerIds.length >= REQUIRED_STOPS;
+  const newlyCompleted = completed && !state.completedAt;
 
-  if (completed) {
+  if (newlyCompleted) {
     state.academicInterest = resolveAcademicInterest(state.interestScores);
     state.completedAt = new Date().toISOString();
   }
@@ -100,5 +102,6 @@ export function applyInteraction(trigger, option) {
     stageChanged: previousStage !== state.swoopStage,
     unlockedItem,
     completed,
+    newlyCompleted,
   };
 }

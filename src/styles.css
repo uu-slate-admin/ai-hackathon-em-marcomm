@@ -143,7 +143,7 @@ select {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.55fr);
   gap: 1rem;
 }
 
@@ -154,7 +154,7 @@ select {
 
 .hud-root {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 0.85rem;
 }
 
@@ -191,6 +191,10 @@ select {
 .intel-card p {
   margin: 0.35rem 0 0;
   line-height: 1.45;
+}
+
+.hud-card--primary {
+  padding-bottom: 1.05rem;
 }
 
 .progress-track {
@@ -364,6 +368,10 @@ select {
   clip-path: polygon(7% 0, 100% 0, 100% 86%, 93% 100%, 0 100%, 0 14%);
 }
 
+.result-chip p {
+  margin-top: 0.45rem;
+}
+
 .payload-preview {
   margin-top: 1rem;
   padding: 0.85rem;
@@ -373,9 +381,22 @@ select {
   overflow: auto;
 }
 
+.payload-disclosure {
+  margin-top: 1rem;
+}
+
+.payload-disclosure summary {
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(18, 8, 9, 0.66);
+}
+
 .intel-stack {
   display: grid;
-  gap: 1rem;
+  gap: 0.85rem;
   align-content: start;
 }
 
@@ -386,11 +407,24 @@ select {
   margin-top: 0.9rem;
 }
 
+.intel-list--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .intel-item,
 .collectible-chip {
   padding: 0.7rem 0.8rem;
   background: rgba(18, 8, 9, 0.06);
   clip-path: polygon(6% 0, 100% 0, 100% 86%, 94% 100%, 0 100%, 0 14%);
+}
+
+.intel-item p,
+.collectible-chip p {
+  margin-top: 0.25rem;
+}
+
+.collectible-list--compact {
+  margin-top: 0.75rem;
 }
 
 .collectible-chip strong {
@@ -472,8 +506,9 @@ select {
   }
 
   .chrome-bar,
+  .intel-stack,
   .hud-root,
-  .intel-stack {
+  .intel-list--compact {
     grid-template-columns: 1fr;
     display: grid;
   }

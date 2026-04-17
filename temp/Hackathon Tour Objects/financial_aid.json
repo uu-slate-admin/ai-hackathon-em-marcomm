@@ -1,0 +1,12 @@
+{
+  "id": "financial_aid",
+  "scene": {
+    "location": "Student Services Building",
+    "character": "Staff"
+  },
+  "dialogue": [
+    "The U wants to make sure that higher education is affordable to everyone.",
+    "We offer merit-based and need-based scholarships.",
+    "Millions are awarded annually in financial aid."
+  ]
+}

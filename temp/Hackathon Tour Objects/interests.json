@@ -1,0 +1,40 @@
+{
+  "id": "interests",
+  "scene": {
+    "location": "Block U",
+    "character": "Swoop"
+  },
+  "dialogue": [
+    "Welcome to the U, where your path isn\u2019t chosen for you\u2026 it\u2019s built by you.",
+    "What are your interests?",
+    "Pick what you\u2019re curious about!"
+  ],
+  "interaction": {
+    "type": "tag_selection",
+    "style": "tetris_drop",
+    "categories": [
+      "interested",
+      "not_interested"
+    ],
+    "options": [
+      "Innovation",
+      "Healthcare",
+      "Business",
+      "Creativity",
+      "Adventure",
+      "Community",
+      "Research",
+      "Leadership",
+      "Global Experiences",
+      "Technology",
+      "Service",
+      "Flexibility",
+      "Sports",
+      "Nature",
+      "Marketing"
+    ]
+  },
+  "result_dialogue": [
+    "Nice! I\u2019ve mapped out a path just for you. Let\u2019s go!"
+  ]
+}

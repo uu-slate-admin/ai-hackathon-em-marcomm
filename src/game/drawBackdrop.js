@@ -69,11 +69,15 @@ export function drawTitleBackdrop(scene) {
 }
 
 export function drawCampusMap(scene, mapScene, triggers) {
-  scene.add.image(0, 0, mapScene.backgroundKey).setOrigin(0).setDepth(0);
+  scene.add.image(0, 0, mapScene.backgroundKey).setOrigin(0).setDisplaySize(mapScene.width, mapScene.height).setDepth(0);
 
   scene.add
     .rectangle(mapScene.width / 2, mapScene.height / 2, mapScene.width, mapScene.height, 0xf3efe6, 0.06)
     .setDepth(1);
+
+  if (mapScene.showTriggerLabels === false) {
+    return;
+  }
 
   triggers.forEach((trigger) => {
     scene.add

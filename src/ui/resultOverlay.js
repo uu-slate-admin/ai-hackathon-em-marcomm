@@ -4,6 +4,10 @@ export function mountResultOverlay(root) {
   rootElement = root;
 }
 
+function escapeHtml(value) {
+  return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
+
 export function showResults({
   interest,
   resultMapping,
@@ -11,6 +15,7 @@ export function showResults({
   collectedItems,
   payload,
   slateHref,
+  onContinue,
   onRestart,
 }) {
   if (!rootElement) {
@@ -24,37 +29,46 @@ export function showResults({
       (item) => `
         <div class="result-chip">
           <span>Collectible</span>
-          <strong>${item.label}</strong>
-          <p>${item.unlockCopy}</p>
+          <strong>${escapeHtml(item.label)}</strong>
+          <p>${escapeHtml(item.unlockCopy)}</p>
         </div>
       `,
     )
     .join("");
+  const payloadJson = JSON.stringify(payload, null, 2);
+  const payloadMarkup = escapeHtml(payloadJson);
 
   rootElement.innerHTML = `
     <div class="overlay-card">
       <div class="overlay-card__body">
-        <span>${resultMapping.kicker}</span>
-        <h2>${interest.headline}</h2>
-        <p>${interest.summary}</p>
+        <span>${escapeHtml(resultMapping.kicker)}</span>
+        <h2>${escapeHtml(interest.headline)}</h2>
+        <p>${escapeHtml(interest.summary)}</p>
         <div class="result-grid">
           <div class="result-chip">
             <span>Final Swoop Stage</span>
-            <strong>${stageLabel}</strong>
+            <strong>${escapeHtml(stageLabel)}</strong>
             <p>Swoop grew with every campus moment you completed.</p>
           </div>
           <div class="result-chip">
             <span>Next Step</span>
-            <strong>${interest.label}</strong>
-            <p>${interest.nextStep}</p>
+            <strong>${escapeHtml(interest.label)}</strong>
+            <p>${escapeHtml(interest.nextStep)}</p>
           </div>
           ${itemsMarkup}
         </div>
-        <pre class="payload-preview">${JSON.stringify(payload, null, 2)}</pre>
+        <details class="payload-disclosure">
+          <summary>Show QA payload</summary>
+          <pre class="payload-preview">${payloadMarkup}</pre>
+        </details>
         <div class="result-actions">
           <button class="action-button" data-action="slate">
-            <strong>${slateHref ? resultMapping.ctaLabel : "Preview Slate Payload"}</strong>
-            <small>${resultMapping.ctaDescription}</small>
+            <strong>${slateHref ? escapeHtml(resultMapping.ctaLabel) : "Preview Slate Payload"}</strong>
+            <small>${escapeHtml(resultMapping.ctaDescription)}</small>
+          </button>
+          <button class="action-button action-button--secondary" data-action="continue">
+            <strong>Keep Exploring</strong>
+            <small>Close this summary and keep visiting the rest of the map.</small>
           </button>
           <button class="action-button action-button--accent" data-action="copy">
             <strong>Copy Payload</strong>
@@ -74,13 +88,19 @@ export function showResults({
     onRestart();
   });
 
+  rootElement.querySelector('[data-action="continue"]').addEventListener("click", () => {
+    hideResults();
+    onContinue?.();
+  });
+
   rootElement.querySelector('[data-action="copy"]').addEventListener("click", async () => {
-    await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+    await navigator.clipboard.writeText(payloadJson);
   });
 
   rootElement.querySelector('[data-action="slate"]').addEventListener("click", () => {
     if (slateHref) {
-      window.open(slateHref, "_blank", "noopener,noreferrer");
+      hideResults();
+      window.location.assign(slateHref);
     }
   });
 }

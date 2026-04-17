@@ -1,60 +1,16 @@
-export const locationTriggers = [
-  {
-    id: "undergraduate_studies",
-    label: "Undergraduate Studies",
-    shortLabel: "UG Studies",
-    x: 940,
-    y: 930,
-    radius: 120,
-    dialogueEventId: "undergraduate_studies",
-    collectibleId: "major-map",
-    color: 0xbe0000,
-  },
-  {
-    id: "student_services",
-    label: "Student Services",
-    shortLabel: "Services",
-    x: 1200,
-    y: 780,
-    radius: 120,
-    dialogueEventId: "student_services",
-    collectibleId: "support-badge",
-    color: 0xffb81d,
-  },
-  {
-    id: "transportation_hub",
-    label: "TRAX Stop",
-    shortLabel: "Transit",
-    x: 1430,
-    y: 1530,
-    radius: 120,
-    dialogueEventId: "transportation_hub",
-    collectibleId: "transit-pass",
-    color: 0x3abfc0,
-  },
-  {
-    id: "rice_eccles",
-    label: "Rice-Eccles Stadium",
-    shortLabel: "Stadium",
-    x: 760,
-    y: 1580,
-    radius: 125,
-    dialogueEventId: "rice_eccles",
-    collectibleId: "stadium-pennant",
-    color: 0x708e99,
-  },
-  {
-    id: "red_butte",
-    label: "Red Butte Garden",
-    shortLabel: "Red Butte",
-    x: 2470,
-    y: 820,
-    radius: 125,
-    dialogueEventId: "red_butte",
-    collectibleId: "trail-postcard",
-    color: 0x890000,
-  },
-];
+import { tourStops } from "./tourStops";
+
+export const locationTriggers = tourStops.map((stop) => ({
+  id: stop.id,
+  label: stop.label,
+  shortLabel: stop.shortLabel,
+  x: stop.x,
+  y: stop.y,
+  radius: stop.radius,
+  dialogueEventId: stop.id,
+  collectibleId: stop.collectible.id,
+  color: stop.color,
+}));
 
 export const locationTriggersById = Object.fromEntries(
   locationTriggers.map((trigger) => [trigger.id, trigger]),

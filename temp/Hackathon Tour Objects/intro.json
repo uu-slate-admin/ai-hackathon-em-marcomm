@@ -1,0 +1,22 @@
+{
+  "id": "intro",
+  "scene": {
+    "location": "landing",
+    "character": "Swoop",
+    "animation": "pop_up_bottom"
+  },
+  "dialogue": [
+    "Hey there! Ready to explore the University of Utah in a way that lets you forge your own path?",
+    "Let\u2019s go on a journey to the U together!"
+  ],
+  "options": [
+    {
+      "text": "Play the game",
+      "action": "start_game"
+    },
+    {
+      "text": "I\u2019ll explore on my own",
+      "action": "exit"
+    }
+  ]
+}

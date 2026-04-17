@@ -4,6 +4,7 @@ import "./styles.css";
 import { academicInterestsById } from "./content/academicInterests";
 import { collectibleItemsById } from "./content/collectibleItems";
 import { locationTriggers } from "./content/locationTriggers";
+import { REQUIRED_STOPS } from "./content/tourStops";
 import { BootScene } from "./scenes/BootScene";
 import { CampusScene } from "./scenes/CampusScene";
 import { TitleScene } from "./scenes/TitleScene";
@@ -21,6 +22,7 @@ mountHud({
   missionRoot: shell.missionRoot,
   collectiblesRoot: shell.collectiblesRoot,
   totalStops: locationTriggers.length,
+  requiredStops: REQUIRED_STOPS,
   academicInterestsById,
   collectibleItemsById,
 });

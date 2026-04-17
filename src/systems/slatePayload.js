@@ -1,4 +1,5 @@
 const GAME_VERSION = "v0.1.0";
+const DEFAULT_SLATE_URL = "https://futureu.admissions.utah.edu/portal/rfi_portal";
 
 export function buildSlatePayload(session) {
   return {
@@ -14,11 +15,7 @@ export function buildSlateQuery(payload) {
 }
 
 export function buildSlateHref(session) {
-  const slateUrl = import.meta.env.VITE_SLATE_URL;
-
-  if (!slateUrl) {
-    return null;
-  }
+  const slateUrl = import.meta.env.VITE_SLATE_URL || DEFAULT_SLATE_URL;
 
   const url = new URL(slateUrl, window.location.href);
   const payload = buildSlatePayload(session);

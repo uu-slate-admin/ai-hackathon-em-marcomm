@@ -5,16 +5,15 @@ export function createShell(root) {
         <div class="brand-lockup">
           <p class="eyebrow">University of Utah • Geared to Rise</p>
           <h1>Explore With Swoop</h1>
-          <p>Walk the campus, discover what fits, and help Swoop grow as you go.</p>
+          <p>Walk the campus and discover your best-fit path.</p>
         </div>
         <div class="status-chip" id="status-chip">
           <span>Mission Status</span>
-          <strong>Launch the tour and reach all five landmarks.</strong>
+          <strong>Launch the tour and reach any five landmarks.</strong>
         </div>
       </header>
       <main class="play-layout">
         <section class="game-stage">
-          <div class="hud-root" id="hud-root"></div>
           <div class="frame-stack">
             <div class="game-root" id="game-root"></div>
             <div class="overlay-layer" id="dialogue-layer"></div>
@@ -25,6 +24,7 @@ export function createShell(root) {
         <aside class="intel-stack">
           <div class="intel-card" id="mission-root"></div>
           <div class="intel-card" id="collectibles-root"></div>
+          <div class="hud-root" id="hud-root"></div>
         </aside>
       </main>
     </div>
