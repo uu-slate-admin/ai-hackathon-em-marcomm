@@ -1,0 +1,39 @@
+{
+  "id": "activities",
+  "categories": [
+    {
+      "id": "concerts",
+      "image": "slc_twilight.jpg",
+      "dialogue": "We have over a dozen music venues..."
+    },
+    {
+      "id": "outdoors",
+      "image": "outdoor_rec.jpg",
+      "dialogue": "Some of the best camping spots in the country are nearby..."
+    },
+    {
+      "id": "skiing",
+      "dialogue": "11 ski resorts less than an hour away."
+    },
+    {
+      "id": "city_life",
+      "dialogue": "All the energy of a city without losing the outdoors."
+    },
+    {
+      "id": "food",
+      "dialogue": "From late-night bites to global cuisine..."
+    },
+    {
+      "id": "sports",
+      "dialogue": "School spirit runs deep at the U."
+    },
+    {
+      "id": "clubs",
+      "dialogue": "With 600+ student clubs, you'll find your people."
+    },
+    {
+      "id": "fitness",
+      "dialogue": "Train in the mountains or hit the gym."
+    }
+  ]
+}

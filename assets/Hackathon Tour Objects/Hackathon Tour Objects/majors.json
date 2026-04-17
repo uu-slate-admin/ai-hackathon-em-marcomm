@@ -1,0 +1,32 @@
+{
+  "id": "majors",
+  "scene": {
+    "location": "Gardner Commons",
+    "characters": [
+      "Swoop",
+      "Counselor"
+    ]
+  },
+  "counselor_intro": "Hello! I\u2019m a guidance counselor at the U! What are you interested in?",
+  "categories": [
+    "Science & Research",
+    "Health & Medicine",
+    "Business & Leadership & Entrepreneurship",
+    "Education & Social Impact",
+    "Engineering & Technology",
+    "Arts & Creativity",
+    "Social Work",
+    "Architecture & Games",
+    "Nursing",
+    "Law",
+    "CSBS",
+    "Humanities",
+    "Honors",
+    "Undecided",
+    "Study Abroad"
+  ],
+  "college_scene": {
+    "template_dialogue": "Welcome to the College of {college}! Did you know that {fun_fact}?",
+    "next_step": "choose_major"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id": "transportation",
+  "scene": {
+    "location": "Bus Stop",
+    "character": "Bus Driver"
+  },
+  "dialogue": [
+    "Your student ID is your ticket to ride.",
+    "Buses and TRAX run all day.",
+    "We\u2019ll get you wherever you need to go."
+  ]
+}

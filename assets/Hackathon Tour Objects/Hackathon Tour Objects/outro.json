@@ -1,0 +1,13 @@
+{
+  "id": "outro",
+  "scene": {
+    "location": "Campus Landmark",
+    "character": "Swoop"
+  },
+  "dialogue": [
+    "That wraps up our journey together, but this is only the beginning.",
+    "Welcome to your U.",
+    "Your interests and passions will define your experience here."
+  ],
+  "dynamic_summary": true
+}

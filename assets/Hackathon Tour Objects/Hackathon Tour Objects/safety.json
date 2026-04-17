@@ -1,0 +1,12 @@
+{
+  "id": "safety",
+  "scene": {
+    "location": "Campus Night",
+    "character": "Campus Security"
+  },
+  "dialogue": [
+    "Your safety matters here, day or night.",
+    "We provide 24/7 public safety services and security escorts.",
+    "We ensure you feel safe at the U."
+  ]
+}

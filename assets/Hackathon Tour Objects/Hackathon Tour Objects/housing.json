@@ -1,0 +1,12 @@
+{
+  "id": "housing",
+  "scene": {
+    "location": "Kahlert Village",
+    "character": "RA"
+  },
+  "dialogue": [
+    "Hey there! I\u2019m an RA at Kahlert Village.",
+    "The University of Utah guarantees on-campus housing for first-year students.",
+    "Living on campus helps you build your community and network for the future."
+  ]
+}
