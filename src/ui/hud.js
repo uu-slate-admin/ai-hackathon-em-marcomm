@@ -20,6 +20,7 @@ const state = {
   mode: "title",
   session: null,
   nearbyTrigger: null,
+  highlightMovementInfo: false,
 };
 let audioSettings = getAudioSettings();
 
@@ -54,22 +55,19 @@ function renderHud() {
   const remainingRequiredStops = Math.max(requiredStops - completedRequiredStops, 0);
   const routeStops = getRouteStops(state.session);
   const nextRouteStop = routeStops.find((stop) => !stop.visited) ?? null;
+  const visitedStops = routeStops.filter((stop) => stop.visited);
   const routeListMarkup = routeStops.length
     ? routeStops
-        .map(
-          (stop) => `
-            <div class="route-stop-chip${stop.visited ? " is-visited" : nextRouteStop?.triggerId === stop.triggerId ? " is-next" : ""}">
-              <strong>${stop.index + 1}. ${stop.label}</strong>
-              <p>${stop.visited ? "Visited. Swoop already grew here." : nextRouteStop?.triggerId === stop.triggerId ? "Next recommended stop." : "Still ahead on your route."}</p>
-            </div>
-          `,
-        )
-        .join("")
+        ? visitedStops.length
+          ? `
+              <ul class="route-stop-bullets">
+                ${visitedStops.map((stop) => `<li>${stop.label}</li>`).join("")}
+              </ul>
+            `
+          : '<p class="route-stop-empty">No route locations visited yet.</p>'
+        : ""
     : `
-        <div class="route-stop-chip">
-          <strong>Route locked</strong>
-          <p>Your five destinations appear after you pick a major at Gardner Commons.</p>
-        </div>
+        <p class="route-stop-empty">Your five destinations appear after you pick a major at Gardner Commons.</p>
       `;
 
   const nearbyCopy =
@@ -154,28 +152,31 @@ function renderHud() {
   }
 
   const missionMarkup = `
-    <span>${state.mode === "title" ? "Before You Start" : "Right Now"}</span>
-    <strong>${
-      !program
-        ? "Choose a major at Gardner Commons"
-        : state.nearbyTrigger
-          ? `Interact at ${state.nearbyTrigger.label}`
-          : nextRouteStop
-            ? `Head to ${nextRouteStop.label}`
-            : "Head to the next recommended stop"
-    }</strong>
-    <p>${nearbyCopy}</p>
-    <div class="route-stop-list">
-      ${routeListMarkup}
-    </div>
-    <div class="intel-list intel-list--compact">
-      <div class="intel-item">
-        <strong>Move</strong>
-        <p>WASD or arrow keys.</p>
+    <div class="mission-content${state.highlightMovementInfo ? " mission-content--movement-alert" : ""}">
+      <span>${state.mode === "title" ? "Before You Start" : "Right Now"}</span>
+      <strong>${
+        !program
+          ? "Choose a major at Gardner Commons"
+          : state.nearbyTrigger
+            ? `Interact at ${state.nearbyTrigger.label}`
+            : nextRouteStop
+              ? `Head to ${nextRouteStop.label}`
+              : "Head to the next recommended stop"
+      }</strong>
+      <p>${nearbyCopy}</p>
+      <div class="route-stop-list" aria-label="Visited locations">
+        <span>Visited Locations</span>
+        ${routeListMarkup}
       </div>
-      <div class="intel-item">
-        <strong>Interact</strong>
-        <p>E, SPACE, ENTER, or tap.</p>
+      <div class="intel-list intel-list--compact">
+        <div class="intel-item${state.highlightMovementInfo ? " intel-item--alert" : ""}">
+          <strong>Move</strong>
+          <p>WASD or arrow keys.</p>
+        </div>
+        <div class="intel-item">
+          <strong>Interact</strong>
+          <p>E, SPACE, ENTER, or tap.</p>
+        </div>
       </div>
     </div>
   `;

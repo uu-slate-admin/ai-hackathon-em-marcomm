@@ -12,54 +12,55 @@ export function mountResultOverlay(root) {
 
 export function showResults({
   program,
-  route,
   routeStops,
   resultMapping,
-  stageLabel,
   slateHref,
-  routeCompletedCount,
   onContinue,
 }) {
   if (!rootElement) {
     return;
   }
 
-  const routeMarkup = routeStops
-    .map(
-      (stop) => `
-        <div class="result-chip">
-          <span>${stop.visited ? "Visited" : "Recommended"}</span>
-          <strong>${escapeHtml(stop.label)}</strong>
-          <p>${escapeHtml(stop.reason)}</p>
-        </div>
-      `,
-    )
-    .join("");
+  const visitedStops = routeStops.filter((stop) => stop.visited);
+  const visitedMarkup = visitedStops.length
+    ? visitedStops.map((stop) => `<li>${escapeHtml(stop.label)}</li>`).join("")
+    : "<li>No route locations visited yet.</li>";
+  const confettiMarkup = Array.from({ length: 84 }, (_, index) => {
+    const left = (index * 37) % 100;
+    const drift = ((index * 29) % 18) - 9;
+    const delay = (index % 12) * 0.08;
+    const duration = 2.9 + (index % 7) * 0.24;
+    const rotation = ((index * 47) % 90) - 45;
+    const colors = ["var(--utah-red)", "var(--white)", "var(--obsidian)"];
+    const color = colors[index % colors.length];
+
+    return `
+      <span
+        class="result-confetti-piece"
+        style="--confetti-left:${left}%; --confetti-drift:${drift}vw; --confetti-delay:${delay}s; --confetti-duration:${duration}s; --confetti-rotation:${rotation}deg; --confetti-color:${color};"
+      ></span>
+    `;
+  }).join("");
+
   showOverlay(rootElement, `
-    <div class="overlay-card overlay-card--enter">
+    <div class="result-confetti result-confetti--fullscreen" aria-hidden="true">
+      ${confettiMarkup}
+    </div>
+    <div class="overlay-card overlay-card--enter overlay-card--result">
       <div class="overlay-card__body">
         <span>${escapeHtml(resultMapping.kicker)}</span>
         <h2>${escapeHtml(program.label)}</h2>
         <p>${escapeHtml(program.collegeLabel)}</p>
-        <div class="result-grid">
-          <div class="result-chip">
-            <span>Route Progress</span>
-            <strong>${routeCompletedCount} of ${routeStops.length}</strong>
-            <p>You completed the five-stop campus route built for this selected major.</p>
-          </div>
-          <div class="result-chip">
-            <span>Final Swoop Stage</span>
-            <strong>${escapeHtml(stageLabel)}</strong>
-            <p>Swoop grew at every recommended stop you completed.</p>
-          </div>
-          <div class="result-chip">
-            <span>Route Family</span>
-            <strong>${escapeHtml(route.label)}</strong>
-            <p>Your top five places were grouped to match this major’s strongest campus fit.</p>
-          </div>
+        <div class="result-message">
+          <strong>Congratulations</strong>
+          <p>You finished your campus route and unlocked your program match. Keep exploring the map or jump to the next step.</p>
         </div>
-        <div class="result-grid result-grid--route">
-          ${routeMarkup}
+        <div class="result-list-block">
+          <span>Visited Locations</span>
+          <strong>${visitedStops.length} of ${routeStops.length} route stops visited</strong>
+          <ul class="result-location-list">
+            ${visitedMarkup}
+          </ul>
         </div>
         <div class="result-actions">
           <button class="action-button" data-action="slate">
