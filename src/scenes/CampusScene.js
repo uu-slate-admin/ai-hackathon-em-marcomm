@@ -58,10 +58,15 @@ export class CampusScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.wasd = this.input.keyboard.addKeys("W,A,S,D");
     this.interactKeys = this.input.keyboard.addKeys("SPACE,ENTER,E");
+    this.handleEscapeKey = () => this.dismissInteraction();
 
     this.input.keyboard.on("keydown-SPACE", () => this.tryInteract());
     this.input.keyboard.on("keydown-ENTER", () => this.tryInteract());
     this.input.keyboard.on("keydown-E", () => this.tryInteract());
+    this.input.keyboard.on("keydown-ESC", this.handleEscapeKey);
+    this.events.once("shutdown", () => {
+      this.input.keyboard.off("keydown-ESC", this.handleEscapeKey);
+    });
 
     setActionHandler(() => this.tryInteract());
     hideDialogue();
@@ -277,6 +282,22 @@ export class CampusScene extends Phaser.Scene {
       trigger: this.activeTrigger,
       eventData,
       onSelect: (option) => this.completeInteraction(this.activeTrigger, option),
+    });
+  }
+
+  dismissInteraction() {
+    if (!this.isBusy) {
+      return;
+    }
+
+    hideDialogue();
+    this.isBusy = false;
+    this.activeTrigger = this.findNearbyTrigger();
+
+    updateHud({
+      session: getSession(),
+      mode: "play",
+      nearbyTrigger: this.activeTrigger,
     });
   }
 
