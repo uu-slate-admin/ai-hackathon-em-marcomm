@@ -106,6 +106,18 @@ export class CampusScene extends Phaser.Scene {
       const textureKeys = getLandmarkTextureKeys(session.visitedTriggerIds.includes(trigger.id));
       const pulse = this.add.image(trigger.x, trigger.y, textureKeys.pulse).setDepth(6);
       const center = this.add.image(trigger.x, trigger.y, textureKeys.center).setDepth(7);
+      const pinLabel = this.add
+        .text(trigger.x + 28, trigger.y - 10, trigger.shortLabel ?? trigger.label, {
+          fontFamily: BRAND_FONT_FAMILY.body,
+          fontSize: "18px",
+          color: "#f5f1e8",
+          backgroundColor: "rgba(8, 16, 24, 0.78)",
+          padding: { x: 8, y: 5 },
+          stroke: "#081018",
+          strokeThickness: 3,
+        })
+        .setOrigin(0, 0.5)
+        .setDepth(8);
       const badgeRing = this.add
         .circle(trigger.x + 26, trigger.y - 26, 15, 0xffffff, 0)
         .setStrokeStyle(3, 0xffffff, 0.98)
@@ -137,6 +149,7 @@ export class CampusScene extends Phaser.Scene {
       this.markerMap.set(trigger.id, {
         pulse,
         center,
+        pinLabel,
         badgeRing,
         badgeFill,
         badgeLabel,
@@ -396,6 +409,8 @@ export class CampusScene extends Phaser.Scene {
       marker.center.setTint(tint);
       marker.pulse.setAlpha(isRequired ? 0.98 : 0.34);
       marker.center.setAlpha(isRequired ? 1 : 0.56);
+      marker.pinLabel.setAlpha(isRequired ? 1 : isVisited ? 0.92 : 0.82);
+      marker.pinLabel.setColor(isRequired ? "#ffffff" : isVisited ? "#f5f1e8" : "#d7d3ca");
       marker.pulse.setScale(isRequired && !isRouteComplete ? 1.16 : 1);
       marker.center.setScale(isRequired && !isVisited ? 1.08 : 0.94);
       marker.badgeRing.setVisible(isRequired);
