@@ -156,6 +156,7 @@ export class CampusScene extends Phaser.Scene {
     this.swoopShadow = this.add.ellipse(this.player.x, this.player.y + 44, 54, 18, 0x081018, 0.18).setDepth(8);
     this.swoop = this.add.image(this.player.x, this.player.y, swoopStageAssets.egg.key).setDepth(10);
     this.swoop.setOrigin(0.5, 0.82);
+    this.swoopFacingDirection = "left";
     this.syncSwoopSprite("egg");
     this.swoopMotionDirection = new Phaser.Math.Vector2(1, 0);
     this.swoopMotionPhase = Math.random() * Math.PI * 2;
@@ -179,6 +180,7 @@ export class CampusScene extends Phaser.Scene {
 
     const velocity = this.player.body.velocity;
     const isMoving = velocity.lengthSq() > 1;
+    const stageId = session.swoopStage;
 
     if (isMoving) {
       this.swoopMotionDirection.copy(velocity).normalize();
@@ -186,6 +188,8 @@ export class CampusScene extends Phaser.Scene {
     } else {
       this.swoopMotionPhase += 0.045;
     }
+
+    this.updateSwoopFacing(stageId, velocity.x);
 
     const bobWave = Math.sin(this.swoopMotionPhase);
     const bobAmount = isMoving ? 12 : 5;
@@ -416,12 +420,31 @@ export class CampusScene extends Phaser.Scene {
 
   syncSwoopSprite(stageId) {
     const asset = swoopStageAssets[stageId] ?? swoopStageAssets.egg;
+    const directionalAsset = asset.directional?.[this.swoopFacingDirection];
+    const textureKey = directionalAsset?.key ?? asset.key;
 
-    this.swoop.setTexture(asset.key);
+    this.swoop.setTexture(textureKey);
     this.swoopBaseDisplaySize = { ...asset.displaySize };
     this.swoop.setDisplaySize(asset.displaySize.width, asset.displaySize.height);
     if (this.swoopShadow) {
       this.swoopShadow.setSize(Math.max(44, asset.displaySize.width * 0.52), 18);
     }
+  }
+
+  updateSwoopFacing(stageId, velocityX) {
+    const asset = swoopStageAssets[stageId] ?? swoopStageAssets.egg;
+
+    if (!asset.directional) {
+      return;
+    }
+
+    const nextFacingDirection = velocityX > 1 ? "right" : velocityX < -1 ? "left" : this.swoopFacingDirection;
+
+    if (nextFacingDirection === this.swoopFacingDirection) {
+      return;
+    }
+
+    this.swoopFacingDirection = nextFacingDirection;
+    this.syncSwoopSprite(stageId);
   }
 }

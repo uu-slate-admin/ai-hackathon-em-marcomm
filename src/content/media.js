@@ -1,9 +1,15 @@
 import campusMapUrl from "../../assets/maps/campus-map.png";
 import swoopAdultUrl from "../../assets/sprites/swoop/adult.png";
 import swoopAdolescentUrl from "../../assets/sprites/swoop/adolescent.png";
+import swoopAdolescentLeftUrl from "../../assets/sprites/swoop/directional/Early Adolescence_Swoop left.png";
+import swoopAdolescentRightUrl from "../../assets/sprites/swoop/directional/Early Adolescence_Swoop right.png";
 import swoopBabyUrl from "../../assets/sprites/swoop/baby.png";
+import swoopBabyLeftUrl from "../../assets/sprites/swoop/directional/Baby Swoop left.png";
+import swoopBabyRightUrl from "../../assets/sprites/swoop/directional/Baby Swoop right.png";
 import swoopEggUrl from "../../assets/sprites/swoop/egg.png";
 import swoopTeenUrl from "../../assets/sprites/swoop/teen.png";
+import swoopTeenLeftUrl from "../../assets/sprites/swoop/directional/Teenage_Swoop left.png";
+import swoopTeenRightUrl from "../../assets/sprites/swoop/directional/Teenage_Swoop right.png";
 
 function resolveTempPhoto(path) {
   return new URL(`../../assets/photos/${path}`, import.meta.url).href;
@@ -24,16 +30,46 @@ export const swoopStageAssets = {
     key: "swoop-baby",
     url: swoopBabyUrl,
     displaySize: { width: 104, height: 150 },
+    directional: {
+      left: {
+        key: "swoop-baby-left",
+        url: swoopBabyLeftUrl,
+      },
+      right: {
+        key: "swoop-baby-right",
+        url: swoopBabyRightUrl,
+      },
+    },
   },
   adolescent: {
     key: "swoop-adolescent",
     url: swoopAdolescentUrl,
     displaySize: { width: 114, height: 150 },
+    directional: {
+      left: {
+        key: "swoop-adolescent-left",
+        url: swoopAdolescentLeftUrl,
+      },
+      right: {
+        key: "swoop-adolescent-right",
+        url: swoopAdolescentRightUrl,
+      },
+    },
   },
   teen: {
     key: "swoop-teen",
     url: swoopTeenUrl,
     displaySize: { width: 124, height: 164 },
+    directional: {
+      left: {
+        key: "swoop-teen-left",
+        url: swoopTeenLeftUrl,
+      },
+      right: {
+        key: "swoop-teen-right",
+        url: swoopTeenRightUrl,
+      },
+    },
   },
   adult: {
     key: "swoop-adult",

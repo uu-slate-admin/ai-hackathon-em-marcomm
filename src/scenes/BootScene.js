@@ -17,6 +17,9 @@ export class BootScene extends Phaser.Scene {
 
     Object.values(swoopStageAssets).forEach((asset) => {
       this.load.image(asset.key, asset.url);
+      Object.values(asset.directional ?? {}).forEach((directionalAsset) => {
+        this.load.image(directionalAsset.key, directionalAsset.url);
+      });
     });
 
     this.load.image(titleHeroAsset.key, titleHeroAsset.url);
