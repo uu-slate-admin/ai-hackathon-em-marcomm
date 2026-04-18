@@ -4,7 +4,9 @@ const STORAGE_KEY = "uofu-campus-audio-settings";
 const DEFAULT_SETTINGS = {
   musicMuted: false,
   musicVolume: 0.45,
+  sfxMuted: false,
 };
+const SFX_NORMALIZATION_GAIN = 1.45;
 
 const subscribers = new Set();
 
@@ -32,6 +34,7 @@ function loadSettings() {
     return {
       musicMuted: Boolean(parsed.musicMuted),
       musicVolume: clampVolume(parsed.musicVolume),
+      sfxMuted: Boolean(parsed.sfxMuted),
     };
   } catch {
     return { ...DEFAULT_SETTINGS };
@@ -120,6 +123,19 @@ export function toggleMusicMuted() {
   setMusicMuted(!settings.musicMuted);
 }
 
+export function setSfxMuted(sfxMuted) {
+  settings = {
+    ...settings,
+    sfxMuted: Boolean(sfxMuted),
+  };
+  persistSettings();
+  notifySubscribers();
+}
+
+export function toggleSfxMuted() {
+  setSfxMuted(!settings.sfxMuted);
+}
+
 export function setMusicVolume(musicVolume) {
   settings = {
     ...settings,
@@ -163,12 +179,12 @@ export function startBackgroundMusic() {
 export function playSoundEffect(key, config = {}) {
   const soundManager = gameRef?.sound;
 
-  if (!soundManager || settings.musicMuted || settings.musicVolume <= 0) {
+  if (!soundManager || settings.sfxMuted) {
     return;
   }
 
   const requestedVolume = Number.isFinite(config.volume) ? config.volume : 1;
-  const volume = clampVolume(requestedVolume * settings.musicVolume);
+  const volume = clampVolume(requestedVolume * SFX_NORMALIZATION_GAIN);
 
   if (volume <= 0) {
     return;

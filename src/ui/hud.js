@@ -6,6 +6,7 @@ import {
   setMusicVolume,
   subscribeAudioSettings,
   toggleMusicMuted,
+  toggleSfxMuted,
 } from "../systems/audioState";
 import { swoopStages } from "../systems/swoopProgression";
 
@@ -106,13 +107,24 @@ function renderHud() {
     </div>
     <div class="hud-card">
       <span>Audio</span>
-      <strong>${audioSettings.musicMuted ? "Music muted" : "Music on"}</strong>
+      <strong>${audioSettings.musicMuted ? "Music muted" : "Music on"} • ${audioSettings.sfxMuted ? "SFX muted" : "SFX on"}</strong>
       <div class="audio-controls">
-        <button class="audio-toggle-button" type="button" data-audio-toggle>
-          ${audioSettings.musicMuted ? "Unmute music" : "Mute music"}
+        <button
+          class="audio-toggle-button${audioSettings.musicMuted ? " is-muted" : " is-active"}"
+          type="button"
+          data-audio-toggle
+        >
+          ${audioSettings.musicMuted ? "Music: Off" : "Music: On"}
+        </button>
+        <button
+          class="audio-toggle-button audio-toggle-button--secondary${audioSettings.sfxMuted ? " is-muted" : " is-active"}"
+          type="button"
+          data-sfx-toggle
+        >
+          ${audioSettings.sfxMuted ? "SFX: Off" : "SFX: On"}
         </button>
         <label class="audio-slider-group" for="music-volume">
-          <span>Volume</span>
+          <span>Music volume</span>
           <input
             id="music-volume"
             type="range"
@@ -131,6 +143,9 @@ function renderHud() {
     refs.hudRoot.innerHTML = hudMarkup;
     refs.hudRoot.querySelector("[data-audio-toggle]")?.addEventListener("click", () => {
       toggleMusicMuted();
+    });
+    refs.hudRoot.querySelector("[data-sfx-toggle]")?.addEventListener("click", () => {
+      toggleSfxMuted();
     });
     refs.hudRoot.querySelector("[data-music-volume]")?.addEventListener("input", (event) => {
       setMusicVolume(Number(event.currentTarget.value) / 100);

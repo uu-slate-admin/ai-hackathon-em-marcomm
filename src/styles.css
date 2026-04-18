@@ -216,6 +216,7 @@ select {
 
 .audio-controls {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
   margin-top: 0.7rem;
 }
@@ -233,9 +234,33 @@ select {
   clip-path: polygon(8% 0, 100% 0, 100% 84%, 92% 100%, 0 100%, 0 16%);
 }
 
+.audio-toggle-button.is-active {
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+.audio-toggle-button.is-muted {
+  background: color-mix(in srgb, var(--cinder) 82%, black 18%);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.audio-toggle-button--secondary {
+  background: var(--obsidian);
+}
+
+@media (max-width: 1180px) {
+  .audio-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .audio-slider-group {
+    grid-column: auto;
+  }
+}
+
 .audio-slider-group {
   display: grid;
   gap: 0.45rem;
+  grid-column: 1 / -1;
 }
 
 .audio-slider-group span {
