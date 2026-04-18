@@ -23,6 +23,7 @@ const ROUTE_GREEN = 0x5f8b3d;
 const ROUTE_GREEN_DARK = 0x3f6124;
 const PLAYER_MOVE_SPEED = 400;
 const FINAL_RESULTS_DELAY_MS = 1400;
+const MOVEMENT_REMINDER_DELAY_MS = 2600;
 
 function isEditableElement(element) {
   if (!(element instanceof HTMLElement)) {
@@ -52,6 +53,9 @@ export class CampusScene extends Phaser.Scene {
     this.isBusy = false;
     this.markerMap = new Map();
     this.resultStateTimer = null;
+    this.movementReminderTimer = null;
+    this.hasMovedSinceProgramSelection = false;
+    this.isMovementReminderActive = false;
   }
 
   create() {
@@ -106,6 +110,7 @@ export class CampusScene extends Phaser.Scene {
         this.resultStateTimer.remove(false);
         this.resultStateTimer = null;
       }
+      this.clearMovementReminderTimer();
     });
 
     setActionHandler(() => this.tryInteract());
@@ -235,6 +240,10 @@ export class CampusScene extends Phaser.Scene {
     const isMoving = velocity.lengthSq() > 1;
     const stageId = session.swoopStage;
 
+    if (session.selectedProgramId && isMoving && !this.hasMovedSinceProgramSelection) {
+      this.markPlayerMovedSinceProgramSelection();
+    }
+
     if (isMoving) {
       this.swoopMotionDirection.copy(velocity).normalize();
       this.swoopMotionPhase += 0.22;
@@ -274,6 +283,7 @@ export class CampusScene extends Phaser.Scene {
       nearbyTrigger: nearby,
       session,
       mode: session.completedAt ? "results" : "play",
+      highlightMovementInfo: this.isMovementReminderActive,
     });
   }
 
@@ -309,6 +319,7 @@ export class CampusScene extends Phaser.Scene {
         const result = selectProgram(program.id, locationTriggersById.gardner_commons);
         hideProgramSelector();
         this.isBusy = false;
+        this.startMovementReminderWatch();
         this.refreshMarkers(result.session);
         this.syncHud();
       },
@@ -353,6 +364,7 @@ export class CampusScene extends Phaser.Scene {
       session: getSession(),
       mode: "play",
       nearbyTrigger: this.activeTrigger,
+      highlightMovementInfo: this.isMovementReminderActive,
     });
   }
 
@@ -378,6 +390,7 @@ export class CampusScene extends Phaser.Scene {
       session: result.session,
       mode: result.completed ? "results" : "play",
       nearbyTrigger: null,
+      highlightMovementInfo: this.isMovementReminderActive,
     });
 
     if (result.newlyCompleted) {
@@ -427,6 +440,7 @@ export class CampusScene extends Phaser.Scene {
           session: getSession(),
           mode: "play",
           nearbyTrigger: this.findNearbyTrigger(),
+          highlightMovementInfo: this.isMovementReminderActive,
         });
       },
     });
@@ -473,7 +487,43 @@ export class CampusScene extends Phaser.Scene {
       session: getSession(),
       mode: "play",
       nearbyTrigger: null,
+      highlightMovementInfo: this.isMovementReminderActive,
     });
+  }
+
+  clearMovementReminderTimer() {
+    if (this.movementReminderTimer) {
+      this.movementReminderTimer.remove(false);
+      this.movementReminderTimer = null;
+    }
+  }
+
+  setMovementReminderActive(isActive) {
+    if (this.isMovementReminderActive === isActive) {
+      return;
+    }
+
+    this.isMovementReminderActive = isActive;
+    this.syncHud();
+  }
+
+  startMovementReminderWatch() {
+    this.clearMovementReminderTimer();
+    this.hasMovedSinceProgramSelection = false;
+    this.setMovementReminderActive(false);
+    this.movementReminderTimer = this.time.delayedCall(MOVEMENT_REMINDER_DELAY_MS, () => {
+      this.movementReminderTimer = null;
+
+      if (!this.hasMovedSinceProgramSelection) {
+        this.setMovementReminderActive(true);
+      }
+    });
+  }
+
+  markPlayerMovedSinceProgramSelection() {
+    this.hasMovedSinceProgramSelection = true;
+    this.clearMovementReminderTimer();
+    this.setMovementReminderActive(false);
   }
 
   playSwoopEvolutionSound(stageId) {
