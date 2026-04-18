@@ -25,6 +25,162 @@ export function showProgramSelector({
   let query = "";
   let step = "intro";
 
+  const getPrograms = () => (selectedCollegeId ? programsByCollegeId[selectedCollegeId] ?? [] : []);
+  const getFilteredPrograms = () => {
+    const normalizedQuery = query.toLowerCase();
+
+    return getPrograms().filter((program) => {
+      const haystack = `${program.label} ${program.degreeLabel}`.toLowerCase();
+      return haystack.includes(normalizedQuery);
+    });
+  };
+
+  const buildProgramListMarkup = (filteredPrograms) =>
+    filteredPrograms.length
+      ? filteredPrograms
+          .map(
+            (program) => `
+              <button class="selector-program ${selectedProgram?.id === program.id ? "is-active" : ""}" data-program-id="${program.id}">
+                <strong>${escapeHtml(program.label)}</strong>
+                <small>${escapeHtml(program.collegeLabel)}</small>
+              </button>
+            `,
+          )
+          .join("")
+      : `<div class="selector-empty">No majors match this filter.</div>`;
+
+  const buildPreviewMarkup = () =>
+    selectedProgram
+      ? `
+        <span>Selection</span>
+        <h3>${escapeHtml(selectedProgram.label)}</h3>
+        <p>${escapeHtml(selectedProgram.collegeLabel)}</p>
+        <button class="action-button" data-role="confirm-program">
+          <strong>Start With This Major</strong>
+          <small>Use this major as the starting point for the rest of the game.</small>
+        </button>
+      `
+      : `
+        <span>Selection</span>
+        <h3>Choose a major to continue</h3>
+        <p>Select any major from the list to start the game.</p>
+      `;
+
+  const renderSelectionUi = () => {
+    const filteredPrograms = getFilteredPrograms();
+    const searchInput = rootElement.querySelector('[data-role="search"]');
+    const programList = rootElement.querySelector(".selector-program-list");
+    const preview = rootElement.querySelector(".selector-preview");
+
+    if (searchInput && searchInput.value !== query) {
+      searchInput.value = query;
+    }
+
+    rootElement.querySelectorAll("[data-college-id]").forEach((button) => {
+      button.classList.toggle("is-active", button.dataset.collegeId === selectedCollegeId);
+    });
+
+    if (programList) {
+      programList.innerHTML = buildProgramListMarkup(filteredPrograms);
+    }
+
+    if (preview) {
+      preview.innerHTML = buildPreviewMarkup();
+    }
+  };
+
+  const mountSelectionStep = () => {
+    showOverlay(rootElement, `
+      <div class="overlay-card overlay-card--enter overlay-card--selector">
+        <div class="overlay-card__body overlay-card__body--selector">
+          <span>Gardner Commons</span>
+          <h2>Choose Your Academic Interest</h2>
+          <p>
+            You know the mission: explore campus, visit key spaces, and help Swoop grow from an egg into later stages. Start by choosing the college category that fits best, then pick the major you want to explore.
+          </p>
+          <div class="selector-layout">
+            <section class="selector-panel">
+              <div class="selector-step">
+                <strong>1. Pick a college</strong>
+                <div class="selector-chip-grid">
+                  ${colleges
+                    .map(
+                      (college) => `
+                        <button
+                          class="selector-chip ${college.id === selectedCollegeId ? "is-active" : ""}"
+                          data-college-id="${college.id}"
+                        >
+                          ${escapeHtml(college.label)}
+                        </button>
+                      `,
+                    )
+                    .join("")}
+                </div>
+              </div>
+              <div class="selector-step">
+                <div class="selector-step__header">
+                  <strong>2. Pick a major</strong>
+                  <input
+                    class="selector-search"
+                    type="search"
+                    placeholder="Filter majors in this college"
+                    data-role="search"
+                  />
+                </div>
+                <div class="selector-program-list"></div>
+              </div>
+            </section>
+            <aside class="selector-preview"></aside>
+          </div>
+        </div>
+      </div>
+    `, { centered: true });
+
+    rootElement.querySelectorAll("[data-college-id]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.dataset.collegeId === selectedCollegeId) {
+          return;
+        }
+
+        selectedCollegeId = button.dataset.collegeId;
+        selectedProgram = null;
+        query = "";
+        renderSelectionUi();
+        rootElement.querySelector(".selector-program-list")?.scrollTo({ top: 0 });
+      });
+    });
+
+    rootElement.querySelector('[data-role="search"]')?.addEventListener("input", (event) => {
+      query = event.currentTarget.value;
+      renderSelectionUi();
+    });
+
+    rootElement.querySelector(".selector-program-list")?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-program-id]");
+
+      if (!button) {
+        return;
+      }
+
+      const program = getPrograms().find((entry) => entry.id === button.dataset.programId);
+
+      if (program && selectedProgram?.id !== program.id) {
+        selectedProgram = program;
+        renderSelectionUi();
+      }
+    });
+
+    rootElement.querySelector(".selector-preview")?.addEventListener("click", (event) => {
+      const confirmButton = event.target.closest('[data-role="confirm-program"]');
+
+      if (confirmButton && selectedProgram) {
+        onConfirm(selectedProgram);
+      }
+    });
+
+    renderSelectionUi();
+  };
+
   const render = () => {
     if (step === "intro") {
       showOverlay(rootElement, `
@@ -78,118 +234,7 @@ export function showProgramSelector({
       return;
     }
 
-    const programs = selectedCollegeId ? programsByCollegeId[selectedCollegeId] ?? [] : [];
-    const filteredPrograms = programs.filter((program) => {
-      const haystack = `${program.label} ${program.degreeLabel}`.toLowerCase();
-      return haystack.includes(query.toLowerCase());
-    });
-    showOverlay(rootElement, `
-      <div class="overlay-card overlay-card--enter overlay-card--selector">
-        <div class="overlay-card__body overlay-card__body--selector">
-          <span>Gardner Commons</span>
-          <h2>Choose Your Academic Interest</h2>
-          <p>
-            You know the mission: explore campus, visit key spaces, and help Swoop grow from an egg into later stages. Start by choosing the college category that fits best, then pick the major you want to explore.
-          </p>
-          <div class="selector-layout">
-            <section class="selector-panel">
-              <div class="selector-step">
-                <strong>1. Pick a college</strong>
-                <div class="selector-chip-grid">
-                  ${colleges
-                    .map(
-                      (college) => `
-                        <button
-                          class="selector-chip ${college.id === selectedCollegeId ? "is-active" : ""}"
-                          data-college-id="${college.id}"
-                        >
-                          ${escapeHtml(college.label)}
-                        </button>
-                      `,
-                    )
-                    .join("")}
-                </div>
-              </div>
-              <div class="selector-step">
-                <div class="selector-step__header">
-                  <strong>2. Pick a major</strong>
-                  <input
-                    class="selector-search"
-                    type="search"
-                    value="${escapeHtml(query)}"
-                    placeholder="Filter majors in this college"
-                    data-role="search"
-                  />
-                </div>
-                <div class="selector-program-list">
-                  ${filteredPrograms.length
-                    ? filteredPrograms
-                        .map(
-                          (program) => `
-                            <button class="selector-program ${selectedProgram?.id === program.id ? "is-active" : ""}" data-program-id="${program.id}">
-                              <strong>${escapeHtml(program.label)}</strong>
-                              <small>${escapeHtml(program.collegeLabel)}</small>
-                            </button>
-                          `,
-                        )
-                        .join("")
-                    : `<div class="selector-empty">No majors match this filter.</div>`}
-                </div>
-              </div>
-            </section>
-            <aside class="selector-preview">
-              <span>Selection</span>
-              ${
-                selectedProgram
-                  ? `
-                    <h3>${escapeHtml(selectedProgram.label)}</h3>
-                    <p>${escapeHtml(selectedProgram.collegeLabel)}</p>
-                    <button class="action-button" data-role="confirm-program">
-                      <strong>Start With This Major</strong>
-                      <small>Use this major as the starting point for the rest of the game.</small>
-                    </button>
-                  `
-                  : `
-                    <h3>Choose a major to continue</h3>
-                    <p>Select any major from the list to start the game.</p>
-                  `
-              }
-            </aside>
-          </div>
-        </div>
-      </div>
-    `, { centered: true });
-
-    rootElement.querySelectorAll("[data-college-id]").forEach((button) => {
-      button.addEventListener("click", () => {
-        selectedCollegeId = button.dataset.collegeId;
-        selectedProgram = null;
-        query = "";
-        render();
-      });
-    });
-
-    rootElement.querySelectorAll("[data-program-id]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const program = programs.find((entry) => entry.id === button.dataset.programId);
-
-        if (program) {
-          selectedProgram = program;
-          render();
-        }
-      });
-    });
-
-    rootElement.querySelector('[data-role="search"]')?.addEventListener("input", (event) => {
-      query = event.currentTarget.value;
-      render();
-    });
-
-    rootElement.querySelector('[data-role="confirm-program"]')?.addEventListener("click", () => {
-      if (selectedProgram) {
-        onConfirm(selectedProgram);
-      }
-    });
+    mountSelectionStep();
   };
 
   render();

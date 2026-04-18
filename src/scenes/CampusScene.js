@@ -24,6 +24,20 @@ const ROUTE_GREEN_DARK = 0x3f6124;
 const PLAYER_MOVE_SPEED = 400;
 const FINAL_RESULTS_DELAY_MS = 1400;
 
+function isEditableElement(element) {
+  if (!(element instanceof HTMLElement)) {
+    return false;
+  }
+
+  if (element.isContentEditable) {
+    return true;
+  }
+
+  const tagName = element.tagName;
+
+  return tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT";
+}
+
 function getLandmarkTextureKeys(isVisited) {
   return {
     pulse: isVisited ? "landmark-node-visited" : "landmark-node-unvisited",
@@ -59,9 +73,15 @@ export class CampusScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
 
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.wasd = this.input.keyboard.addKeys("W,A,S,D");
-    this.interactKeys = this.input.keyboard.addKeys("SPACE,ENTER,E");
-    this.handleEscapeKey = () => this.dismissInteraction();
+    this.wasd = this.input.keyboard.addKeys("W,A,S,D", false);
+    this.interactKeys = this.input.keyboard.addKeys("SPACE,ENTER,E", false);
+    this.handleEscapeKey = () => {
+      if (isEditableElement(document.activeElement)) {
+        return;
+      }
+
+      this.dismissInteraction();
+    };
 
     this.input.keyboard.on("keydown-SPACE", () => this.tryInteract());
     this.input.keyboard.on("keydown-ENTER", () => this.tryInteract());
@@ -285,7 +305,7 @@ export class CampusScene extends Phaser.Scene {
   tryInteract() {
     const session = getSession();
 
-    if (this.isBusy || !this.activeTrigger || !session.selectedProgramId) {
+    if (isEditableElement(document.activeElement) || this.isBusy || !this.activeTrigger || !session.selectedProgramId) {
       return;
     }
 
