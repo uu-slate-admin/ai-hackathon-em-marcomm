@@ -297,7 +297,7 @@ export class CampusScene extends Phaser.Scene {
     showDialogue({
       trigger: this.activeTrigger,
       eventData,
-      onSelect: (option) => this.completeInteraction(this.activeTrigger, option),
+      onSelect: () => this.completeInteraction(this.activeTrigger),
     });
   }
 
@@ -318,8 +318,8 @@ export class CampusScene extends Phaser.Scene {
     });
   }
 
-  completeInteraction(trigger, option) {
-    const result = applyInteraction(trigger, option);
+  completeInteraction(trigger) {
+    const result = applyInteraction(trigger);
     const stage = resolveSwoopStage(result.session.growthPoints);
 
     this.refreshMarkers(result.session);

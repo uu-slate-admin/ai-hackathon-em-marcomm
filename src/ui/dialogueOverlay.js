@@ -23,32 +23,18 @@ export function showDialogue({ trigger, eventData, onSelect }) {
         <span>${trigger.label}</span>
         <h2>${eventData.title}</h2>
         <p>${eventData.body}</p>
-        <p><strong>${eventData.prompt}</strong></p>
         <div class="choice-grid">
-          ${eventData.options
-            .map(
-              (option) => `
-                <button class="choice-button" data-option-id="${option.id}">
-                  <strong>${option.label}</strong>
-                  <small>${option.description}</small>
-                </button>
-              `,
-            )
-            .join("")}
+          <button class="choice-button" data-action="continue">
+            <strong>keep exploring</strong>
+          </button>
         </div>
       </div>
     </div>
   `;
 
-  rootElement.querySelectorAll("[data-option-id]").forEach((button) => {
+  rootElement.querySelectorAll("[data-action='continue']").forEach((button) => {
     button.addEventListener("click", () => {
-      const selectedOption = eventData.options.find(
-        (option) => option.id === button.dataset.optionId,
-      );
-
-      if (selectedOption) {
-        onSelect(selectedOption);
-      }
+      onSelect();
     });
   });
 }

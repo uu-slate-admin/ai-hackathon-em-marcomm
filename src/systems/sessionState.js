@@ -101,7 +101,7 @@ export function selectProgram(programId, trigger) {
   };
 }
 
-export function applyInteraction(trigger, option) {
+export function applyInteraction(trigger) {
   if (state.visitedTriggerIds.includes(trigger.id)) {
     return {
       session: snapshot(),
@@ -122,7 +122,7 @@ export function applyInteraction(trigger, option) {
 
   if (countedTowardRoute && !state.completedRouteTriggerIds.includes(trigger.id)) {
     state.completedRouteTriggerIds.push(trigger.id);
-    state.growthPoints += option?.growthPoints ?? 1;
+    state.growthPoints += 1;
     state.swoopStage = resolveSwoopStage(state.growthPoints).id;
   }
 

@@ -8,8 +8,6 @@ export const dialogueEvents = Object.fromEntries(
       title: stop.label,
       image: campusPhotoAssets[stop.imageAsset]?.url,
       body: stop.body,
-      prompt: stop.prompt,
-      options: stop.options,
     },
   ]),
 );
