@@ -79,7 +79,7 @@ export class CampusScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.wasd = this.input.keyboard.addKeys("W,A,S,D", false);
     this.interactKeys = this.input.keyboard.addKeys("SPACE,ENTER,E", false);
-    this.handleEnterKey = () => {
+    this.handleActionKey = () => {
       if (isEditableElement(document.activeElement)) {
         return;
       }
@@ -99,12 +99,14 @@ export class CampusScene extends Phaser.Scene {
       this.dismissInteraction();
     };
 
-    this.input.keyboard.on("keydown-SPACE", () => this.tryInteract());
-    this.input.keyboard.on("keydown-ENTER", this.handleEnterKey);
-    this.input.keyboard.on("keydown-E", () => this.tryInteract());
+    this.input.keyboard.on("keydown-SPACE", this.handleActionKey);
+    this.input.keyboard.on("keydown-ENTER", this.handleActionKey);
+    this.input.keyboard.on("keydown-E", this.handleActionKey);
     this.input.keyboard.on("keydown-ESC", this.handleEscapeKey);
     this.events.once("shutdown", () => {
-      this.input.keyboard.off("keydown-ENTER", this.handleEnterKey);
+      this.input.keyboard.off("keydown-SPACE", this.handleActionKey);
+      this.input.keyboard.off("keydown-ENTER", this.handleActionKey);
+      this.input.keyboard.off("keydown-E", this.handleActionKey);
       this.input.keyboard.off("keydown-ESC", this.handleEscapeKey);
       if (this.resultStateTimer) {
         this.resultStateTimer.remove(false);

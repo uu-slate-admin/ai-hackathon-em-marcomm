@@ -15,6 +15,7 @@ let totalStops = 0;
 let requiredStops = 0;
 let lastHudMarkup = "";
 let lastMissionMarkup = "";
+let lastStatusMarkup = "";
 
 const state = {
   mode: "title",
@@ -55,17 +56,25 @@ function renderHud() {
   const remainingRequiredStops = Math.max(requiredStops - completedRequiredStops, 0);
   const routeStops = getRouteStops(state.session);
   const nextRouteStop = routeStops.find((stop) => !stop.visited) ?? null;
-  const visitedStops = routeStops.filter((stop) => stop.visited);
-  const routeListMarkup = routeStops.length
-    ? routeStops
-        ? visitedStops.length
-          ? `
-              <ul class="route-stop-bullets">
-                ${visitedStops.map((stop) => `<li>${stop.label}</li>`).join("")}
-              </ul>
-            `
-          : '<p class="route-stop-empty">No route locations visited yet.</p>'
-        : ""
+  const routeChecklistMarkup = routeStops.length
+    ? `
+        <ul class="route-checklist" aria-label="Recommended places checklist">
+          ${routeStops
+            .map(
+              (stop) => `
+                <li class="route-checklist__item${stop.visited ? " is-visited" : ""}">
+                  <span
+                    class="route-checklist__marker${stop.visited ? " route-checklist__marker--visited" : ""}"
+                    aria-hidden="true"
+                    data-marker="${stop.visited ? "✓" : stop.index + 1}"
+                  ></span>
+                  <span class="route-checklist__label">${stop.label}</span>
+                  <span class="route-checklist__state">${stop.visited ? "Visited" : "Pending"}</span>
+                </li>`,
+            )
+            .join("")}
+        </ul>
+      `
     : `
         <p class="route-stop-empty">Your five destinations appear after you pick a major at Gardner Commons.</p>
       `;
@@ -85,18 +94,26 @@ function renderHud() {
 
   const hudMarkup = `
     <div class="hud-card hud-card--primary">
-      <span>Recommended Places</span>
-      <strong>${completedRequiredStops} of ${requiredStops}</strong>
-      <p>
-        ${
-          program
-            ? remainingRequiredStops === 0
-              ? `You completed the ${program.label} route. ${totalStops} total locations are still available.`
-              : `${remainingRequiredStops} recommended stop${remainingRequiredStops === 1 ? "" : "s"} left for ${program.label}.`
-            : "Your five-stop campus route will appear after you pick a major."
-        }
-      </p>
-      <div class="progress-track"><div class="progress-fill" style="width: ${progressPercentage}"></div></div>
+      <div class="route-card-layout">
+        <div class="route-card-progress">
+          <span>Recommended Places</span>
+          <strong>${completedRequiredStops} of ${requiredStops}</strong>
+          <p>
+            ${
+              program
+                ? remainingRequiredStops === 0
+                  ? `You completed the ${program.label} route. ${totalStops} total locations are still available.`
+                  : `${remainingRequiredStops} recommended stop${remainingRequiredStops === 1 ? "" : "s"} left for ${program.label}.`
+                : "Your five-stop campus route will appear after you pick a major."
+            }
+          </p>
+          <div class="progress-track"><div class="progress-fill" style="width: ${progressPercentage}"></div></div>
+        </div>
+        <div class="route-card-checklist">
+          <span>Route Checklist</span>
+          ${routeChecklistMarkup}
+        </div>
+      </div>
     </div>
     <div class="hud-card">
       <span>Swoop</span>
@@ -151,6 +168,28 @@ function renderHud() {
     lastHudMarkup = hudMarkup;
   }
 
+  const statusMarkup = `
+    <span>Mission Status</span>
+    <strong>${
+      state.mode === "title"
+        ? "Start the tour"
+        : !program
+          ? "Choose a major at Gardner Commons"
+          : state.nearbyTrigger
+            ? `Interact at ${state.nearbyTrigger.label}`
+            : state.session.completedAt
+              ? "Route complete"
+              : nextRouteStop
+                ? `Next stop: ${nextRouteStop.label}`
+                : "Keep exploring campus"
+    }</strong>
+  `;
+
+  if (refs.statusChip && statusMarkup !== lastStatusMarkup) {
+    refs.statusChip.innerHTML = statusMarkup;
+    lastStatusMarkup = statusMarkup;
+  }
+
   const missionMarkup = `
     <div class="mission-content${state.highlightMovementInfo ? " mission-content--movement-alert" : ""}">
       <span>${state.mode === "title" ? "Before You Start" : "Right Now"}</span>
@@ -164,10 +203,6 @@ function renderHud() {
               : "Head to the next recommended stop"
       }</strong>
       <p>${nearbyCopy}</p>
-      <div class="route-stop-list" aria-label="Visited locations">
-        <span>Visited Locations</span>
-        ${routeListMarkup}
-      </div>
       <div class="intel-list intel-list--compact">
         <div class="intel-item${state.highlightMovementInfo ? " intel-item--alert" : ""}">
           <strong>Move</strong>
@@ -190,15 +225,18 @@ function renderHud() {
 export function mountHud({
   hudRoot,
   missionRoot,
+  statusChip,
   totalStops: configuredTotalStops,
   requiredStops: configuredRequiredStops,
 }) {
   refs = {
     hudRoot,
     missionRoot,
+    statusChip,
   };
   lastHudMarkup = "";
   lastMissionMarkup = "";
+  lastStatusMarkup = "";
   totalStops = configuredTotalStops;
   requiredStops = configuredRequiredStops;
   subscribeAudioSettings((nextAudioSettings) => {

@@ -21,6 +21,7 @@ const shell = createShell(document.querySelector("#app"));
 mountHud({
   hudRoot: shell.hudRoot,
   missionRoot: shell.missionRoot,
+  statusChip: shell.statusChip,
   totalStops: locationTriggers.length,
   requiredStops: REQUIRED_STOPS,
 });

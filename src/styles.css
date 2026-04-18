@@ -284,6 +284,27 @@ select {
   padding-bottom: 1.05rem;
 }
 
+.route-card-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(14rem, 0.95fr);
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.route-card-progress,
+.route-card-checklist {
+  min-width: 0;
+}
+
+.route-card-checklist {
+  padding-left: 0.85rem;
+  border-left: 1px solid rgba(18, 8, 9, 0.12);
+}
+
+.route-card-checklist > span {
+  margin-bottom: 0.45rem;
+}
+
 .progress-track {
   position: relative;
   margin-top: 0.7rem;
@@ -946,33 +967,89 @@ select {
   margin-top: 0.9rem;
 }
 
-.route-stop-list {
-  display: grid;
-  gap: 0.55rem;
-  margin-top: 0.9rem;
-}
-
-.route-stop-bullets {
-  margin: 0;
-  padding-left: 1.2rem;
-  display: grid;
-  gap: 0.3rem;
-}
-
-.route-stop-bullets li {
-  line-height: 1.35;
-}
-
 .route-stop-empty {
   margin: 0;
   color: rgba(18, 8, 9, 0.72);
+  line-height: 1.35;
+}
+
+.route-checklist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.28rem;
+}
+
+.route-checklist__item {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+  gap: 0.45rem;
+  align-items: center;
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.route-checklist__marker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.3rem;
+  width: 1.5rem;
+  padding: 0 0.28rem;
+  background: rgba(18, 8, 9, 0.08);
+  color: rgba(18, 8, 9, 0.8);
+  font-size: 0.68rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 0;
+}
+
+.route-checklist__marker::before {
+  content: attr(data-marker);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 0.72rem;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+}
+
+.route-checklist__marker--visited::before {
+  font-size: 0.78rem;
+}
+
+.route-checklist__label {
+  min-width: 0;
+}
+
+.route-checklist__state {
+  color: rgba(18, 8, 9, 0.56);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.route-checklist__item.is-visited .route-checklist__marker {
+  background: color-mix(in srgb, var(--route-green) 88%, white 12%);
+  color: var(--white);
+}
+
+.route-checklist__item.is-visited .route-checklist__label {
+  color: rgba(18, 8, 9, 0.72);
+}
+
+.route-checklist__item.is-visited .route-checklist__state {
+  color: color-mix(in srgb, var(--route-green-dark) 72%, var(--ink) 28%);
 }
 
 .intel-list--compact {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.mission-content--movement-alert .route-stop-list > span,
 .mission-content--movement-alert > p {
   color: color-mix(in srgb, var(--utah-red) 72%, var(--ink) 28%);
 }
@@ -1080,6 +1157,18 @@ select {
 
   .intel-stack {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .route-card-layout {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .route-card-checklist {
+    padding-left: 0;
+    padding-top: 0.7rem;
+    border-left: 0;
+    border-top: 1px solid rgba(18, 8, 9, 0.12);
   }
 }
 
