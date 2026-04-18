@@ -636,8 +636,7 @@ select {
   overflow: auto;
 }
 
-.intel-list,
-.collectible-list {
+.intel-list {
   display: grid;
   gap: 0.55rem;
   margin-top: 0.9rem;
@@ -680,26 +679,14 @@ select {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.intel-item,
-.collectible-chip {
+.intel-item {
   padding: 0.7rem 0.8rem;
   background: rgba(18, 8, 9, 0.06);
   clip-path: polygon(6% 0, 100% 0, 100% 86%, 94% 100%, 0 100%, 0 14%);
 }
 
-.intel-item p,
-.collectible-chip p {
+.intel-item p {
   margin-top: 0.25rem;
-}
-
-.collectible-list--compact {
-  margin-top: 0.75rem;
-}
-
-.collectible-chip strong {
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  display: block;
 }
 
 .touch-controls {

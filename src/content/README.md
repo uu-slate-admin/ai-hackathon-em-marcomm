@@ -6,6 +6,5 @@ Target responsibilities:
 - map scene definitions
 - landmark triggers
 - dialogue content
-- collectible metadata
 - `academic_interest` definitions
 - result mappings

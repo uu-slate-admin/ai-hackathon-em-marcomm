@@ -24,7 +24,6 @@ export function createShell(root) {
         </section>
         <aside class="intel-stack">
           <div class="intel-card" id="mission-root"></div>
-          <div class="intel-card" id="collectibles-root"></div>
           <div class="hud-root" id="hud-root"></div>
         </aside>
       </main>
@@ -38,7 +37,6 @@ export function createShell(root) {
     dialogueLayer: root.querySelector("#dialogue-layer"),
     resultLayer: root.querySelector("#result-layer"),
     missionRoot: root.querySelector("#mission-root"),
-    collectiblesRoot: root.querySelector("#collectibles-root"),
     touchControlsRoot: root.querySelector("#touch-controls"),
     statusChip: root.querySelector("#status-chip"),
   };

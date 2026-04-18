@@ -12,10 +12,8 @@ import { swoopStages } from "../systems/swoopProgression";
 let refs = null;
 let totalStops = 0;
 let requiredStops = 0;
-let collectibleLookup = {};
 let lastHudMarkup = "";
 let lastMissionMarkup = "";
-let lastCollectiblesMarkup = "";
 
 const state = {
   mode: "title",
@@ -53,8 +51,6 @@ function renderHud() {
   const progressPercentage = `${requiredStops === 0 ? 0 : (completedRequiredStops / requiredStops) * 100}%`;
   const stageLabel = getStageLabel(state.session.swoopStage);
   const remainingRequiredStops = Math.max(requiredStops - completedRequiredStops, 0);
-  const latestCollectibleId = state.session.collectedItemIds.at(-1);
-  const latestCollectible = latestCollectibleId ? collectibleLookup[latestCollectibleId] : null;
   const routeStops = getRouteStops(state.session);
   const nextRouteStop = routeStops.find((stop) => !stop.visited) ?? null;
   const routeListMarkup = routeStops.length
@@ -173,43 +169,22 @@ function renderHud() {
     refs.missionRoot.innerHTML = missionMarkup;
     lastMissionMarkup = missionMarkup;
   }
-
-  const collectiblesMarkup = `
-    <span>Collectibles</span>
-    <strong>${state.session.collectedItemIds.length} found</strong>
-    <div class="collectible-list collectible-list--compact">
-      <div class="collectible-chip">
-        <strong>${latestCollectible ? latestCollectible.label : "Nothing unlocked yet"}</strong>
-        <p>${latestCollectible ? latestCollectible.unlockCopy : "Discover landmarks to reveal keepsakes during the tour."}</p>
-      </div>
-    </div>
-  `;
-
-  if (collectiblesMarkup !== lastCollectiblesMarkup) {
-    refs.collectiblesRoot.innerHTML = collectiblesMarkup;
-    lastCollectiblesMarkup = collectiblesMarkup;
-  }
 }
 
 export function mountHud({
   hudRoot,
   missionRoot,
-  collectiblesRoot,
   totalStops: configuredTotalStops,
   requiredStops: configuredRequiredStops,
-  collectibleItemsById,
 }) {
   refs = {
     hudRoot,
     missionRoot,
-    collectiblesRoot,
   };
   lastHudMarkup = "";
   lastMissionMarkup = "";
-  lastCollectiblesMarkup = "";
   totalStops = configuredTotalStops;
   requiredStops = configuredRequiredStops;
-  collectibleLookup = collectibleItemsById;
   subscribeAudioSettings((nextAudioSettings) => {
     audioSettings = nextAudioSettings;
     renderHud();

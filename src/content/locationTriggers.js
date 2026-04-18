@@ -8,7 +8,6 @@ export const locationTriggers = tourStops.map((stop) => ({
   y: stop.y,
   radius: stop.radius,
   dialogueEventId: stop.id,
-  collectibleId: stop.collectible.id,
   color: stop.color,
 }));
 

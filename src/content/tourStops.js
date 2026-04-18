@@ -8,14 +8,6 @@ const COLORS = {
   ember: 0x890000,
 };
 
-function createCollectible(id, label) {
-  return {
-    id: `${id}-stamp`,
-    label: `${label} Stamp`,
-    unlockCopy: `A tour stamp from ${label}.`,
-  };
-}
-
 export const tourStops = [
   {
     id: "block_u",
@@ -26,7 +18,6 @@ export const tourStops = [
     radius: 120,
     color: COLORS.red,
     imageAsset: "blockU",
-    collectible: createCollectible("block_u", "Block U"),
     body:
       "At Block U, the tour opens with the same idea captured in the source material: your path is not chosen for you, it is built by you. This is where curiosity turns into direction.",
   },
@@ -39,7 +30,6 @@ export const tourStops = [
     radius: 115,
     color: COLORS.lake,
     imageAsset: "uac",
-    collectible: createCollectible("uac", "U Asia Campus"),
     body:
       "The U's global footprint expands what college can look like. This stop reflects the tour's emphasis on global experiences and the idea that your Utah story can connect to a much wider world.",
   },
@@ -52,7 +42,6 @@ export const tourStops = [
     radius: 115,
     color: COLORS.sunrise,
     imageAsset: "umfa",
-    collectible: createCollectible("umfa", "UMFA"),
     body:
       "UMFA signals how the university connects learning with art, culture, and public-facing creativity. It is a reminder that expression and perspective are part of campus life too.",
   },
@@ -65,7 +54,6 @@ export const tourStops = [
     radius: 120,
     color: COLORS.granite,
     imageAsset: "kahlertVillage",
-    collectible: createCollectible("kahlert_village", "Kahlert Village"),
     body:
       "The housing tour object makes this clear: first-year students are guaranteed on-campus housing, and living here helps people build community and network early.",
   },
@@ -78,7 +66,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.granite,
     imageAsset: "honorsHousing",
-    collectible: createCollectible("honors_housing", "Honors Housing"),
     body:
       "This stop extends the housing story toward a more close-knit academic community, where students balance residential life with a stronger sense of intellectual connection.",
   },
@@ -91,7 +78,6 @@ export const tourStops = [
     radius: 120,
     color: COLORS.ember,
     imageAsset: "safety",
-    collectible: createCollectible("safety", "Public Safety"),
     body:
       "The tour's safety script emphasizes 24/7 public safety services and security escorts. The point is simple: students should feel supported here day or night.",
   },
@@ -104,7 +90,6 @@ export const tourStops = [
     radius: 120,
     color: COLORS.sunrise,
     imageAsset: "studentServices",
-    collectible: createCollectible("student_services", "Student Services"),
     body:
       "Student Services pulls in the financial-aid tour copy: merit-based and need-based scholarships, plus millions awarded annually, all framed around making higher education more affordable.",
   },
@@ -117,7 +102,6 @@ export const tourStops = [
     radius: 120,
     color: COLORS.red,
     imageAsset: "gardnerCommons",
-    collectible: createCollectible("gardner_commons", "Gardner Commons"),
     body:
       "The majors tour begins here with a counselor asking what you are interested in. It frames the university as a place with room for science, business, education, engineering, social work, law, honors, and more.",
   },
@@ -130,7 +114,6 @@ export const tourStops = [
     radius: 115,
     color: COLORS.red,
     imageAsset: "undergraduateStudies",
-    collectible: createCollectible("undergraduate_studies", "Undergraduate Studies"),
     body:
       "This stop carries the same exploratory spirit as the major-selection sequence: a lot of paths open here, and the real task is figuring out which kind of learning feels most like you.",
   },
@@ -143,7 +126,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.granite,
     imageAsset: "architecture",
-    collectible: createCollectible("architecture", "Architecture"),
     body:
       "Architecture appears in the major categories as part of a more design-driven path, where visual thinking, building, and systems all work together.",
   },
@@ -156,7 +138,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.lake,
     imageAsset: "science",
-    collectible: createCollectible("science", "Science"),
     body:
       "Science and research are called out directly in the majors source. This stop represents the part of campus built around discovery, inquiry, and asking better questions.",
   },
@@ -169,7 +150,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.sunrise,
     imageAsset: "health",
-    collectible: createCollectible("health", "Health"),
     body:
       "Healthcare is one of the interest tags in the original tour objects, and this stop pushes that people-first direction into a health-focused campus setting.",
   },
@@ -182,7 +162,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.sunrise,
     imageAsset: "artsBuilding",
-    collectible: createCollectible("arts_building", "Arts Building"),
     body:
       "The majors list explicitly includes arts and creativity, and this stop turns that into a real place on the map where making, performing, and producing ideas can take shape.",
   },
@@ -195,7 +174,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.granite,
     imageAsset: "engineering",
-    collectible: createCollectible("engineering", "Engineering"),
     body:
       "Engineering and technology are core major categories in the tour object, representing the builder side of campus where curiosity turns into tools, prototypes, and systems.",
   },
@@ -208,7 +186,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.red,
     imageAsset: "socialWork",
-    collectible: createCollectible("social_work", "Social Work"),
     body:
       "Social Work is named directly in the tour's major categories. It points toward work rooted in support, advocacy, and helping communities move forward.",
   },
@@ -221,7 +198,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.red,
     imageAsset: "csbs",
-    collectible: createCollectible("csbs", "CSBS"),
     body:
       "The College of Social and Behavioral Science sits at the intersection of people, policy, research, and systems. It is a strong match for students interested in how communities actually work.",
   },
@@ -234,7 +210,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.sunrise,
     imageAsset: "education",
-    collectible: createCollectible("education", "Education"),
     body:
       "Education appears in the majors source as part of a social-impact pathway. This stop represents learning that is designed to help other people grow.",
   },
@@ -247,7 +222,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.red,
     imageAsset: "communityService",
-    collectible: createCollectible("community_service", "Community Service"),
     body:
       "Service is one of the original interest tags, and the activities object reinforces the idea that campus life here is about finding your people and making your effort count beyond yourself.",
   },
@@ -260,7 +234,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.lake,
     imageAsset: "library",
-    collectible: createCollectible("library", "Library"),
     body:
       "The library stop stands for the quieter side of the same major exploration: research support, study space, and the infrastructure that helps students turn interest into progress.",
   },
@@ -273,7 +246,6 @@ export const tourStops = [
     radius: 120,
     color: COLORS.sunrise,
     imageAsset: "business",
-    collectible: createCollectible("business", "Business"),
     body:
       "Business and leadership are both central to the source objects, which frame the U as a place to build initiative, entrepreneurship, and momentum that moves people forward.",
   },
@@ -286,7 +258,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.ember,
     imageAsset: "downtown",
-    collectible: createCollectible("night_life", "Night Life"),
     body:
       "This stop adds the after-hours side of the city-campus experience: concerts, late nights, and the kind of social energy that makes Salt Lake feel bigger than the classroom.",
   },
@@ -299,7 +270,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.sunrise,
     imageAsset: "food",
-    collectible: createCollectible("food", "Food"),
     body:
       "The activities object calls out everything from late-night bites to global cuisine. This stop is about daily campus life feeling varied, social, and easy to enjoy.",
   },
@@ -312,7 +282,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.sunrise,
     imageAsset: "studentLifeCenter",
-    collectible: createCollectible("student_life_center", "Student Life Center"),
     body:
       "With 600+ clubs and a strong fitness culture in the activities object, this stop captures the side of campus where routines, recreation, and belonging all come together.",
   },
@@ -325,7 +294,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.granite,
     imageAsset: "jobs",
-    collectible: createCollectible("jobs", "Jobs"),
     body:
       "This stop extends the source material's leadership and city-access themes into internships, campus jobs, and the practical opportunities that make college feel connected to life after graduation.",
   },
@@ -338,7 +306,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.red,
     imageAsset: "humanities",
-    collectible: createCollectible("humanities", "Humanities"),
     body:
       "Humanities is explicitly named in the major categories and points toward language, ideas, culture, ethics, and the kinds of questions that shape how people understand the world.",
   },
@@ -351,7 +318,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.sunrise,
     imageAsset: "nursing",
-    collectible: createCollectible("nursing", "Nursing"),
     body:
       "Nursing is another direct major callout in the source file. It represents a clear care-centered route where skill, urgency, and human connection meet.",
   },
@@ -364,7 +330,6 @@ export const tourStops = [
     radius: 120,
     color: COLORS.red,
     imageAsset: "law",
-    collectible: createCollectible("law", "Law"),
     body:
       "Law appears in the tour's major categories as one of the more direct leadership-oriented routes, where advocacy, systems, and public impact all matter.",
   },
@@ -377,7 +342,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.granite,
     imageAsset: "ldsInstitute",
-    collectible: createCollectible("lds_institute", "LDS Institute"),
     body:
       "This stop adds another community-oriented space to the map, reflecting the broader theme that students here build networks and find places that support both identity and belonging.",
   },
@@ -390,7 +354,6 @@ export const tourStops = [
     radius: 135,
     color: COLORS.granite,
     imageAsset: "riceEccles",
-    collectible: createCollectible("rice_eccles", "Rice-Eccles Stadium"),
     body:
       "The activities source calls out school spirit and sports directly. Rice-Eccles turns that into a stop about tradition, crowd energy, and being part of something bigger.",
   },
@@ -403,7 +366,6 @@ export const tourStops = [
     radius: 130,
     color: COLORS.lake,
     imageAsset: "transportation",
-    collectible: createCollectible("transportation", "Transportation"),
     body:
       "The transportation source is direct: your student ID is your ticket to ride, and buses and TRAX run all day. This stop is about access, independence, and a connected campus.",
   },
@@ -416,7 +378,6 @@ export const tourStops = [
     radius: 120,
     color: COLORS.lake,
     imageAsset: "downtown",
-    collectible: createCollectible("downtown", "Downtown"),
     body:
       "The activity prompts frame Salt Lake City as part of the experience: city life, food, music venues, and opportunity without losing proximity to the outdoors.",
   },
@@ -429,7 +390,6 @@ export const tourStops = [
     radius: 135,
     color: COLORS.ember,
     imageAsset: "redButte",
-    collectible: createCollectible("red_butte", "Red Butte Garden"),
     body:
       "Red Butte reflects the tour's outdoors category and the idea that campus life here stays connected to the landscape, trails, and room to reset.",
   },
@@ -442,7 +402,6 @@ export const tourStops = [
     radius: 120,
     color: COLORS.lake,
     imageAsset: "outdoors",
-    collectible: createCollectible("outdoors", "Outdoors"),
     body:
       "The original activities object makes the outdoors one of the defining parts of the U experience, from nearby camping to quick access to mountain space.",
   },
@@ -455,7 +414,6 @@ export const tourStops = [
     radius: 110,
     color: COLORS.lake,
     imageAsset: "skiSnowboard",
-    collectible: createCollectible("ski_snowboard", "Ski and Snowboard"),
     body:
       "One of the clearest facts in the activities file is that there are 11 ski resorts less than an hour away. This stop turns that into a campus-life advantage you can actually feel.",
   },

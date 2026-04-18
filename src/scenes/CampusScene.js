@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 
-import { collectibleItemsById } from "../content/collectibleItems";
 import { dialogueEvents } from "../content/dialogueEvents";
 import { locationTriggers, locationTriggersById } from "../content/locationTriggers";
 import { audioAssets, swoopStageAssets } from "../content/media";
@@ -360,9 +359,6 @@ export class CampusScene extends Phaser.Scene {
       visited: session.completedRouteTriggerIds.includes(stop.triggerId),
     }));
     const slateHref = buildSlateHref(session);
-    const collectedItems = session.collectedItemIds
-      .map((itemId) => collectibleItemsById[itemId])
-      .filter(Boolean);
     const stage = resolveSwoopStage(session.growthPoints);
 
     this.isBusy = true;
@@ -374,7 +370,6 @@ export class CampusScene extends Phaser.Scene {
       routeStops,
       resultMapping: resultMappings[program.programFamilyId] ?? resultMappings.campus_exploration,
       stageLabel: stage.label,
-      collectedItems,
       slateHref,
       routeCompletedCount: session.completedRouteTriggerIds.length,
       onContinue: () => {

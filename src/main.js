@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 
 import "./styles.css";
-import { collectibleItemsById } from "./content/collectibleItems";
 import { locationTriggers } from "./content/locationTriggers";
 import { REQUIRED_STOPS } from "./content/tourStops";
 import { BootScene } from "./scenes/BootScene";
@@ -22,10 +21,8 @@ const shell = createShell(document.querySelector("#app"));
 mountHud({
   hudRoot: shell.hudRoot,
   missionRoot: shell.missionRoot,
-  collectiblesRoot: shell.collectiblesRoot,
   totalStops: locationTriggers.length,
   requiredStops: REQUIRED_STOPS,
-  collectibleItemsById,
 });
 mountProgramSelectorOverlay(shell.selectorLayer);
 mountDialogueOverlay(shell.dialogueLayer);

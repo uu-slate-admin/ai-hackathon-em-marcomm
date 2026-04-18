@@ -14,7 +14,6 @@ export function showResults({
   routeStops,
   resultMapping,
   stageLabel,
-  collectedItems,
   slateHref,
   routeCompletedCount,
   onContinue,
@@ -24,18 +23,6 @@ export function showResults({
   }
 
   rootElement.classList.add("is-active");
-
-  const itemsMarkup = collectedItems
-    .map(
-      (item) => `
-        <div class="result-chip">
-          <span>Collectible</span>
-          <strong>${escapeHtml(item.label)}</strong>
-          <p>${escapeHtml(item.unlockCopy)}</p>
-        </div>
-      `,
-    )
-    .join("");
   const routeMarkup = routeStops
     .map(
       (stop) => `
@@ -69,7 +56,6 @@ export function showResults({
             <strong>${escapeHtml(route.label)}</strong>
             <p>Your top five places were grouped to match this major’s strongest campus fit.</p>
           </div>
-          ${itemsMarkup}
         </div>
         <div class="result-grid result-grid--route">
           ${routeMarkup}

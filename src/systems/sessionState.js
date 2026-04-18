@@ -1,4 +1,3 @@
-import { collectibleItemsById } from "../content/collectibleItems";
 import { programsById } from "../content/programCatalog";
 import { REQUIRED_STOPS } from "../content/tourStops";
 import { resolveProgramRoute } from "../content/programRoutes";
@@ -10,7 +9,6 @@ function createSessionState() {
   return {
     gameSessionId: crypto.randomUUID(),
     visitedTriggerIds: [],
-    collectedItemIds: [],
     growthPoints: 0,
     swoopStage: "egg",
     selectedProgramId: null,
@@ -28,7 +26,6 @@ function snapshot() {
   return {
     ...state,
     visitedTriggerIds: [...state.visitedTriggerIds],
-    collectedItemIds: [...state.collectedItemIds],
     requiredRouteTriggerIds: [...state.requiredRouteTriggerIds],
     completedRouteTriggerIds: [...state.completedRouteTriggerIds],
   };
@@ -37,15 +34,6 @@ function snapshot() {
 function notify() {
   const current = snapshot();
   subscribers.forEach((subscriber) => subscriber(current));
-}
-
-function unlockCollectible(trigger) {
-  if (!trigger.collectibleId || state.collectedItemIds.includes(trigger.collectibleId)) {
-    return null;
-  }
-
-  state.collectedItemIds.push(trigger.collectibleId);
-  return collectibleItemsById[trigger.collectibleId] ?? null;
 }
 
 function visitTrigger(trigger) {
@@ -89,13 +77,11 @@ export function selectProgram(programId, trigger) {
   state.completedRouteTriggerIds = [];
   state.completedAt = null;
   visitTrigger(trigger);
-  const unlockedItem = unlockCollectible(trigger);
 
   notify();
 
   return {
     session: snapshot(),
-    unlockedItem,
     route,
     program,
   };
@@ -106,7 +92,6 @@ export function applyInteraction(trigger) {
     return {
       session: snapshot(),
       stageChanged: false,
-      unlockedItem: null,
       completed: Boolean(state.completedAt),
       newlyCompleted: false,
       countedTowardRoute: state.completedRouteTriggerIds.includes(trigger.id),
@@ -116,8 +101,6 @@ export function applyInteraction(trigger) {
   const previousStage = state.swoopStage;
 
   visitTrigger(trigger);
-  const unlockedItem = unlockCollectible(trigger);
-
   const countedTowardRoute = state.requiredRouteTriggerIds.includes(trigger.id);
 
   if (countedTowardRoute && !state.completedRouteTriggerIds.includes(trigger.id)) {
@@ -138,7 +121,6 @@ export function applyInteraction(trigger) {
   return {
     session: snapshot(),
     stageChanged: previousStage !== state.swoopStage,
-    unlockedItem,
     completed,
     newlyCompleted,
     countedTowardRoute,
