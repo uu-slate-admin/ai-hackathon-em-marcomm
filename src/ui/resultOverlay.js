@@ -1,20 +1,23 @@
 let rootElement = null;
 
-export function mountResultOverlay(root) {
-  rootElement = root;
-}
-
 function escapeHtml(value) {
   return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
+export function mountResultOverlay(root) {
+  rootElement = root;
+}
+
 export function showResults({
-  interest,
+  program,
+  route,
+  routeStops,
   resultMapping,
   stageLabel,
   collectedItems,
   payload,
   slateHref,
+  routeCompletedCount,
   onContinue,
   onRestart,
 }) {
@@ -35,6 +38,17 @@ export function showResults({
       `,
     )
     .join("");
+  const routeMarkup = routeStops
+    .map(
+      (stop) => `
+        <div class="result-chip">
+          <span>${stop.visited ? "Visited" : "Recommended"}</span>
+          <strong>${escapeHtml(stop.label)}</strong>
+          <p>${escapeHtml(stop.reason)}</p>
+        </div>
+      `,
+    )
+    .join("");
   const payloadJson = JSON.stringify(payload, null, 2);
   const payloadMarkup = escapeHtml(payloadJson);
 
@@ -42,20 +56,28 @@ export function showResults({
     <div class="overlay-card">
       <div class="overlay-card__body">
         <span>${escapeHtml(resultMapping.kicker)}</span>
-        <h2>${escapeHtml(interest.headline)}</h2>
-        <p>${escapeHtml(interest.summary)}</p>
+        <h2>${escapeHtml(program.label)}</h2>
+        <p>${escapeHtml(program.collegeLabel)}</p>
         <div class="result-grid">
+          <div class="result-chip">
+            <span>Route Progress</span>
+            <strong>${routeCompletedCount} of ${routeStops.length}</strong>
+            <p>You completed the five-stop campus route built for this selected major.</p>
+          </div>
           <div class="result-chip">
             <span>Final Swoop Stage</span>
             <strong>${escapeHtml(stageLabel)}</strong>
-            <p>Swoop grew with every campus moment you completed.</p>
+            <p>Swoop grew at every recommended stop you completed.</p>
           </div>
           <div class="result-chip">
-            <span>Next Step</span>
-            <strong>${escapeHtml(interest.label)}</strong>
-            <p>${escapeHtml(interest.nextStep)}</p>
+            <span>Route Family</span>
+            <strong>${escapeHtml(route.label)}</strong>
+            <p>Your top five places were grouped to match this major’s strongest campus fit.</p>
           </div>
           ${itemsMarkup}
+        </div>
+        <div class="result-grid result-grid--route">
+          ${routeMarkup}
         </div>
         <details class="payload-disclosure">
           <summary>Show QA payload</summary>
@@ -76,7 +98,7 @@ export function showResults({
           </button>
           <button class="action-button action-button--secondary" data-action="restart">
             <strong>Play Again</strong>
-            <small>Reset the session and guide Swoop through another tour.</small>
+            <small>Reset the session and choose another major.</small>
           </button>
         </div>
       </div>

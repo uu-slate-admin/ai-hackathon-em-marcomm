@@ -1,7 +1,8 @@
 export const swoopStages = [
   { id: "egg", label: "Egg", minPoints: 0 },
-  { id: "hatchling", label: "Hatchling", minPoints: 1 },
-  { id: "growing", label: "Growing", minPoints: 3 },
+  { id: "baby", label: "Baby", minPoints: 1 },
+  { id: "adolescent", label: "Adolescent", minPoints: 3 },
+  { id: "teen", label: "Teen", minPoints: 4 },
   { id: "adult", label: "Adult", minPoints: 5 },
 ];
 

@@ -1,12 +1,12 @@
-import campusMapUrl from "../../Game Map.png";
+import campusMapUrl from "../../assets/maps/campus-map.png";
 import swoopAdultUrl from "../../assets/sprites/swoop/adult.png";
+import swoopAdolescentUrl from "../../assets/sprites/swoop/adolescent.png";
+import swoopBabyUrl from "../../assets/sprites/swoop/baby.png";
 import swoopEggUrl from "../../assets/sprites/swoop/egg.png";
-import swoopGrowingUrl from "../../assets/sprites/swoop/growing.png";
-import swoopTeenUrl from "../../assets/sprites/swoop/hatchling.png";
-import swoopHatchlingUrl from "../../assets/sprites/swoop/title.png";
+import swoopTeenUrl from "../../assets/sprites/swoop/teen.png";
 
 function resolveTempPhoto(path) {
-  return new URL(`../../temp/location photos/${path}`, import.meta.url).href;
+  return new URL(`../../assets/photos/${path}`, import.meta.url).href;
 }
 
 export const mapAsset = {
@@ -20,15 +20,20 @@ export const swoopStageAssets = {
     url: swoopEggUrl,
     displaySize: { width: 92, height: 130 },
   },
-  hatchling: {
-    key: "swoop-hatchling",
-    url: swoopHatchlingUrl,
+  baby: {
+    key: "swoop-baby",
+    url: swoopBabyUrl,
     displaySize: { width: 104, height: 150 },
   },
-  growing: {
-    key: "swoop-growing",
-    url: swoopGrowingUrl,
+  adolescent: {
+    key: "swoop-adolescent",
+    url: swoopAdolescentUrl,
     displaySize: { width: 114, height: 150 },
+  },
+  teen: {
+    key: "swoop-teen",
+    url: swoopTeenUrl,
+    displaySize: { width: 124, height: 164 },
   },
   adult: {
     key: "swoop-adult",

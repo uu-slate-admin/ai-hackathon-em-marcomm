@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 
+import { BRAND_FONT_FAMILY } from "../theme/typography";
+
 const COLORS = {
   red: 0xbe0000,
   redDark: 0x890000,
@@ -82,7 +84,7 @@ export function drawCampusMap(scene, mapScene, triggers) {
   triggers.forEach((trigger) => {
     scene.add
       .text(trigger.x, trigger.y + 74, trigger.label, {
-        fontFamily: "Arial Black, Impact, sans-serif",
+        fontFamily: BRAND_FONT_FAMILY.display,
         fontSize: "22px",
         color: "#140d0d",
         align: "center",

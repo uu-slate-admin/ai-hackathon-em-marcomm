@@ -7,8 +7,8 @@ export const campusScene = {
   backgroundKey: mapAsset.key,
   showTriggerLabels: false,
   playerStart: {
-    x: 1595,
-    y: 1177,
+    x: 760,
+    y: 1090,
   },
   obstacles: [],
 };

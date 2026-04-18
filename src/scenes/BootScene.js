@@ -2,8 +2,8 @@ import Phaser from "phaser";
 
 import { campusPhotoAssets, mapAsset, swoopStageAssets, titleHeroAsset } from "../content/media";
 
-const GREAT_SALT_LAKE = 0x3abfc0;
-const WASATCH_SUNRISE = 0xffb81d;
+const ROUTE_GREEN = 0x5f8b3d;
+const ROUTE_GREEN_DARK = 0x3f6124;
 const MARKER_OUTLINE = 0xffffff;
 const MARKER_INNER = 0xffffff;
 
@@ -54,10 +54,10 @@ export class BootScene extends Phaser.Scene {
   }
 
   createLandmarkTextures() {
-    this.createLandmarkPulseTexture("landmark-node-unvisited", GREAT_SALT_LAKE);
-    this.createLandmarkPulseTexture("landmark-node-visited", WASATCH_SUNRISE);
-    this.createLandmarkPinTexture("landmark-core-unvisited", GREAT_SALT_LAKE);
-    this.createLandmarkPinTexture("landmark-core-visited", WASATCH_SUNRISE);
+    this.createLandmarkPulseTexture("landmark-node-unvisited", ROUTE_GREEN);
+    this.createLandmarkPulseTexture("landmark-node-visited", ROUTE_GREEN_DARK);
+    this.createLandmarkPinTexture("landmark-core-unvisited", ROUTE_GREEN);
+    this.createLandmarkPinTexture("landmark-core-visited", ROUTE_GREEN_DARK);
   }
 
   createLandmarkPulseTexture(key, color) {

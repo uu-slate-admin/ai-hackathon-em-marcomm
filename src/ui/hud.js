@@ -1,21 +1,37 @@
-import { academicInterests } from "../content/academicInterests";
-import { rankAcademicInterests } from "../systems/academicInterest";
+import { locationTriggersById } from "../content/locationTriggers";
+import { programsById } from "../content/programCatalog";
+import { resolveProgramRoute } from "../content/programRoutes";
 import { swoopStages } from "../systems/swoopProgression";
 
 let refs = null;
 let totalStops = 0;
 let requiredStops = 0;
-let academicInterestsLookup = {};
 let collectibleLookup = {};
 
 const state = {
   mode: "title",
   session: null,
   nearbyTrigger: null,
+  playerPosition: null,
 };
 
 function getStageLabel(stageId) {
   return swoopStages.find((stage) => stage.id === stageId)?.label ?? "Egg";
+}
+
+function getRouteStops(session) {
+  const program = session?.selectedProgramId ? programsById[session.selectedProgramId] : null;
+
+  if (!program) {
+    return [];
+  }
+
+  return resolveProgramRoute(program).stops.map((stop, index) => ({
+    ...stop,
+    index,
+    label: locationTriggersById[stop.triggerId]?.label ?? stop.triggerId,
+    visited: session.completedRouteTriggerIds.includes(stop.triggerId),
+  }));
 }
 
 function renderHud() {
@@ -23,44 +39,83 @@ function renderHud() {
     return;
   }
 
-  const completedStops = state.session.visitedTriggerIds.length;
-  const completedRequiredStops = Math.min(completedStops, requiredStops);
+  const program = state.session.selectedProgramId ? programsById[state.session.selectedProgramId] : null;
+  const completedRequiredStops = state.session.completedRouteTriggerIds.length;
   const progressPercentage = `${requiredStops === 0 ? 0 : (completedRequiredStops / requiredStops) * 100}%`;
   const stageLabel = getStageLabel(state.session.swoopStage);
-  const ranked = rankAcademicInterests(state.session.interestScores);
-  const leadingInterest = state.session.academicInterest
-    ? academicInterestsLookup[state.session.academicInterest]
-    : ranked[0]?.interest ?? academicInterests[0];
-  const remainingRequiredStops = Math.max(requiredStops - completedStops, 0);
+  const remainingRequiredStops = Math.max(requiredStops - completedRequiredStops, 0);
   const latestCollectibleId = state.session.collectedItemIds.at(-1);
   const latestCollectible = latestCollectibleId ? collectibleLookup[latestCollectibleId] : null;
+  const routeStops = getRouteStops(state.session);
+  const nextRouteStop = routeStops.find((stop) => !stop.visited) ?? null;
+  const routeListMarkup = routeStops.length
+    ? routeStops
+        .map(
+          (stop) => `
+            <div class="route-stop-chip${stop.visited ? " is-visited" : nextRouteStop?.triggerId === stop.triggerId ? " is-next" : ""}">
+              <strong>${stop.index + 1}. ${stop.label}</strong>
+              <p>${stop.visited ? "Visited. Swoop already grew here." : nextRouteStop?.triggerId === stop.triggerId ? "Next recommended stop." : "Still ahead on your route."}</p>
+            </div>
+          `,
+        )
+        .join("")
+    : `
+        <div class="route-stop-chip">
+          <strong>Route locked</strong>
+          <p>Your five destinations appear after you pick a major at Gardner Commons.</p>
+        </div>
+      `;
+
   const nearbyCopy =
     state.mode === "title"
-      ? "Press Start to launch the tour, then use WASD, arrow keys, or the touch pad."
-      : state.nearbyTrigger
-        ? `You are close to ${state.nearbyTrigger.label}. Press SPACE, ENTER, or tap the action button.`
-        : state.session.completedAt
-          ? "Tour complete. Review your result or restart for another path."
-          : `Keep moving. Any ${requiredStops} landmarks will complete the tour.`;
+      ? "Press Start to launch the tour, then choose a major at Gardner Commons."
+      : !program
+        ? "Choose a college and major at Gardner Commons to unlock your personalized route."
+        : state.nearbyTrigger
+          ? `You are close to ${state.nearbyTrigger.label}. Press SPACE, ENTER, or tap the action button.`
+          : state.session.completedAt
+            ? "Route complete. Review your result or restart for another major."
+            : nextRouteStop
+              ? `Head toward marker ${nextRouteStop.index + 1}: ${nextRouteStop.label}. The green numbered markers show all five route stops.`
+              : `Keep moving. Visit all ${requiredStops} recommended places to finish this route.`;
 
   refs.hudRoot.innerHTML = `
     <div class="hud-card hud-card--primary">
-      <span>Landmarks Required</span>
+      <span>Recommended Places</span>
       <strong>${completedRequiredStops} of ${requiredStops}</strong>
-      <p>${remainingRequiredStops === 0 ? `Tour complete. ${totalStops} locations are on the map.` : `${remainingRequiredStops} more landmark${remainingRequiredStops === 1 ? "" : "s"} needed. ${totalStops} total locations are available.`}</p>
+      <p>
+        ${
+          program
+            ? remainingRequiredStops === 0
+              ? `You completed the ${program.label} route. ${totalStops} total locations are still available.`
+              : `${remainingRequiredStops} recommended stop${remainingRequiredStops === 1 ? "" : "s"} left for ${program.label}.`
+            : "Your five-stop campus route will appear after you pick a major."
+        }
+      </p>
       <div class="progress-track"><div class="progress-fill" style="width: ${progressPercentage}"></div></div>
     </div>
     <div class="hud-card">
-      <span>Growing</span>
+      <span>Swoop</span>
       <strong>${stageLabel}</strong>
-      <p>${leadingInterest.label} is the strongest fit so far.</p>
+      <p>${program ? `${program.label} • ${program.collegeLabel}` : "Still waiting for a starting major."}</p>
     </div>
   `;
 
   refs.missionRoot.innerHTML = `
     <span>${state.mode === "title" ? "Before You Start" : "Right Now"}</span>
-    <strong>${state.mode === "title" ? "Launch the tour" : state.nearbyTrigger ? `Interact at ${state.nearbyTrigger.label}` : "Head to the next landmark"}</strong>
+    <strong>${
+      !program
+        ? "Choose a major at Gardner Commons"
+        : state.nearbyTrigger
+          ? `Interact at ${state.nearbyTrigger.label}`
+          : nextRouteStop
+            ? `Head to ${nextRouteStop.label}`
+            : "Head to the next recommended stop"
+    }</strong>
     <p>${nearbyCopy}</p>
+    <div class="route-stop-list">
+      ${routeListMarkup}
+    </div>
     <div class="intel-list intel-list--compact">
       <div class="intel-item">
         <strong>Move</strong>
@@ -69,6 +124,14 @@ function renderHud() {
       <div class="intel-item">
         <strong>Interact</strong>
         <p>SPACE, ENTER, or tap.</p>
+      </div>
+      <div class="intel-item">
+        <strong>Player XY</strong>
+        <p>${
+          state.playerPosition
+            ? `x: ${state.playerPosition.x}, y: ${state.playerPosition.y}`
+            : "Waiting for player position."
+        }</p>
       </div>
     </div>
   `;
@@ -91,7 +154,6 @@ export function mountHud({
   collectiblesRoot,
   totalStops: configuredTotalStops,
   requiredStops: configuredRequiredStops,
-  academicInterestsById,
   collectibleItemsById,
 }) {
   refs = {
@@ -101,7 +163,6 @@ export function mountHud({
   };
   totalStops = configuredTotalStops;
   requiredStops = configuredRequiredStops;
-  academicInterestsLookup = academicInterestsById;
   collectibleLookup = collectibleItemsById;
 }
 

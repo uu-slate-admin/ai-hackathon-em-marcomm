@@ -1,42 +1,42 @@
-# AI Hackathon EM MarComm
+# UofU Campus Exploration Game
 
-## Purpose
+A University of Utah campus exploration prototype built with Phaser and Vite. Players walk a stylized campus map, trigger short discovery moments about academics and student life, grow `Swoop` from egg to adult, and finish with a lightweight program/result handoff.
 
-Build a branded University of Utah campus exploration game for prospective students. Players walk through a stylized campus-and-city map, trigger short discovery moments about student life and academics, grow a Tamagotchi-style `Swoop` companion from egg to adult, collect campus items, reveal an `academic_interest`, and then optionally continue to an embedded Slate RFI with non-PII game metadata.
+## Run Locally
 
-## Current Direction
+```bash
+npm install
+npm run dev
+```
 
-The repo is now organized around a playable vertical slice, not a survey flow.
+Build for production:
 
-- Core loop: walk, discover, interact, collect, grow `Swoop`, reveal `academic_interest`
-- Experience target: lightweight Pokemon-style campus exploration
-- Slate role: final lead-capture handoff only
+```bash
+npm run build
+```
 
-## Core Documents
-
-- Plan: [PLAN/PLAN.md](PLAN/PLAN.md)
-- Stack: [PLAN/stack.md](PLAN/stack.md)
-- Context map: [CONTEXT.md](CONTEXT.md)
-- Data contracts: [docs/spec/DATA-CONTRACTS.md](docs/spec/DATA-CONTRACTS.md)
-- Slate fields: [slate/field-dictionary.md](slate/field-dictionary.md)
-
-## Repo Structure
+## Repo Layout
 
 ```text
 /
-  assets/
-    maps/
-    sprites/
-    audio/
-  docs/
-  slate/
-  src/
-    game/
-    content/
-    ui/
+  assets/   runtime maps, photos, sprites, and fonts
+  src/      game logic, scenes, systems, and overlays
+  SKILLS/   reusable project-specific skill assets kept at repo root
 ```
 
-- `src/game/`: movement, scenes, triggers, camera, session state
-- `src/content/`: map definitions, interactions, items, scoring, result mappings
-- `src/ui/`: HUD, dialogue, inventory, results, Slate handoff screens
-- `assets/`: map art, sprite sheets, audio, and other runtime assets
+The public repo is intentionally app-first. Internal planning notes, process docs, and working files live under `internal/` locally and are ignored by git.
+
+## Stack
+
+- Vite
+- Phaser 3
+- Vanilla JavaScript modules
+
+## Status
+
+The current build is a playable vertical slice with:
+
+- title screen and onboarding flow
+- campus exploration and trigger interactions
+- `Swoop` progression
+- program selection and result summary flow

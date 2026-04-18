@@ -1,20 +1,27 @@
 import Phaser from "phaser";
 
-import { academicInterestsById } from "../content/academicInterests";
 import { collectibleItemsById } from "../content/collectibleItems";
 import { dialogueEvents } from "../content/dialogueEvents";
-import { locationTriggers } from "../content/locationTriggers";
+import { locationTriggers, locationTriggersById } from "../content/locationTriggers";
 import { swoopStageAssets } from "../content/media";
 import { campusScene } from "../content/mapScenes";
+import { programsByCollegeId, programsById, colleges } from "../content/programCatalog";
+import { resolveProgramRoute } from "../content/programRoutes";
 import { resultMappings } from "../content/resultMappings";
 import { drawCampusMap } from "../game/drawBackdrop";
 import { getInputState, setActionHandler } from "../systems/inputState";
 import { buildSlateHref, buildSlatePayload } from "../systems/slatePayload";
-import { getSession, applyInteraction, resetSession } from "../systems/sessionState";
+import { applyInteraction, getSession, resetSession, selectProgram } from "../systems/sessionState";
 import { resolveSwoopStage } from "../systems/swoopProgression";
+import { BRAND_FONT_FAMILY } from "../theme/typography";
 import { hideDialogue, showDialogue } from "../ui/dialogueOverlay";
 import { updateHud } from "../ui/hud";
+import { hideProgramSelector, showProgramSelector } from "../ui/programSelectorOverlay";
 import { hideResults, showResults } from "../ui/resultOverlay";
+
+const ROUTE_GREEN = 0x5f8b3d;
+const ROUTE_GREEN_DARK = 0x3f6124;
+const PLAYER_MOVE_SPEED = 400;
 
 function getLandmarkTextureKeys(isVisited) {
   return {
@@ -59,11 +66,12 @@ export class CampusScene extends Phaser.Scene {
     setActionHandler(() => this.tryInteract());
     hideDialogue();
     hideResults();
-    updateHud({
-      session: getSession(),
-      mode: "play",
-      nearbyTrigger: null,
-    });
+    this.refreshMarkers(getSession());
+    this.syncHud();
+
+    if (!getSession().selectedProgramId) {
+      this.showProgramSelection();
+    }
   }
 
   createObstacles() {
@@ -90,13 +98,30 @@ export class CampusScene extends Phaser.Scene {
     locationTriggers.forEach((trigger) => {
       const textureKeys = getLandmarkTextureKeys(session.visitedTriggerIds.includes(trigger.id));
       const pulse = this.add.image(trigger.x, trigger.y, textureKeys.pulse).setDepth(6);
-      pulse.setAlpha(0.92);
-
       const center = this.add.image(trigger.x, trigger.y, textureKeys.center).setDepth(7);
+      const badgeRing = this.add
+        .circle(trigger.x + 26, trigger.y - 26, 15, 0xffffff, 0)
+        .setStrokeStyle(3, 0xffffff, 0.98)
+        .setDepth(8)
+        .setVisible(false);
+      const badgeFill = this.add.circle(trigger.x + 26, trigger.y - 26, 13, ROUTE_GREEN, 0.98).setDepth(8).setVisible(false);
+      const badgeLabel = this.add
+        .text(trigger.x + 26, trigger.y - 26, "", {
+          fontFamily: BRAND_FONT_FAMILY.display,
+          fontSize: "16px",
+          color: "#ffffff",
+        })
+        .setOrigin(0.5)
+        .setDepth(9)
+        .setVisible(false);
 
       center.setInteractive({ useHandCursor: true });
       center.on("pointerdown", () => {
-        if (Phaser.Math.Distance.Between(this.player.x, this.player.y, trigger.x, trigger.y) <= trigger.radius + 90) {
+        if (
+          !this.isBusy &&
+          Phaser.Math.Distance.Between(this.player.x, this.player.y, trigger.x, trigger.y) <=
+            trigger.radius + 90
+        ) {
           this.activeTrigger = trigger;
           this.tryInteract();
         }
@@ -105,6 +130,9 @@ export class CampusScene extends Phaser.Scene {
       this.markerMap.set(trigger.id, {
         pulse,
         center,
+        badgeRing,
+        badgeFill,
+        badgeLabel,
       });
     });
   }
@@ -118,26 +146,19 @@ export class CampusScene extends Phaser.Scene {
     this.player.body.setSize(30, 30);
     this.player.body.setOffset(9, 9);
     this.physics.add.collider(this.player, this.obstacles);
+    this.player.setVisible(false);
 
-    this.swoop = this.add.image(this.player.x - 54, this.player.y + 34, swoopStageAssets.egg.key).setDepth(9);
+    this.swoopShadow = this.add.ellipse(this.player.x, this.player.y + 44, 54, 18, 0x081018, 0.18).setDepth(8);
+    this.swoop = this.add.image(this.player.x, this.player.y, swoopStageAssets.egg.key).setDepth(10);
     this.swoop.setOrigin(0.5, 0.82);
     this.syncSwoopSprite("egg");
-    this.swoopFollowDirection = new Phaser.Math.Vector2(0, 1);
-    this.swoopFollowPhase = Math.random() * Math.PI * 2;
-    this.swoopBob = { offsetY: 0 };
-    this.swoopTween = this.tweens.add({
-      targets: this.swoopBob,
-      offsetY: -10,
-      duration: 900,
-      yoyo: true,
-      repeat: -1,
-      ease: "Sine.easeInOut",
-    });
+    this.swoopMotionDirection = new Phaser.Math.Vector2(1, 0);
+    this.swoopMotionPhase = Math.random() * Math.PI * 2;
   }
 
   update() {
     const session = getSession();
-    const speed = this.isBusy ? 0 : 250;
+    const speed = this.isBusy ? 0 : PLAYER_MOVE_SPEED;
     const inputState = getInputState();
     const movement = new Phaser.Math.Vector2(0, 0);
 
@@ -152,28 +173,47 @@ export class CampusScene extends Phaser.Scene {
     this.player.setVelocity(movement.x, movement.y);
 
     const velocity = this.player.body.velocity;
-    if (velocity.lengthSq() > 1) {
-      this.swoopFollowDirection.copy(velocity).normalize();
-      this.swoopFollowPhase += 0.11;
+    const isMoving = velocity.lengthSq() > 1;
+
+    if (isMoving) {
+      this.swoopMotionDirection.copy(velocity).normalize();
+      this.swoopMotionPhase += 0.22;
     } else {
-      this.swoopFollowPhase += 0.04;
+      this.swoopMotionPhase += 0.045;
     }
 
-    const followDirection = this.swoopFollowDirection;
-    const sideDirection = new Phaser.Math.Vector2(-followDirection.y, followDirection.x);
-    const trailingDistance = 48;
-    const sideDrift = 10 + Math.sin(this.swoopFollowPhase) * 18;
-    const swoopTargetX = this.player.x - (followDirection.x * trailingDistance) + (sideDirection.x * sideDrift);
-    const swoopTargetY =
-      this.player.y + 26 - (followDirection.y * (trailingDistance * 0.55)) + (sideDirection.y * sideDrift * 0.35);
+    const bobWave = Math.sin(this.swoopMotionPhase);
+    const bobAmount = isMoving ? 12 : 5;
+    const lift = isMoving ? 10 : 4;
+    const bobOffset = bobWave * bobAmount - lift;
+    const landingCompression = Phaser.Math.Clamp((bobWave + 1) * 0.5, 0, 1);
+    const rotationTarget =
+      Phaser.Math.Clamp(this.swoopMotionDirection.x * 0.16, -0.16, 0.16) + bobWave * (isMoving ? 0.03 : 0.012);
+    const width = this.swoopBaseDisplaySize.width * (1 + landingCompression * 0.08);
+    const height = this.swoopBaseDisplaySize.height * (1 - landingCompression * 0.06);
 
-    this.swoop.x = Phaser.Math.Linear(this.swoop.x, swoopTargetX, 0.08);
-    this.swoop.y = Phaser.Math.Linear(this.swoop.y, swoopTargetY + this.swoopBob.offsetY, 0.08);
+    this.swoop.x = Phaser.Math.Linear(this.swoop.x, this.player.x, 0.3);
+    this.swoop.y = Phaser.Math.Linear(this.swoop.y, this.player.y + bobOffset, 0.24);
+    this.swoop.rotation = Phaser.Math.Linear(this.swoop.rotation, rotationTarget, 0.18);
+    this.swoop.setDisplaySize(width, height);
+
+    this.swoopShadow.x = Phaser.Math.Linear(this.swoopShadow.x, this.player.x, 0.34);
+    this.swoopShadow.y = Phaser.Math.Linear(
+      this.swoopShadow.y,
+      this.player.y + Math.max(40, this.swoopBaseDisplaySize.height * 0.28),
+      0.34,
+    );
+    this.swoopShadow.setScale(1 - landingCompression * 0.16, 1 - landingCompression * 0.22);
+    this.swoopShadow.setAlpha(0.12 + landingCompression * 0.12);
 
     const nearby = this.findNearbyTrigger();
     this.activeTrigger = nearby;
     updateHud({
       nearbyTrigger: nearby,
+      playerPosition: {
+        x: Math.round(this.player.x),
+        y: Math.round(this.player.y),
+      },
       session,
       mode: session.completedAt ? "results" : "play",
     });
@@ -184,13 +224,12 @@ export class CampusScene extends Phaser.Scene {
     let closestTrigger = null;
     let closestDistance = Number.POSITIVE_INFINITY;
 
+    if (!session.selectedProgramId) {
+      return null;
+    }
+
     locationTriggers.forEach((trigger) => {
-      const distance = Phaser.Math.Distance.Between(
-        this.player.x,
-        this.player.y,
-        trigger.x,
-        trigger.y,
-      );
+      const distance = Phaser.Math.Distance.Between(this.player.x, this.player.y, trigger.x, trigger.y);
 
       if (distance < trigger.radius && !session.visitedTriggerIds.includes(trigger.id) && distance < closestDistance) {
         closestTrigger = trigger;
@@ -201,8 +240,27 @@ export class CampusScene extends Phaser.Scene {
     return closestTrigger;
   }
 
+  showProgramSelection() {
+    this.isBusy = true;
+    this.player.setVelocity(0, 0);
+
+    showProgramSelector({
+      colleges,
+      programsByCollegeId,
+      onConfirm: (program) => {
+        const result = selectProgram(program.id, locationTriggersById.gardner_commons);
+        hideProgramSelector();
+        this.isBusy = false;
+        this.refreshMarkers(result.session);
+        this.syncHud();
+      },
+    });
+  }
+
   tryInteract() {
-    if (this.isBusy || !this.activeTrigger) {
+    const session = getSession();
+
+    if (this.isBusy || !this.activeTrigger || !session.selectedProgramId) {
       return;
     }
 
@@ -224,40 +282,39 @@ export class CampusScene extends Phaser.Scene {
 
   completeInteraction(trigger, option) {
     const result = applyInteraction(trigger, option);
-    const session = result.session;
-    const marker = this.markerMap.get(trigger.id);
-    const stage = resolveSwoopStage(session.growthPoints);
+    const stage = resolveSwoopStage(result.session.growthPoints);
 
-    if (marker) {
-      const textureKeys = getLandmarkTextureKeys(true);
-      marker.pulse.setTexture(textureKeys.pulse);
-      marker.center.setTexture(textureKeys.center);
-      marker.pulse.setAlpha(0.92);
-      marker.center.setAlpha(1);
-    }
-
+    this.refreshMarkers(result.session);
     this.syncSwoopSprite(stage.id);
 
     hideDialogue();
     this.isBusy = false;
 
     updateHud({
-      session,
+      session: result.session,
       mode: result.completed ? "results" : "play",
       nearbyTrigger: null,
     });
 
     if (result.newlyCompleted) {
-      this.showResultState(session);
+      this.showResultState(result.session);
     }
   }
 
   showResultState(session) {
-    this.isBusy = true;
-    this.player.setVelocity(0, 0);
-
-    const interest = academicInterestsById[session.academicInterest];
-    const resultMapping = resultMappings[session.academicInterest];
+    const program = programsById[session.selectedProgramId];
+    const routeDefinition = resolveProgramRoute(program);
+    const route = {
+      ...routeDefinition,
+      stops: routeDefinition.stops.map((stop) => ({
+        ...stop,
+        label: locationTriggersById[stop.triggerId]?.label ?? stop.triggerId,
+      })),
+    };
+    const routeStops = route.stops.map((stop) => ({
+      ...stop,
+      visited: session.completedRouteTriggerIds.includes(stop.triggerId),
+    }));
     const payload = buildSlatePayload(session);
     const slateHref = buildSlateHref(session);
     const collectedItems = session.collectedItemIds
@@ -265,13 +322,19 @@ export class CampusScene extends Phaser.Scene {
       .filter(Boolean);
     const stage = resolveSwoopStage(session.growthPoints);
 
+    this.isBusy = true;
+    this.player.setVelocity(0, 0);
+
     showResults({
-      interest,
-      resultMapping,
+      program,
+      route,
+      routeStops,
+      resultMapping: resultMappings[program.programFamilyId] ?? resultMappings.campus_exploration,
       stageLabel: stage.label,
       collectedItems,
       payload,
       slateHref,
+      routeCompletedCount: session.completedRouteTriggerIds.length,
       onContinue: () => {
         this.isBusy = false;
         updateHud({
@@ -281,9 +344,52 @@ export class CampusScene extends Phaser.Scene {
         });
       },
       onRestart: () => {
+        hideProgramSelector();
         resetSession();
         this.scene.restart();
       },
+    });
+  }
+
+  refreshMarkers(session) {
+    locationTriggers.forEach((trigger) => {
+      const marker = this.markerMap.get(trigger.id);
+
+      if (!marker) {
+        return;
+      }
+
+      const isVisited = session.visitedTriggerIds.includes(trigger.id);
+      const isRequired = session.requiredRouteTriggerIds.includes(trigger.id);
+      const isRouteComplete = session.completedRouteTriggerIds.includes(trigger.id);
+      const routeIndex = session.requiredRouteTriggerIds.indexOf(trigger.id);
+      const textureKeys = getLandmarkTextureKeys(isVisited);
+      const tint = isRequired ? (isRouteComplete ? ROUTE_GREEN_DARK : ROUTE_GREEN) : trigger.color;
+
+      marker.pulse.setTexture(textureKeys.pulse);
+      marker.center.setTexture(textureKeys.center);
+      marker.pulse.setTint(tint);
+      marker.center.setTint(tint);
+      marker.pulse.setAlpha(isRequired ? 0.98 : 0.34);
+      marker.center.setAlpha(isRequired ? 1 : 0.56);
+      marker.pulse.setScale(isRequired && !isRouteComplete ? 1.16 : 1);
+      marker.center.setScale(isRequired && !isVisited ? 1.08 : 0.94);
+      marker.badgeRing.setVisible(isRequired);
+      marker.badgeFill.setVisible(isRequired);
+      marker.badgeLabel.setVisible(isRequired);
+
+      if (isRequired) {
+        marker.badgeFill.setFillStyle(isRouteComplete ? ROUTE_GREEN_DARK : ROUTE_GREEN, 0.98);
+        marker.badgeLabel.setText(String(routeIndex + 1));
+      }
+    });
+  }
+
+  syncHud() {
+    updateHud({
+      session: getSession(),
+      mode: "play",
+      nearbyTrigger: null,
     });
   }
 
@@ -291,6 +397,10 @@ export class CampusScene extends Phaser.Scene {
     const asset = swoopStageAssets[stageId] ?? swoopStageAssets.egg;
 
     this.swoop.setTexture(asset.key);
+    this.swoopBaseDisplaySize = { ...asset.displaySize };
     this.swoop.setDisplaySize(asset.displaySize.width, asset.displaySize.height);
+    if (this.swoopShadow) {
+      this.swoopShadow.setSize(Math.max(44, asset.displaySize.width * 0.52), 18);
+    }
   }
 }

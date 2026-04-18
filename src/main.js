@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 
 import "./styles.css";
-import { academicInterestsById } from "./content/academicInterests";
 import { collectibleItemsById } from "./content/collectibleItems";
 import { locationTriggers } from "./content/locationTriggers";
 import { REQUIRED_STOPS } from "./content/tourStops";
@@ -9,8 +8,10 @@ import { BootScene } from "./scenes/BootScene";
 import { CampusScene } from "./scenes/CampusScene";
 import { TitleScene } from "./scenes/TitleScene";
 import { getSession, resetSession, subscribeSession } from "./systems/sessionState";
+import { loadBrandFonts } from "./theme/typography";
 import { mountDialogueOverlay } from "./ui/dialogueOverlay";
 import { mountHud, updateHud } from "./ui/hud";
+import { mountProgramSelectorOverlay } from "./ui/programSelectorOverlay";
 import { mountResultOverlay } from "./ui/resultOverlay";
 import { createShell } from "./ui/shell";
 import { mountTouchControls } from "./ui/touchControls";
@@ -23,9 +24,9 @@ mountHud({
   collectiblesRoot: shell.collectiblesRoot,
   totalStops: locationTriggers.length,
   requiredStops: REQUIRED_STOPS,
-  academicInterestsById,
   collectibleItemsById,
 });
+mountProgramSelectorOverlay(shell.selectorLayer);
 mountDialogueOverlay(shell.dialogueLayer);
 mountResultOverlay(shell.resultLayer);
 mountTouchControls(shell.touchControlsRoot);
@@ -37,28 +38,34 @@ subscribeSession((session) => {
   });
 });
 
-resetSession();
-updateHud({
-  session: getSession(),
-  mode: "title",
-  nearbyTrigger: null,
-});
+async function bootstrap() {
+  resetSession();
+  updateHud({
+    session: getSession(),
+    mode: "title",
+    nearbyTrigger: null,
+  });
 
-new Phaser.Game({
-  type: Phaser.CANVAS,
-  parent: shell.gameRoot,
-  width: 1600,
-  height: 900,
-  backgroundColor: "#100808",
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-  },
-  physics: {
-    default: "arcade",
-    arcade: {
-      debug: false,
+  await loadBrandFonts();
+
+  new Phaser.Game({
+    type: Phaser.CANVAS,
+    parent: shell.gameRoot,
+    width: 1600,
+    height: 900,
+    backgroundColor: "#100808",
+    scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-  },
-  scene: [BootScene, TitleScene, CampusScene],
-});
+    physics: {
+      default: "arcade",
+      arcade: {
+        debug: false,
+      },
+    },
+    scene: [BootScene, TitleScene, CampusScene],
+  });
+}
+
+bootstrap();

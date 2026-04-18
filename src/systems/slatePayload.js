@@ -3,7 +3,10 @@ const DEFAULT_SLATE_URL = "https://futureu.admissions.utah.edu/portal/rfi_portal
 
 export function buildSlatePayload(session) {
   return {
-    game_academic_interest: session.academicInterest,
+    selected_program_id: session.selectedProgramId,
+    selected_college_id: session.selectedCollegeId,
+    route_completed_count: session.completedRouteTriggerIds.length,
+    game_academic_interest: session.selectedProgramId,
     game_version: GAME_VERSION,
     game_session_id: session.gameSessionId,
     game_completed_at: session.completedAt,

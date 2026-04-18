@@ -16,6 +16,7 @@ export function createShell(root) {
         <section class="game-stage">
           <div class="frame-stack">
             <div class="game-root" id="game-root"></div>
+            <div class="overlay-layer is-centered" id="selector-layer"></div>
             <div class="overlay-layer" id="dialogue-layer"></div>
             <div class="overlay-layer is-centered" id="result-layer"></div>
           </div>
@@ -33,6 +34,7 @@ export function createShell(root) {
   return {
     gameRoot: root.querySelector("#game-root"),
     hudRoot: root.querySelector("#hud-root"),
+    selectorLayer: root.querySelector("#selector-layer"),
     dialogueLayer: root.querySelector("#dialogue-layer"),
     resultLayer: root.querySelector("#result-layer"),
     missionRoot: root.querySelector("#mission-root"),

@@ -2,6 +2,7 @@ import Phaser from "phaser";
 
 import { titleGalleryPhotos, titleHeroAsset } from "../content/media";
 import { drawTitleBackdrop } from "../game/drawBackdrop";
+import { BRAND_FONT_FAMILY } from "../theme/typography";
 import { updateHud } from "../ui/hud";
 
 export class TitleScene extends Phaser.Scene {
@@ -27,12 +28,12 @@ export class TitleScene extends Phaser.Scene {
 
     this.add
       .image(width * 0.77, height * 0.72, titleHeroAsset.key)
-      .setDisplaySize(250, 320)
+      .setDisplaySize(280, 320)
       .setDepth(6);
 
     this.add
       .text(width * 0.08, height * 0.18, "GEARED TO RISE", {
-        fontFamily: "Arial Black, Impact, sans-serif",
+        fontFamily: BRAND_FONT_FAMILY.display,
         fontSize: "24px",
         color: "#f9eedd",
       })
@@ -40,7 +41,7 @@ export class TitleScene extends Phaser.Scene {
 
     this.add
       .text(width * 0.08, height * 0.28, "EXPLORE\nWITH SWOOP", {
-        fontFamily: "Arial Black, Impact, sans-serif",
+        fontFamily: BRAND_FONT_FAMILY.display,
         fontSize: "84px",
         color: "#ffffff",
         lineSpacing: 8,
@@ -51,9 +52,9 @@ export class TitleScene extends Phaser.Scene {
       .text(
         width * 0.08,
         height * 0.56,
-        "Ready to explore the University of Utah and forge your own path? Walk the campus, unlock landmark moments, and help Swoop grow as you go.",
+        "Start at Gardner Commons, choose a major, and let Swoop guide you through five recommended places across the University of Utah campus.",
         {
-          fontFamily: "Trebuchet MS, sans-serif",
+          fontFamily: BRAND_FONT_FAMILY.body,
           fontSize: "28px",
           color: "#f3efe6",
           wordWrap: { width: width * 0.4 },
@@ -66,7 +67,7 @@ export class TitleScene extends Phaser.Scene {
     const buttonShape = this.add.rectangle(0, 0, 320, 94, 0xbe0000, 1).setOrigin(0.5);
     const buttonText = this.add
       .text(0, 0, "START THE TOUR", {
-        fontFamily: "Arial Black, Impact, sans-serif",
+        fontFamily: BRAND_FONT_FAMILY.display,
         fontSize: "30px",
         color: "#ffffff",
       })
@@ -91,7 +92,7 @@ export class TitleScene extends Phaser.Scene {
     const border = this.add.rectangle(0, 0, width, height, 0xf3efe6, 1).setOrigin(0.5);
     const image = this.add.image(0, 0, asset.key).setDisplaySize(width - 18, height - 18);
     const label = this.add.text(-width / 2 + 16, height / 2 - 34, asset.label, {
-      fontFamily: "Arial Black, Impact, sans-serif",
+      fontFamily: BRAND_FONT_FAMILY.display,
       fontSize: "14px",
       color: "#120809",
     });
