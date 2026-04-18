@@ -24,15 +24,41 @@ export function showProgramSelector({
   let selectedProgram = null;
   let query = "";
   let step = "intro";
+  const allPrograms = Object.values(programsByCollegeId).flat();
 
   const getPrograms = () => (selectedCollegeId ? programsByCollegeId[selectedCollegeId] ?? [] : []);
   const getFilteredPrograms = () => {
     const normalizedQuery = query.toLowerCase();
+    const trimmedQuery = normalizedQuery.trim();
 
-    return getPrograms().filter((program) => {
-      const haystack = `${program.label} ${program.degreeLabel}`.toLowerCase();
-      return haystack.includes(normalizedQuery);
-    });
+    if (!trimmedQuery) {
+      return getPrograms();
+    }
+
+    return allPrograms
+      .filter((program) => {
+        const haystack = `${program.label} ${program.degreeLabel} ${program.collegeLabel}`.toLowerCase();
+        return haystack.includes(trimmedQuery);
+      })
+      .sort((left, right) => {
+        const leftLabel = left.label.toLowerCase();
+        const rightLabel = right.label.toLowerCase();
+        const leftStartsWith = leftLabel.startsWith(trimmedQuery);
+        const rightStartsWith = rightLabel.startsWith(trimmedQuery);
+
+        if (leftStartsWith !== rightStartsWith) {
+          return leftStartsWith ? -1 : 1;
+        }
+
+        const leftIndex = leftLabel.indexOf(trimmedQuery);
+        const rightIndex = rightLabel.indexOf(trimmedQuery);
+
+        if (leftIndex !== rightIndex) {
+          return leftIndex - rightIndex;
+        }
+
+        return left.label.localeCompare(right.label) || left.collegeLabel.localeCompare(right.collegeLabel);
+      });
   };
 
   const buildProgramListMarkup = (filteredPrograms) =>
@@ -123,7 +149,7 @@ export function showProgramSelector({
                   <input
                     class="selector-search"
                     type="search"
-                    placeholder="Filter majors in this college"
+                    placeholder="Search all majors"
                     data-role="search"
                   />
                 </div>
@@ -162,7 +188,7 @@ export function showProgramSelector({
         return;
       }
 
-      const program = getPrograms().find((entry) => entry.id === button.dataset.programId);
+      const program = allPrograms.find((entry) => entry.id === button.dataset.programId);
 
       if (program && selectedProgram?.id !== program.id) {
         selectedProgram = program;
