@@ -3,12 +3,13 @@ import Phaser from "phaser";
 import { collectibleItemsById } from "../content/collectibleItems";
 import { dialogueEvents } from "../content/dialogueEvents";
 import { locationTriggers, locationTriggersById } from "../content/locationTriggers";
-import { swoopStageAssets } from "../content/media";
+import { audioAssets, swoopStageAssets } from "../content/media";
 import { campusScene } from "../content/mapScenes";
 import { programsByCollegeId, programsById, colleges } from "../content/programCatalog";
 import { resolveProgramRoute } from "../content/programRoutes";
 import { resultMappings } from "../content/resultMappings";
 import { drawCampusMap } from "../game/drawBackdrop";
+import { playSoundEffect, startBackgroundMusic } from "../systems/audioState";
 import { getInputState, setActionHandler } from "../systems/inputState";
 import { buildSlateHref, buildSlatePayload } from "../systems/slatePayload";
 import { applyInteraction, getSession, resetSession, selectProgram } from "../systems/sessionState";
@@ -42,6 +43,7 @@ export class CampusScene extends Phaser.Scene {
     this.isBusy = false;
     this.activeTrigger = null;
     this.markerMap.clear();
+    startBackgroundMusic();
 
     drawCampusMap(this, campusScene, locationTriggers);
 
@@ -281,6 +283,7 @@ export class CampusScene extends Phaser.Scene {
 
     this.isBusy = true;
     this.player.setVelocity(0, 0);
+    playSoundEffect(audioAssets.ui.open.key, { volume: 0.65 });
 
     showDialogue({
       trigger: this.activeTrigger,
@@ -295,6 +298,7 @@ export class CampusScene extends Phaser.Scene {
     }
 
     hideDialogue();
+    playSoundEffect(audioAssets.ui.close.key, { volume: 0.55 });
     this.isBusy = false;
     this.activeTrigger = this.findNearbyTrigger();
 
@@ -313,6 +317,12 @@ export class CampusScene extends Phaser.Scene {
     this.syncSwoopSprite(stage.id);
 
     hideDialogue();
+    playSoundEffect(audioAssets.ui.close.key, { volume: 0.55 });
+
+    if (result.stageChanged) {
+      this.playSwoopEvolutionSound(stage.id);
+    }
+
     this.isBusy = false;
 
     updateHud({
@@ -416,6 +426,16 @@ export class CampusScene extends Phaser.Scene {
       mode: "play",
       nearbyTrigger: null,
     });
+  }
+
+  playSwoopEvolutionSound(stageId) {
+    const evolutionSound = audioAssets.swoopEvolution[stageId];
+
+    if (!evolutionSound) {
+      return;
+    }
+
+    playSoundEffect(evolutionSound.key, { volume: 0.72 });
   }
 
   syncSwoopSprite(stageId) {

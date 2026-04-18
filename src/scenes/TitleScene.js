@@ -2,6 +2,7 @@ import Phaser from "phaser";
 
 import { titleGalleryPhotos, titleHeroAsset } from "../content/media";
 import { drawTitleBackdrop } from "../game/drawBackdrop";
+import { startBackgroundMusic } from "../systems/audioState";
 import { BRAND_FONT_FAMILY } from "../theme/typography";
 import { updateHud } from "../ui/hud";
 
@@ -77,6 +78,7 @@ export class TitleScene extends Phaser.Scene {
     buttonShape.setInteractive({ useHandCursor: true });
 
     const startTour = () => {
+      startBackgroundMusic();
       this.scene.start("CampusScene");
     };
 

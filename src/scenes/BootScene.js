@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-import { campusPhotoAssets, mapAsset, swoopStageAssets, titleHeroAsset } from "../content/media";
+import { audioAssets, campusPhotoAssets, mapAsset, swoopStageAssets, titleHeroAsset } from "../content/media";
 
 const ROUTE_GREEN = 0x5f8b3d;
 const ROUTE_GREEN_DARK = 0x3f6124;
@@ -26,6 +26,14 @@ export class BootScene extends Phaser.Scene {
 
     Object.values(campusPhotoAssets).forEach((asset) => {
       this.load.image(asset.key, asset.url);
+    });
+
+    this.load.audio(audioAssets.music.background.key, audioAssets.music.background.url);
+    Object.values(audioAssets.ui).forEach((asset) => {
+      this.load.audio(asset.key, asset.url);
+    });
+    Object.values(audioAssets.swoopEvolution).forEach((asset) => {
+      this.load.audio(asset.key, asset.url);
     });
   }
 

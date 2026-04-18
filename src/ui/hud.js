@@ -1,12 +1,21 @@
 import { locationTriggersById } from "../content/locationTriggers";
 import { programsById } from "../content/programCatalog";
 import { resolveProgramRoute } from "../content/programRoutes";
+import {
+  getAudioSettings,
+  setMusicVolume,
+  subscribeAudioSettings,
+  toggleMusicMuted,
+} from "../systems/audioState";
 import { swoopStages } from "../systems/swoopProgression";
 
 let refs = null;
 let totalStops = 0;
 let requiredStops = 0;
 let collectibleLookup = {};
+let lastHudMarkup = "";
+let lastMissionMarkup = "";
+let lastCollectiblesMarkup = "";
 
 const state = {
   mode: "title",
@@ -14,6 +23,7 @@ const state = {
   nearbyTrigger: null,
   playerPosition: null,
 };
+let audioSettings = getAudioSettings();
 
 function getStageLabel(stageId) {
   return swoopStages.find((stage) => stage.id === stageId)?.label ?? "Egg";
@@ -79,7 +89,7 @@ function renderHud() {
               ? `Head toward marker ${nextRouteStop.index + 1}: ${nextRouteStop.label}. The green numbered markers show all five route stops.`
               : `Keep moving. Visit all ${requiredStops} recommended places to finish this route.`;
 
-  refs.hudRoot.innerHTML = `
+  const hudMarkup = `
     <div class="hud-card hud-card--primary">
       <span>Recommended Places</span>
       <strong>${completedRequiredStops} of ${requiredStops}</strong>
@@ -99,9 +109,41 @@ function renderHud() {
       <strong>${stageLabel}</strong>
       <p>${program ? `${program.label} • ${program.collegeLabel}` : "Still waiting for a starting major."}</p>
     </div>
+    <div class="hud-card">
+      <span>Audio</span>
+      <strong>${audioSettings.musicMuted ? "Music muted" : "Music on"}</strong>
+      <div class="audio-controls">
+        <button class="audio-toggle-button" type="button" data-audio-toggle>
+          ${audioSettings.musicMuted ? "Unmute music" : "Mute music"}
+        </button>
+        <label class="audio-slider-group" for="music-volume">
+          <span>Volume</span>
+          <input
+            id="music-volume"
+            type="range"
+            min="0"
+            max="100"
+            step="1"
+            value="${Math.round(audioSettings.musicVolume * 100)}"
+            data-music-volume
+          />
+        </label>
+      </div>
+    </div>
   `;
 
-  refs.missionRoot.innerHTML = `
+  if (hudMarkup !== lastHudMarkup) {
+    refs.hudRoot.innerHTML = hudMarkup;
+    refs.hudRoot.querySelector("[data-audio-toggle]")?.addEventListener("click", () => {
+      toggleMusicMuted();
+    });
+    refs.hudRoot.querySelector("[data-music-volume]")?.addEventListener("input", (event) => {
+      setMusicVolume(Number(event.currentTarget.value) / 100);
+    });
+    lastHudMarkup = hudMarkup;
+  }
+
+  const missionMarkup = `
     <span>${state.mode === "title" ? "Before You Start" : "Right Now"}</span>
     <strong>${
       !program
@@ -136,7 +178,12 @@ function renderHud() {
     </div>
   `;
 
-  refs.collectiblesRoot.innerHTML = `
+  if (missionMarkup !== lastMissionMarkup) {
+    refs.missionRoot.innerHTML = missionMarkup;
+    lastMissionMarkup = missionMarkup;
+  }
+
+  const collectiblesMarkup = `
     <span>Collectibles</span>
     <strong>${state.session.collectedItemIds.length} found</strong>
     <div class="collectible-list collectible-list--compact">
@@ -146,6 +193,11 @@ function renderHud() {
       </div>
     </div>
   `;
+
+  if (collectiblesMarkup !== lastCollectiblesMarkup) {
+    refs.collectiblesRoot.innerHTML = collectiblesMarkup;
+    lastCollectiblesMarkup = collectiblesMarkup;
+  }
 }
 
 export function mountHud({
@@ -161,9 +213,16 @@ export function mountHud({
     missionRoot,
     collectiblesRoot,
   };
+  lastHudMarkup = "";
+  lastMissionMarkup = "";
+  lastCollectiblesMarkup = "";
   totalStops = configuredTotalStops;
   requiredStops = configuredRequiredStops;
   collectibleLookup = collectibleItemsById;
+  subscribeAudioSettings((nextAudioSettings) => {
+    audioSettings = nextAudioSettings;
+    renderHud();
+  });
 }
 
 export function updateHud(patch) {

@@ -10,6 +10,13 @@ import swoopEggUrl from "../../assets/sprites/swoop/egg.png";
 import swoopTeenUrl from "../../assets/sprites/swoop/teen.png";
 import swoopTeenLeftUrl from "../../assets/sprites/swoop/directional/Teenage_Swoop left.png";
 import swoopTeenRightUrl from "../../assets/sprites/swoop/directional/Teenage_Swoop right.png";
+import backgroundMusicUrl from "../../assets/audio/music/Chiptune Wonderland Loop.wav";
+import uiCloseSoundUrl from "../../assets/audio/ui/Close.mp3";
+import uiOpenSoundUrl from "../../assets/audio/ui/Open.mp3";
+import swoopAdultSoundUrl from "../../assets/audio/swoop_evolution/Adult.mp3";
+import swoopAdolescentSoundUrl from "../../assets/audio/swoop_evolution/adolecent-chirp.mp3";
+import swoopEggHatchSoundUrl from "../../assets/audio/swoop_evolution/egg-hatch.wav";
+import swoopTeenSoundUrl from "../../assets/audio/swoop_evolution/Teen Swoop.mp3";
 
 function resolveTempPhoto(path) {
   return new URL(`../../assets/photos/${path}`, import.meta.url).href;
@@ -81,6 +88,43 @@ export const swoopStageAssets = {
 export const titleHeroAsset = {
   key: "swoop-title-hero",
   url: swoopTeenUrl,
+};
+
+export const audioAssets = {
+  music: {
+    background: {
+      key: "bgm-campus-loop",
+      url: backgroundMusicUrl,
+    },
+  },
+  ui: {
+    open: {
+      key: "ui-open",
+      url: uiOpenSoundUrl,
+    },
+    close: {
+      key: "ui-close",
+      url: uiCloseSoundUrl,
+    },
+  },
+  swoopEvolution: {
+    baby: {
+      key: "swoop-evolution-baby",
+      url: swoopEggHatchSoundUrl,
+    },
+    adolescent: {
+      key: "swoop-evolution-adolescent",
+      url: swoopAdolescentSoundUrl,
+    },
+    teen: {
+      key: "swoop-evolution-teen",
+      url: swoopTeenSoundUrl,
+    },
+    adult: {
+      key: "swoop-evolution-adult",
+      url: swoopAdultSoundUrl,
+    },
+  },
 };
 
 export const campusPhotoAssets = {

@@ -7,6 +7,7 @@ import { REQUIRED_STOPS } from "./content/tourStops";
 import { BootScene } from "./scenes/BootScene";
 import { CampusScene } from "./scenes/CampusScene";
 import { TitleScene } from "./scenes/TitleScene";
+import { attachAudioGame } from "./systems/audioState";
 import { getSession, resetSession, subscribeSession } from "./systems/sessionState";
 import { loadBrandFonts } from "./theme/typography";
 import { mountDialogueOverlay } from "./ui/dialogueOverlay";
@@ -48,7 +49,7 @@ async function bootstrap() {
 
   await loadBrandFonts();
 
-  new Phaser.Game({
+  const game = new Phaser.Game({
     type: Phaser.CANVAS,
     parent: shell.gameRoot,
     width: 1600,
@@ -66,6 +67,8 @@ async function bootstrap() {
     },
     scene: [BootScene, TitleScene, CampusScene],
   });
+
+  attachAudioGame(game);
 }
 
 bootstrap();
