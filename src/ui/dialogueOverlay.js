@@ -2,6 +2,10 @@ let rootElement = null;
 
 import { hideOverlay, showOverlay } from "./overlayMotion";
 
+function getContinueButton() {
+  return rootElement?.querySelector("[data-action='continue']") ?? null;
+}
+
 export function mountDialogueOverlay(root) {
   rootElement = root;
 }
@@ -38,6 +42,21 @@ export function showDialogue({ trigger, eventData, onSelect }) {
       onSelect();
     });
   });
+}
+
+export function isDialogueVisible() {
+  return Boolean(getContinueButton());
+}
+
+export function submitDialogue() {
+  const continueButton = getContinueButton();
+
+  if (!continueButton) {
+    return false;
+  }
+
+  continueButton.click();
+  return true;
 }
 
 export function hideDialogue() {

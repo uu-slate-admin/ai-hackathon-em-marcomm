@@ -14,7 +14,7 @@ import { buildSlateHref } from "../systems/slatePayload";
 import { applyInteraction, getSession, selectProgram } from "../systems/sessionState";
 import { resolveSwoopStage } from "../systems/swoopProgression";
 import { BRAND_FONT_FAMILY } from "../theme/typography";
-import { hideDialogue, showDialogue } from "../ui/dialogueOverlay";
+import { hideDialogue, isDialogueVisible, showDialogue, submitDialogue } from "../ui/dialogueOverlay";
 import { updateHud } from "../ui/hud";
 import { hideProgramSelector, showProgramSelector } from "../ui/programSelectorOverlay";
 import { hideResults, showResults } from "../ui/resultOverlay";
@@ -75,6 +75,18 @@ export class CampusScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.wasd = this.input.keyboard.addKeys("W,A,S,D", false);
     this.interactKeys = this.input.keyboard.addKeys("SPACE,ENTER,E", false);
+    this.handleEnterKey = () => {
+      if (isEditableElement(document.activeElement)) {
+        return;
+      }
+
+      if (isDialogueVisible()) {
+        submitDialogue();
+        return;
+      }
+
+      this.tryInteract();
+    };
     this.handleEscapeKey = () => {
       if (isEditableElement(document.activeElement)) {
         return;
@@ -84,10 +96,11 @@ export class CampusScene extends Phaser.Scene {
     };
 
     this.input.keyboard.on("keydown-SPACE", () => this.tryInteract());
-    this.input.keyboard.on("keydown-ENTER", () => this.tryInteract());
+    this.input.keyboard.on("keydown-ENTER", this.handleEnterKey);
     this.input.keyboard.on("keydown-E", () => this.tryInteract());
     this.input.keyboard.on("keydown-ESC", this.handleEscapeKey);
     this.events.once("shutdown", () => {
+      this.input.keyboard.off("keydown-ENTER", this.handleEnterKey);
       this.input.keyboard.off("keydown-ESC", this.handleEscapeKey);
       if (this.resultStateTimer) {
         this.resultStateTimer.remove(false);
