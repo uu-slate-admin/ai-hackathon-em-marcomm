@@ -19,7 +19,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "blockU",
     body:
-      "At Block U, the tour opens with the same idea captured in the source material: your path is not chosen for you, it is built by you. This is where curiosity turns into direction.",
+      "Block U sets the tone for the whole visit: this is a place to build your own path. From your first day on campus, the U encourages you to explore what matters to you and move toward it with purpose.",
   },
   {
     id: "uac",
@@ -31,7 +31,7 @@ export const tourStops = [
     color: COLORS.lake,
     imageAsset: "uac",
     body:
-      "The U's global footprint expands what college can look like. This stop reflects the tour's emphasis on global experiences and the idea that your Utah story can connect to a much wider world.",
+      "The U Asia Campus shows how far a Utah education can reach. It adds a global dimension to your experience, connecting campus life here with opportunities to learn, grow, and build community across borders.",
   },
   {
     id: "umfa",
@@ -43,7 +43,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "umfa",
     body:
-      "UMFA signals how the university connects learning with art, culture, and public-facing creativity. It is a reminder that expression and perspective are part of campus life too.",
+      "At UMFA, creativity becomes part of everyday campus life. It is one of the places that reminds you the U values perspective, expression, and the kind of learning that reaches beyond the classroom.",
   },
   {
     id: "kahlert_village",
@@ -55,7 +55,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "kahlertVillage",
     body:
-      "The housing tour object makes this clear: first-year students are guaranteed on-campus housing, and living here helps people build community and network early.",
+      "Kahlert Village reflects one of the clearest student-life advantages at the U: first-year students are guaranteed on-campus housing. Living here helps you find your people early, build community, and start college with support close by.",
   },
   {
     id: "honors_housing",
@@ -67,7 +67,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "honorsHousing",
     body:
-      "The Honors College offers an interdisciplinary academic experience for high-achieving students. It emphasizes critical thinking, research, and intellectual exploration across disciplines. Students engage in small, discussion-based courses and collaborative projects. The program culminates in a capstone thesis or creative project. Honors students graduate with enhanced academic depth and a strong foundation for graduate study or professional careers.",
+      "Honors Housing connects to the Honors College experience: an interdisciplinary path built around critical thinking, research, and close-knit academic community. It is a place where ambitious students can live among peers who want to push their ideas further.",
   },
   {
     id: "safety",
@@ -79,7 +79,7 @@ export const tourStops = [
     color: COLORS.ember,
     imageAsset: "safety",
     body:
-      "The tour's safety script emphasizes 24/7 public safety services and security escorts. The point is simple: students should feel supported here day or night.",
+      "The Public Safety Building represents a simple promise: your safety matters here, day or night. With 24/7 public safety services, campus-wide safety features, and security escorts, the U works to make campus feel supportive and secure.",
   },
   {
     id: "student_services",
@@ -91,7 +91,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "studentServices",
     body:
-      "Student Services pulls in the financial-aid tour copy: merit-based and need-based scholarships, plus millions awarded annually, all framed around making higher education more affordable.",
+      "Student Services is where affordability becomes real support. The U offers merit-based and need-based scholarships, awards millions in financial aid each year, and works to make a Utah education more accessible for in-state and out-of-state students alike.",
   },
   {
     id: "gardner_commons",
@@ -103,7 +103,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "gardnerCommons",
     body:
-      "The majors tour begins here with a counselor asking what you are interested in. It frames the university as a place with room for science, business, education, engineering, social work, law, honors, and more.",
+      "Gardner Commons captures the starting point for academic exploration at the U. It is where big questions about your future turn into real options across disciplines, with guidance that helps you connect your interests to a path forward.",
   },
   {
     id: "undergraduate_studies",
@@ -115,7 +115,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "undergraduateStudies",
     body:
-      "This stop carries the same exploratory spirit as the major-selection sequence: a lot of paths open here, and the real task is figuring out which kind of learning feels most like you.",
+      "Undergraduate Studies reflects the freedom to explore before locking in a direction. With so many paths available, this part of the journey is about discovering the kind of learning, challenge, and community that fits you best.",
   },
   {
     id: "architecture",
@@ -127,7 +127,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "architecture",
     body:
-      "The College of Architecture + Planning focuses on shaping the built environment through design, innovation, and community impact. Students explore fields like architecture, urban planning, game design, and multidisciplinary design, blending creativity with real-world problem solving. The college emphasizes sustainability, equity, and the relationship between people and spaces. Hands-on studios, research, and community projects prepare students to address modern environmental and urban challenges. Graduates leave ready to design spaces and systems that improve how we live, work, and connect.",
+      "The College of Architecture + Planning is where creativity meets impact. Students study architecture, planning, game design, and multidisciplinary design while using hands-on studios and community projects to shape spaces and systems that improve how people live and connect.",
   },
   {
     id: "science",
@@ -139,7 +139,7 @@ export const tourStops = [
     color: COLORS.lake,
     imageAsset: "science",
     body:
-      "The College of Science provides a foundation in disciplines like biology, chemistry, physics, and mathematics. Students engage in research, lab work, and problem-solving across scientific fields. The college emphasizes discovery, innovation, and analytical thinking. Interdisciplinary opportunities allow students to explore emerging areas of science. Graduates are prepared for careers in research, industry, healthcare, and beyond.",
+      "The College of Science builds a strong foundation in fields like biology, chemistry, physics, and mathematics. Through research, lab work, and interdisciplinary problem-solving, students learn how to turn curiosity into discovery and real-world impact.",
   },
   {
     id: "health",
@@ -151,7 +151,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "health",
     body:
-      "The College of Health focuses on improving quality of life through health sciences, wellness, and prevention. Programs span areas like kinesiology, nutrition, and health promotion. Students gain practical experience through labs, internships, and community engagement. The college emphasizes holistic health and evidence-based practices. Graduates are prepared to promote healthier communities and support public well-being.",
+      "The College of Health focuses on helping people live better through wellness, prevention, and health science. Students gain practical experience in areas like kinesiology, nutrition, and health promotion while preparing to strengthen healthier communities.",
   },
   {
     id: "arts_building",
@@ -163,7 +163,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "artsBuilding",
     body:
-      "The College of Fine Arts nurtures creativity across visual art, music, theatre, dance, and film. Students develop their artistic voice while gaining technical skills and professional experience. The college emphasizes performance, exhibition, and collaboration. Opportunities to engage with the broader arts community enhance learning. Graduates are prepared to contribute to the cultural landscape as artists, performers, and creative leaders.",
+      "The College of Fine Arts gives students room to create, perform, and collaborate across visual art, music, theatre, dance, and film. It is a place to develop your artistic voice while gaining the experience and discipline to share it with the world.",
   },
   {
     id: "engineering",
@@ -175,7 +175,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "engineering",
     body:
-      "The College of Engineering offers cutting-edge programs across disciplines like biomedical, civil, electrical, and computer engineering. Students engage in hands-on projects, research, and industry partnerships that tackle real-world challenges. Innovation and problem-solving are central to the curriculum. The college supports interdisciplinary collaboration and entrepreneurship. Graduates are prepared to design technologies and systems that drive progress across industries.",
+      "The College of Engineering is built around hands-on problem-solving. Across disciplines like biomedical, civil, electrical, and computer engineering, students work on real challenges through research, projects, and industry partnerships that prepare them to build what comes next.",
   },
   {
     id: "social_work",
@@ -187,7 +187,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "socialWork",
     body:
-      "The College of Social Work prepares students to support individuals, families, and communities. Programs focus on advocacy, clinical practice, and social justice. Students gain hands-on experience through field placements. The college emphasizes equity, inclusion, and community impact. Graduates are equipped to create positive change and improve lives through professional social work practice.",
+      "The College of Social Work prepares students to support individuals, families, and communities through advocacy, clinical practice, and social justice. Field experience and community impact are central here, so students graduate ready to help create meaningful change.",
   },
   {
     id: "csbs",
@@ -199,7 +199,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "csbs",
     body:
-      "The College of Social and Behavioral Science examines human behavior and societal systems. Programs include psychology, economics, political science, and sociology. Students develop analytical and research skills to understand complex social issues. The college emphasizes real-world application and policy impact. Graduates are prepared to address societal challenges and inform decision-making.",
+      "The College of Social and Behavioral Science helps students understand people, systems, and the forces that shape society. Through fields like psychology, economics, political science, and sociology, students build the research and analytical skills to address real social challenges.",
   },
   {
     id: "education",
@@ -211,7 +211,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "education",
     body:
-      "The College of Education prepares students to become effective educators, leaders, and advocates in diverse learning environments. Programs focus on teaching, educational leadership, counseling, and policy. Students gain hands-on classroom experience while studying evidence-based practices. The college emphasizes equity, inclusion, and lifelong learning. Graduates are ready to shape educational systems and support student success at every level.",
+      "The College of Education prepares future teachers, counselors, leaders, and advocates to serve diverse learners. With hands-on experience and a strong focus on equity and evidence-based practice, students are ready to support success at every level of education.",
   },
   {
     id: "community_service",
@@ -223,7 +223,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "communityService",
     body:
-      "Service is one of the original interest tags, and the activities object reinforces the idea that campus life here is about finding your people and making your effort count beyond yourself.",
+      "Community service at the U is about turning care into action. There are many ways to get involved, give back, and shape the community around you, making service part of how you build purpose and connection here.",
   },
   {
     id: "library",
@@ -235,7 +235,7 @@ export const tourStops = [
     color: COLORS.lake,
     imageAsset: "library",
     body:
-      "The library stop stands for the quieter side of the same major exploration: research support, study space, and the infrastructure that helps students turn interest into progress.",
+      "The library represents the academic support behind every path at the U. It gives students the space, tools, and research help to turn questions into progress, whether they are exploring a new subject or pushing deeper into a major.",
   },
   {
     id: "business",
@@ -247,7 +247,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "business",
     body:
-      "The David Eccles School of Business prepares students to lead in a rapidly evolving global economy. Programs span entrepreneurship, finance, marketing, operations, and more, with a strong emphasis on innovation and real-world application. Students gain hands-on experience through internships, consulting projects, and startup opportunities. The school is known for fostering an entrepreneurial mindset and strong industry connections. Graduates are equipped to drive growth, solve complex business challenges, and create meaningful impact in organizations of all sizes.",
+      "The David Eccles School of Business prepares students to lead with confidence in a fast-moving economy. With strengths in entrepreneurship, finance, marketing, operations, and more, it combines classroom learning with internships, consulting, and startup experience that connect directly to career outcomes.",
   },
   {
     id: "night_life",
@@ -259,7 +259,7 @@ export const tourStops = [
     color: COLORS.ember,
     imageAsset: "downtown",
     body:
-      "This stop adds the after-hours side of the city-campus experience: concerts, late nights, and the kind of social energy that makes Salt Lake feel bigger than the classroom.",
+      "Night life gives you another side of the Salt Lake experience. Just a quick ride from campus, evenings can mean live music, late-night food, or time with friends in a city that stays active without feeling overwhelming.",
   },
   {
     id: "food",
@@ -271,7 +271,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "food",
     body:
-      "The activities object calls out everything from late-night bites to global cuisine. This stop is about daily campus life feeling varied, social, and easy to enjoy.",
+      "Food is part of what makes daily life here feel lively and social. From late-night favorites to global cuisine, Salt Lake offers plenty of ways to try something new and make meals part of the experience.",
   },
   {
     id: "student_life_center",
@@ -283,7 +283,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "studentLifeCenter",
     body:
-      "With 600+ clubs and a strong fitness culture in the activities object, this stop captures the side of campus where routines, recreation, and belonging all come together.",
+      "The Student Life Center brings together two big parts of campus life: staying active and finding your community. Between top-tier fitness facilities and more than 600 student clubs, it is easy to build routines, friendships, and a sense of belonging here.",
   },
   {
     id: "jobs",
@@ -295,7 +295,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "jobs",
     body:
-      "This stop extends the source material's leadership and city-access themes into internships, campus jobs, and the practical opportunities that make college feel connected to life after graduation.",
+      "Jobs around campus help students build experience while they study. Whether you are looking for on-campus work or nearby opportunities that fit your schedule, this is one more way the U connects college life with practical growth and future career momentum.",
   },
   {
     id: "humanities",
@@ -307,7 +307,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "humanities",
     body:
-      "The College of Humanities explores human culture, language, history, and ideas. Programs include disciplines like literature, philosophy, languages, and communication. Students develop critical thinking, writing, and analytical skills. The college emphasizes global perspectives and cultural understanding. Graduates are prepared for careers that require strong communication, creativity, and insight into the human experience.",
+      "The College of Humanities explores culture, language, history, and ideas in ways that sharpen how students think and communicate. It is a strong fit for students who want to pair curiosity about people and meaning with writing, analysis, and global perspective.",
   },
   {
     id: "nursing",
@@ -319,7 +319,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "nursing",
     body:
-      "The College of Nursing prepares students for compassionate, evidence-based patient care. Programs emphasize clinical practice, research, and leadership in healthcare settings. Students gain hands-on experience in diverse medical environments. The college promotes innovation in healthcare delivery and patient outcomes. Graduates are ready to lead in nursing practice and improve health systems.",
+      "The College of Nursing prepares students for compassionate, evidence-based care through clinical training, research, and leadership development. With experience in diverse healthcare settings, students are ready to improve patient outcomes and lead in a changing health system.",
   },
   {
     id: "law",
@@ -331,7 +331,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "law",
     body:
-      "The S.J. Quinney College of Law prepares students for leadership in the legal profession. The curriculum combines rigorous legal training with hands-on experience through clinics and externships. Students explore areas like environmental law, business law, and public interest law. The college emphasizes ethics, public service, and advocacy. Graduates are equipped to navigate complex legal systems and drive meaningful change.",
+      "The S.J. Quinney College of Law prepares students for leadership through rigorous legal study and hands-on experience in clinics and externships. With strengths in areas like environmental, business, and public interest law, it is a place where advocacy and service carry real weight.",
   },
   {
     id: "lds_institute",
@@ -343,7 +343,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "ldsInstitute",
     body:
-      "This stop adds another community-oriented space to the map, reflecting the broader theme that students here build networks and find places that support both identity and belonging.",
+      "The LDS Institute reflects a broader truth about campus life: students need spaces where they feel grounded and connected. The U supports a community with room for faith, identity, and belonging alongside academic growth.",
   },
   {
     id: "rice_eccles",
@@ -355,7 +355,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "riceEccles",
     body:
-      "The activities source calls out school spirit and sports directly. Rice-Eccles turns that into a stop about tradition, crowd energy, and being part of something bigger.",
+      "Rice-Eccles Stadium is where school spirit gets loud. From major football moments to the energy of the Mighty Utah Student Section, this stop captures the pride, tradition, and shared excitement that make game day feel bigger than the scoreboard.",
   },
   {
     id: "transportation",
@@ -367,7 +367,7 @@ export const tourStops = [
     color: COLORS.lake,
     imageAsset: "transportation",
     body:
-      "The transportation source is direct: your student ID is your ticket to ride, and buses and TRAX run all day. This stop is about access, independence, and a connected campus.",
+      "Transportation at the U makes the city and campus easier to navigate. Your student ID is your ticket to ride, and with buses and TRAX running throughout the day, getting to class, downtown, or the mountains feels simple and flexible.",
   },
   {
     id: "downtown",
@@ -379,7 +379,7 @@ export const tourStops = [
     color: COLORS.lake,
     imageAsset: "downtown",
     body:
-      "The activity prompts frame Salt Lake City as part of the experience: city life, food, music venues, and opportunity without losing proximity to the outdoors.",
+      "Downtown Salt Lake City adds energy and opportunity to the college experience. You get the benefits of a real city, from food and events to internships and culture, without giving up quick access to the outdoors.",
   },
   {
     id: "red_butte",
@@ -391,7 +391,7 @@ export const tourStops = [
     color: COLORS.ember,
     imageAsset: "redButte",
     body:
-      "Red Butte reflects the tour's outdoors category and the idea that campus life here stays connected to the landscape, trails, and room to reset.",
+      "Red Butte Garden shows how closely campus life is tied to the landscape around it. It is a place for concerts, views, and a quick reset, all while staying connected to the energy of the university.",
   },
   {
     id: "outdoors",
@@ -403,7 +403,7 @@ export const tourStops = [
     color: COLORS.lake,
     imageAsset: "outdoors",
     body:
-      "The original activities object makes the outdoors one of the defining parts of the U experience, from nearby camping to quick access to mountain space.",
+      "The outdoors are one of the defining parts of life at the U. With nearby camping, mountain trails, and five national parks within reach for a weekend, getting outside is not an occasional bonus here, it is part of the rhythm of living in Utah.",
   },
   {
     id: "ski_snowboard",
@@ -415,7 +415,7 @@ export const tourStops = [
     color: COLORS.lake,
     imageAsset: "skiSnowboard",
     body:
-      "One of the clearest facts in the activities file is that there are 11 ski resorts less than an hour away. This stop turns that into a campus-life advantage you can actually feel.",
+      "Skiing and snowboarding are woven into the Utah experience. With 11 resorts less than an hour from campus, it is entirely possible to go from class to the slopes and make world-class snow part of your normal week.",
   },
 ];
 

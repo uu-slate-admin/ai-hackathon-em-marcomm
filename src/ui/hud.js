@@ -8,7 +8,6 @@ import {
   toggleMusicMuted,
   toggleSfxMuted,
 } from "../systems/audioState";
-import { swoopStages } from "../systems/swoopProgression";
 
 let refs = null;
 let totalStops = 0;
@@ -24,10 +23,6 @@ const state = {
   highlightMovementInfo: false,
 };
 let audioSettings = getAudioSettings();
-
-function getStageLabel(stageId) {
-  return swoopStages.find((stage) => stage.id === stageId)?.label ?? "Egg";
-}
 
 function getRouteStops(session) {
   const program = session?.selectedProgramId ? programsById[session.selectedProgramId] : null;
@@ -52,7 +47,6 @@ function renderHud() {
   const program = state.session.selectedProgramId ? programsById[state.session.selectedProgramId] : null;
   const completedRequiredStops = state.session.completedRouteTriggerIds.length;
   const progressPercentage = `${requiredStops === 0 ? 0 : (completedRequiredStops / requiredStops) * 100}%`;
-  const stageLabel = getStageLabel(state.session.swoopStage);
   const remainingRequiredStops = Math.max(requiredStops - completedRequiredStops, 0);
   const routeStops = getRouteStops(state.session);
   const nextRouteStop = routeStops.find((stop) => !stop.visited) ?? null;
@@ -113,11 +107,6 @@ function renderHud() {
           ${routeChecklistMarkup}
         </div>
       </div>
-    </div>
-    <div class="hud-card">
-      <span>Swoop</span>
-      <strong>${stageLabel}</strong>
-      <p>${program ? `${program.label} • ${program.collegeLabel}` : "Still waiting for a starting major."}</p>
     </div>
     <div class="hud-card">
       <span>Audio</span>
