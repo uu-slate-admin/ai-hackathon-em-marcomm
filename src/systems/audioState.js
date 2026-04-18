@@ -163,9 +163,19 @@ export function startBackgroundMusic() {
 export function playSoundEffect(key, config = {}) {
   const soundManager = gameRef?.sound;
 
-  if (!soundManager) {
+  if (!soundManager || settings.musicMuted || settings.musicVolume <= 0) {
     return;
   }
 
-  soundManager.play(key, config);
+  const requestedVolume = Number.isFinite(config.volume) ? config.volume : 1;
+  const volume = clampVolume(requestedVolume * settings.musicVolume);
+
+  if (volume <= 0) {
+    return;
+  }
+
+  soundManager.play(key, {
+    ...config,
+    volume,
+  });
 }

@@ -21,7 +21,6 @@ const state = {
   mode: "title",
   session: null,
   nearbyTrigger: null,
-  playerPosition: null,
 };
 let audioSettings = getAudioSettings();
 
@@ -166,14 +165,6 @@ function renderHud() {
       <div class="intel-item">
         <strong>Interact</strong>
         <p>SPACE, ENTER, or tap.</p>
-      </div>
-      <div class="intel-item">
-        <strong>Player XY</strong>
-        <p>${
-          state.playerPosition
-            ? `x: ${state.playerPosition.x}, y: ${state.playerPosition.y}`
-            : "Waiting for player position."
-        }</p>
       </div>
     </div>
   `;

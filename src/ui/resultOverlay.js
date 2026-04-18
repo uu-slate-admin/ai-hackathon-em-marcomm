@@ -15,11 +15,9 @@ export function showResults({
   resultMapping,
   stageLabel,
   collectedItems,
-  payload,
   slateHref,
   routeCompletedCount,
   onContinue,
-  onRestart,
 }) {
   if (!rootElement) {
     return;
@@ -49,9 +47,6 @@ export function showResults({
       `,
     )
     .join("");
-  const payloadJson = JSON.stringify(payload, null, 2);
-  const payloadMarkup = escapeHtml(payloadJson);
-
   rootElement.innerHTML = `
     <div class="overlay-card">
       <div class="overlay-card__body">
@@ -79,10 +74,6 @@ export function showResults({
         <div class="result-grid result-grid--route">
           ${routeMarkup}
         </div>
-        <details class="payload-disclosure">
-          <summary>Show QA payload</summary>
-          <pre class="payload-preview">${payloadMarkup}</pre>
-        </details>
         <div class="result-actions">
           <button class="action-button" data-action="slate">
             <strong>${slateHref ? escapeHtml(resultMapping.ctaLabel) : "Preview Slate Payload"}</strong>
@@ -92,31 +83,14 @@ export function showResults({
             <strong>Keep Exploring</strong>
             <small>Close this summary and keep visiting the rest of the map.</small>
           </button>
-          <button class="action-button action-button--accent" data-action="copy">
-            <strong>Copy Payload</strong>
-            <small>Copy the handoff metadata for QA or integration testing.</small>
-          </button>
-          <button class="action-button action-button--secondary" data-action="restart">
-            <strong>Play Again</strong>
-            <small>Reset the session and choose another major.</small>
-          </button>
         </div>
       </div>
     </div>
   `;
 
-  rootElement.querySelector('[data-action="restart"]').addEventListener("click", () => {
-    hideResults();
-    onRestart();
-  });
-
   rootElement.querySelector('[data-action="continue"]').addEventListener("click", () => {
     hideResults();
     onContinue?.();
-  });
-
-  rootElement.querySelector('[data-action="copy"]').addEventListener("click", async () => {
-    await navigator.clipboard.writeText(payloadJson);
   });
 
   rootElement.querySelector('[data-action="slate"]').addEventListener("click", () => {

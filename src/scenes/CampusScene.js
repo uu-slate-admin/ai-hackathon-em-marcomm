@@ -11,8 +11,8 @@ import { resultMappings } from "../content/resultMappings";
 import { drawCampusMap } from "../game/drawBackdrop";
 import { playSoundEffect, startBackgroundMusic } from "../systems/audioState";
 import { getInputState, setActionHandler } from "../systems/inputState";
-import { buildSlateHref, buildSlatePayload } from "../systems/slatePayload";
-import { applyInteraction, getSession, resetSession, selectProgram } from "../systems/sessionState";
+import { buildSlateHref } from "../systems/slatePayload";
+import { applyInteraction, getSession, selectProgram } from "../systems/sessionState";
 import { resolveSwoopStage } from "../systems/swoopProgression";
 import { BRAND_FONT_FAMILY } from "../theme/typography";
 import { hideDialogue, showDialogue } from "../ui/dialogueOverlay";
@@ -221,10 +221,6 @@ export class CampusScene extends Phaser.Scene {
     this.activeTrigger = nearby;
     updateHud({
       nearbyTrigger: nearby,
-      playerPosition: {
-        x: Math.round(this.player.x),
-        y: Math.round(this.player.y),
-      },
       session,
       mode: session.completedAt ? "results" : "play",
     });
@@ -283,7 +279,7 @@ export class CampusScene extends Phaser.Scene {
 
     this.isBusy = true;
     this.player.setVelocity(0, 0);
-    playSoundEffect(audioAssets.ui.open.key, { volume: 0.65 });
+    playSoundEffect(audioAssets.ui.open.key, { volume: 0.32 });
 
     showDialogue({
       trigger: this.activeTrigger,
@@ -298,7 +294,7 @@ export class CampusScene extends Phaser.Scene {
     }
 
     hideDialogue();
-    playSoundEffect(audioAssets.ui.close.key, { volume: 0.55 });
+    playSoundEffect(audioAssets.ui.close.key, { volume: 0.26 });
     this.isBusy = false;
     this.activeTrigger = this.findNearbyTrigger();
 
@@ -317,7 +313,7 @@ export class CampusScene extends Phaser.Scene {
     this.syncSwoopSprite(stage.id);
 
     hideDialogue();
-    playSoundEffect(audioAssets.ui.close.key, { volume: 0.55 });
+    playSoundEffect(audioAssets.ui.close.key, { volume: 0.26 });
 
     if (result.stageChanged) {
       this.playSwoopEvolutionSound(stage.id);
@@ -350,7 +346,6 @@ export class CampusScene extends Phaser.Scene {
       ...stop,
       visited: session.completedRouteTriggerIds.includes(stop.triggerId),
     }));
-    const payload = buildSlatePayload(session);
     const slateHref = buildSlateHref(session);
     const collectedItems = session.collectedItemIds
       .map((itemId) => collectibleItemsById[itemId])
@@ -367,7 +362,6 @@ export class CampusScene extends Phaser.Scene {
       resultMapping: resultMappings[program.programFamilyId] ?? resultMappings.campus_exploration,
       stageLabel: stage.label,
       collectedItems,
-      payload,
       slateHref,
       routeCompletedCount: session.completedRouteTriggerIds.length,
       onContinue: () => {
@@ -377,11 +371,6 @@ export class CampusScene extends Phaser.Scene {
           mode: "play",
           nearbyTrigger: this.findNearbyTrigger(),
         });
-      },
-      onRestart: () => {
-        hideProgramSelector();
-        resetSession();
-        this.scene.restart();
       },
     });
   }
