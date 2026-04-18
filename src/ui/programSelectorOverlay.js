@@ -1,4 +1,4 @@
-import { swoopStageAssets } from "../content/media";
+import { campusPhotoAssets } from "../content/media";
 import { hideOverlay, showOverlay } from "./overlayMotion";
 
 let rootElement = null;
@@ -211,13 +211,16 @@ export function showProgramSelector({
     if (step === "intro") {
       showOverlay(rootElement, `
         <div class="overlay-card overlay-card--enter overlay-card--selector overlay-card--intro">
+          <div class="overlay-card__media">
+            <img src="${campusPhotoAssets.gardnerCommons.url}" alt="${campusPhotoAssets.gardnerCommons.label}" />
+          </div>
           <div class="overlay-card__body overlay-card__body--selector overlay-card__body--intro">
             <div class="selector-intro">
               <div class="selector-intro__copy">
-                <span>How The Game Works</span>
+                <span>${campusPhotoAssets.gardnerCommons.label}</span>
                 <h2>Explore Campus And Help Swoop Grow</h2>
                 <p>
-                  You are about to explore the University of Utah campus by visiting key places and seeing what each area can offer you.
+                  You are about to start at Gardner Commons, then explore the University of Utah campus by visiting key places and seeing what each area can offer you.
                 </p>
                 <p>
                   Swoop starts this journey as an egg. As you move through campus and visit new stops, Swoop grows through baby, adolescent, teen, and adult stages.
@@ -241,12 +244,6 @@ export function showProgramSelector({
                   <small>Continue to the major selection screen and start the tour.</small>
                 </button>
               </div>
-              <aside class="selector-intro__visual" aria-hidden="true">
-                <div class="selector-intro__egg-frame">
-                  <img src="${swoopStageAssets.egg.url}" alt="" />
-                </div>
-                <p>Swoop begins as an egg and grows with every new campus stop you complete.</p>
-              </aside>
             </div>
           </div>
         </div>

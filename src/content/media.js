@@ -301,9 +301,9 @@ export const campusPhotoAssets = {
 };
 
 export const titleGalleryPhotos = [
+  campusPhotoAssets.gardnerCommons,
   campusPhotoAssets.blockU,
   campusPhotoAssets.kahlertVillage,
   campusPhotoAssets.studentServices,
-  campusPhotoAssets.transportation,
   campusPhotoAssets.redButte,
 ];
