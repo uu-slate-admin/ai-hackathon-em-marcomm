@@ -1,4 +1,4 @@
-import { campusPhotoAssets } from "../content/media";
+import { campusPhotoAssets, swoopStageAssets } from "../content/media";
 import { hideOverlay, showOverlay } from "./overlayMotion";
 
 let rootElement = null;
@@ -67,6 +67,7 @@ export function showProgramSelector({
           .map(
             (program) => `
               <button class="selector-program ${selectedProgram?.id === program.id ? "is-active" : ""}" data-program-id="${program.id}">
+                <span class="selector-program__eyebrow">${escapeHtml(program.degreeLabel)}</span>
                 <strong>${escapeHtml(program.label)}</strong>
                 <small>${escapeHtml(program.collegeLabel)}</small>
               </button>
@@ -78,18 +79,41 @@ export function showProgramSelector({
   const buildPreviewMarkup = () =>
     selectedProgram
       ? `
-        <span>Selection</span>
+        <span>Your route starts here</span>
         <h3>${escapeHtml(selectedProgram.label)}</h3>
         <p>${escapeHtml(selectedProgram.collegeLabel)}</p>
+        <div class="selector-preview__detail-grid">
+          <div class="selector-preview__detail">
+            <span>Degree</span>
+            <strong>${escapeHtml(selectedProgram.degreeLabel)}</strong>
+          </div>
+          <div class="selector-preview__detail">
+            <span>Next step</span>
+            <strong>Start exploring campus</strong>
+          </div>
+        </div>
+        <p class="selector-preview__message">
+          Lock in this major to shape your campus tour and begin Swoop's first stage of growth.
+        </p>
         <button class="action-button" data-role="confirm-program">
-          <strong>Start With This Major</strong>
-          <small>Use this major as the starting point for the rest of the game.</small>
+          <strong>Start This Tour</strong>
+          <small>Use this major as the focus for your first run across campus.</small>
         </button>
       `
       : `
-        <span>Selection</span>
-        <h3>Choose a major to continue</h3>
-        <p>Select any major from the list to start the game.</p>
+        <span>Your route starts here</span>
+        <h3>Choose a major to unlock your route</h3>
+        <p>Pick a college, browse majors, and select one program to begin the tour.</p>
+        <div class="selector-preview__detail-grid">
+          <div class="selector-preview__detail">
+            <span>Step 1</span>
+            <strong>Choose a college</strong>
+          </div>
+          <div class="selector-preview__detail">
+            <span>Step 2</span>
+            <strong>Select a major</strong>
+          </div>
+        </div>
       `;
 
   const renderSelectionUi = () => {
@@ -122,12 +146,16 @@ export function showProgramSelector({
           <span>Gardner Commons</span>
           <h2>Choose Your Academic Interest</h2>
           <p>
-            You know the mission: explore campus, visit key spaces, and help Swoop grow from an egg into later stages. Start by choosing the college category that fits best, then pick the major you want to explore.
+            Start with the academic area that fits you best, then choose a major to personalize the rest of the campus experience.
           </p>
           <div class="selector-layout">
             <section class="selector-panel">
               <div class="selector-step">
-                <strong>1. Pick a college</strong>
+                <div class="selector-step__header selector-step__header--tight">
+                  <span>Step 1</span>
+                  <strong>Pick a college</strong>
+                  <p>Use a broad area first to narrow the major list.</p>
+                </div>
                 <div class="selector-chip-grid">
                   ${colleges
                     .map(
@@ -145,7 +173,9 @@ export function showProgramSelector({
               </div>
               <div class="selector-step">
                 <div class="selector-step__header">
-                  <strong>2. Pick a major</strong>
+                  <span>Step 2</span>
+                  <strong>Pick a major</strong>
+                  <p>Search across all majors or choose from the filtered list below.</p>
                   <input
                     class="selector-search"
                     type="search"
@@ -211,39 +241,60 @@ export function showProgramSelector({
     if (step === "intro") {
       showOverlay(rootElement, `
         <div class="overlay-card overlay-card--enter overlay-card--selector overlay-card--intro">
-          <div class="overlay-card__media">
-            <img src="${campusPhotoAssets.gardnerCommons.url}" alt="${campusPhotoAssets.gardnerCommons.label}" />
-          </div>
           <div class="overlay-card__body overlay-card__body--selector overlay-card__body--intro">
             <div class="selector-intro">
               <div class="selector-intro__copy">
-                <span>${campusPhotoAssets.gardnerCommons.label}</span>
-                <h2>Explore Campus And Help Swoop Grow</h2>
-                <p>
-                  You are about to start at Gardner Commons, then explore the University of Utah campus by visiting key places and seeing what each area can offer you.
-                </p>
-                <p>
-                  Swoop starts this journey as an egg. As you move through campus and visit new stops, Swoop grows through baby, adolescent, teen, and adult stages.
-                </p>
-                <div class="selector-intro__highlights">
-                  <div class="selector-intro__card">
-                    <strong>Explore the map</strong>
-                    <p>Visit campus spaces, discover what happens there, and build your route as you go.</p>
-                  </div>
-                  <div class="selector-intro__card">
-                    <strong>Grow Swoop</strong>
-                    <p>Your egg evolves into new stages as you keep exploring and completing stops.</p>
-                  </div>
-                  <div class="selector-intro__card">
-                    <strong>Pick your path</strong>
-                    <p>After this screen, choose a college and major to unlock your personalized campus journey.</p>
-                  </div>
+                <div class="selector-intro__photo-frame">
+                  <img src="${campusPhotoAssets.gardnerCommons.url}" alt="${campusPhotoAssets.gardnerCommons.label}" />
                 </div>
+                <span>${campusPhotoAssets.gardnerCommons.label}</span>
+                <h2>Build Your Route Across Campus</h2>
+                <p>
+                  Start at Gardner Commons, choose the academic path that fits you, and move through real campus spaces to see what the University of Utah can open up for you.
+                </p>
+                <p>
+                  Every stop helps Swoop grow from egg to adult, so your progress on the map becomes a visible part of the experience.
+                </p>
+                <p class="selector-intro__lead">
+                  <strong>Choose a major, then begin the tour.</strong>
+                  Your selection sets the theme for the route and gets Swoop moving.
+                </p>
                 <button class="action-button selector-intro__button" data-role="continue-to-majors">
-                  <strong>Choose A Major</strong>
-                  <small>Continue to the major selection screen and start the tour.</small>
+                  <strong>Choose Your Major</strong>
+                  <small>Open the academic selector and start your campus journey.</small>
                 </button>
               </div>
+              <aside class="selector-intro__supporting" aria-label="How the experience works">
+                <div class="selector-intro__supporting-panel selector-intro__supporting-panel--swoop">
+                  <span>Swoop progression</span>
+                  <div class="selector-intro__swoop-stage">
+                    <div class="selector-intro__egg-frame">
+                      <img src="${swoopStageAssets.egg.url}" alt="Swoop in egg form" />
+                    </div>
+                    <div class="selector-intro__swoop-copy">
+                      <strong>Start small, grow as you explore</strong>
+                      <p>Each new stop moves Swoop into the next stage, giving the tour a clear sense of progress.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="selector-intro__supporting-panel">
+                  <span>How it works</span>
+                  <div class="selector-intro__highlights">
+                    <div class="selector-intro__item">
+                      <strong>Choose a path</strong>
+                      <p>Select a college and major to frame the experience around your interests.</p>
+                    </div>
+                    <div class="selector-intro__item">
+                      <strong>Visit real places</strong>
+                      <p>Move through key campus spaces to see where learning, support, and student life connect.</p>
+                    </div>
+                    <div class="selector-intro__item">
+                      <strong>Watch Swoop evolve</strong>
+                      <p>Keep exploring to push Swoop from egg to adult and finish the route stronger than you started.</p>
+                    </div>
+                  </div>
+                </div>
+              </aside>
             </div>
           </div>
         </div>
