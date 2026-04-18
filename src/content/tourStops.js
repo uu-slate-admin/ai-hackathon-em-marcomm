@@ -67,7 +67,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "honorsHousing",
     body:
-      "This stop extends the housing story toward a more close-knit academic community, where students balance residential life with a stronger sense of intellectual connection.",
+      "The Honors College offers an interdisciplinary academic experience for high-achieving students. It emphasizes critical thinking, research, and intellectual exploration across disciplines. Students engage in small, discussion-based courses and collaborative projects. The program culminates in a capstone thesis or creative project. Honors students graduate with enhanced academic depth and a strong foundation for graduate study or professional careers.",
   },
   {
     id: "safety",
@@ -127,7 +127,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "architecture",
     body:
-      "Architecture appears in the major categories as part of a more design-driven path, where visual thinking, building, and systems all work together.",
+      "The College of Architecture + Planning focuses on shaping the built environment through design, innovation, and community impact. Students explore fields like architecture, urban planning, game design, and multidisciplinary design, blending creativity with real-world problem solving. The college emphasizes sustainability, equity, and the relationship between people and spaces. Hands-on studios, research, and community projects prepare students to address modern environmental and urban challenges. Graduates leave ready to design spaces and systems that improve how we live, work, and connect.",
   },
   {
     id: "science",
@@ -139,7 +139,7 @@ export const tourStops = [
     color: COLORS.lake,
     imageAsset: "science",
     body:
-      "Science and research are called out directly in the majors source. This stop represents the part of campus built around discovery, inquiry, and asking better questions.",
+      "The College of Science provides a foundation in disciplines like biology, chemistry, physics, and mathematics. Students engage in research, lab work, and problem-solving across scientific fields. The college emphasizes discovery, innovation, and analytical thinking. Interdisciplinary opportunities allow students to explore emerging areas of science. Graduates are prepared for careers in research, industry, healthcare, and beyond.",
   },
   {
     id: "health",
@@ -151,7 +151,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "health",
     body:
-      "Healthcare is one of the interest tags in the original tour objects, and this stop pushes that people-first direction into a health-focused campus setting.",
+      "The College of Health focuses on improving quality of life through health sciences, wellness, and prevention. Programs span areas like kinesiology, nutrition, and health promotion. Students gain practical experience through labs, internships, and community engagement. The college emphasizes holistic health and evidence-based practices. Graduates are prepared to promote healthier communities and support public well-being.",
   },
   {
     id: "arts_building",
@@ -163,7 +163,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "artsBuilding",
     body:
-      "The majors list explicitly includes arts and creativity, and this stop turns that into a real place on the map where making, performing, and producing ideas can take shape.",
+      "The College of Fine Arts nurtures creativity across visual art, music, theatre, dance, and film. Students develop their artistic voice while gaining technical skills and professional experience. The college emphasizes performance, exhibition, and collaboration. Opportunities to engage with the broader arts community enhance learning. Graduates are prepared to contribute to the cultural landscape as artists, performers, and creative leaders.",
   },
   {
     id: "engineering",
@@ -175,7 +175,7 @@ export const tourStops = [
     color: COLORS.granite,
     imageAsset: "engineering",
     body:
-      "Engineering and technology are core major categories in the tour object, representing the builder side of campus where curiosity turns into tools, prototypes, and systems.",
+      "The College of Engineering offers cutting-edge programs across disciplines like biomedical, civil, electrical, and computer engineering. Students engage in hands-on projects, research, and industry partnerships that tackle real-world challenges. Innovation and problem-solving are central to the curriculum. The college supports interdisciplinary collaboration and entrepreneurship. Graduates are prepared to design technologies and systems that drive progress across industries.",
   },
   {
     id: "social_work",
@@ -187,7 +187,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "socialWork",
     body:
-      "Social Work is named directly in the tour's major categories. It points toward work rooted in support, advocacy, and helping communities move forward.",
+      "The College of Social Work prepares students to support individuals, families, and communities. Programs focus on advocacy, clinical practice, and social justice. Students gain hands-on experience through field placements. The college emphasizes equity, inclusion, and community impact. Graduates are equipped to create positive change and improve lives through professional social work practice.",
   },
   {
     id: "csbs",
@@ -199,7 +199,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "csbs",
     body:
-      "The College of Social and Behavioral Science sits at the intersection of people, policy, research, and systems. It is a strong match for students interested in how communities actually work.",
+      "The College of Social and Behavioral Science examines human behavior and societal systems. Programs include psychology, economics, political science, and sociology. Students develop analytical and research skills to understand complex social issues. The college emphasizes real-world application and policy impact. Graduates are prepared to address societal challenges and inform decision-making.",
   },
   {
     id: "education",
@@ -211,7 +211,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "education",
     body:
-      "Education appears in the majors source as part of a social-impact pathway. This stop represents learning that is designed to help other people grow.",
+      "The College of Education prepares students to become effective educators, leaders, and advocates in diverse learning environments. Programs focus on teaching, educational leadership, counseling, and policy. Students gain hands-on classroom experience while studying evidence-based practices. The college emphasizes equity, inclusion, and lifelong learning. Graduates are ready to shape educational systems and support student success at every level.",
   },
   {
     id: "community_service",
@@ -247,7 +247,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "business",
     body:
-      "Business and leadership are both central to the source objects, which frame the U as a place to build initiative, entrepreneurship, and momentum that moves people forward.",
+      "The David Eccles School of Business prepares students to lead in a rapidly evolving global economy. Programs span entrepreneurship, finance, marketing, operations, and more, with a strong emphasis on innovation and real-world application. Students gain hands-on experience through internships, consulting projects, and startup opportunities. The school is known for fostering an entrepreneurial mindset and strong industry connections. Graduates are equipped to drive growth, solve complex business challenges, and create meaningful impact in organizations of all sizes.",
   },
   {
     id: "night_life",
@@ -307,7 +307,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "humanities",
     body:
-      "Humanities is explicitly named in the major categories and points toward language, ideas, culture, ethics, and the kinds of questions that shape how people understand the world.",
+      "The College of Humanities explores human culture, language, history, and ideas. Programs include disciplines like literature, philosophy, languages, and communication. Students develop critical thinking, writing, and analytical skills. The college emphasizes global perspectives and cultural understanding. Graduates are prepared for careers that require strong communication, creativity, and insight into the human experience.",
   },
   {
     id: "nursing",
@@ -319,7 +319,7 @@ export const tourStops = [
     color: COLORS.sunrise,
     imageAsset: "nursing",
     body:
-      "Nursing is another direct major callout in the source file. It represents a clear care-centered route where skill, urgency, and human connection meet.",
+      "The College of Nursing prepares students for compassionate, evidence-based patient care. Programs emphasize clinical practice, research, and leadership in healthcare settings. Students gain hands-on experience in diverse medical environments. The college promotes innovation in healthcare delivery and patient outcomes. Graduates are ready to lead in nursing practice and improve health systems.",
   },
   {
     id: "law",
@@ -331,7 +331,7 @@ export const tourStops = [
     color: COLORS.red,
     imageAsset: "law",
     body:
-      "Law appears in the tour's major categories as one of the more direct leadership-oriented routes, where advocacy, systems, and public impact all matter.",
+      "The S.J. Quinney College of Law prepares students for leadership in the legal profession. The curriculum combines rigorous legal training with hands-on experience through clinics and externships. Students explore areas like environmental law, business law, and public interest law. The college emphasizes ethics, public service, and advocacy. Graduates are equipped to navigate complex legal systems and drive meaningful change.",
   },
   {
     id: "lds_institute",
