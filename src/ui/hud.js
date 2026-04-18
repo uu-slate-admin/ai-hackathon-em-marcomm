@@ -81,7 +81,7 @@ function renderHud() {
       : !program
         ? "Choose a college and major at Gardner Commons to unlock your personalized route."
         : state.nearbyTrigger
-          ? `You are close to ${state.nearbyTrigger.label}. Press SPACE, ENTER, or tap the action button.`
+          ? `You are close to ${state.nearbyTrigger.label}. Press E, SPACE, ENTER, or tap the action button.`
           : state.session.completedAt
             ? "Route complete. Review your result or restart for another major."
             : nextRouteStop
@@ -164,7 +164,7 @@ function renderHud() {
       </div>
       <div class="intel-item">
         <strong>Interact</strong>
-        <p>SPACE, ENTER, or tap.</p>
+        <p>E, SPACE, ENTER, or tap.</p>
       </div>
     </div>
   `;
