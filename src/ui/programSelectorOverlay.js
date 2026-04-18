@@ -1,4 +1,5 @@
 import { swoopStageAssets } from "../content/media";
+import { hideOverlay, showOverlay } from "./overlayMotion";
 
 let rootElement = null;
 
@@ -26,9 +27,8 @@ export function showProgramSelector({
 
   const render = () => {
     if (step === "intro") {
-      rootElement.classList.add("is-active", "is-centered");
-      rootElement.innerHTML = `
-        <div class="overlay-card overlay-card--selector overlay-card--intro">
+      showOverlay(rootElement, `
+        <div class="overlay-card overlay-card--enter overlay-card--selector overlay-card--intro">
           <div class="overlay-card__body overlay-card__body--selector overlay-card__body--intro">
             <div class="selector-intro">
               <div class="selector-intro__copy">
@@ -68,7 +68,7 @@ export function showProgramSelector({
             </div>
           </div>
         </div>
-      `;
+      `, { centered: true });
 
       rootElement.querySelector('[data-role="continue-to-majors"]')?.addEventListener("click", () => {
         step = "select-program";
@@ -83,9 +83,8 @@ export function showProgramSelector({
       const haystack = `${program.label} ${program.degreeLabel}`.toLowerCase();
       return haystack.includes(query.toLowerCase());
     });
-    rootElement.classList.add("is-active", "is-centered");
-    rootElement.innerHTML = `
-      <div class="overlay-card overlay-card--selector">
+    showOverlay(rootElement, `
+      <div class="overlay-card overlay-card--enter overlay-card--selector">
         <div class="overlay-card__body overlay-card__body--selector">
           <span>Gardner Commons</span>
           <h2>Choose Your Academic Interest</h2>
@@ -159,7 +158,7 @@ export function showProgramSelector({
           </div>
         </div>
       </div>
-    `;
+    `, { centered: true });
 
     rootElement.querySelectorAll("[data-college-id]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -197,10 +196,5 @@ export function showProgramSelector({
 }
 
 export function hideProgramSelector() {
-  if (!rootElement) {
-    return;
-  }
-
-  rootElement.classList.remove("is-active", "is-centered");
-  rootElement.innerHTML = "";
+  hideOverlay(rootElement, { centered: true });
 }

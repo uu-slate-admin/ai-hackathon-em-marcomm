@@ -341,11 +341,34 @@ select {
   overflow: hidden;
 }
 
+.overlay-card--enter {
+  animation: overlay-card-enter 320ms cubic-bezier(0.18, 0.84, 0.26, 1) both;
+  transform-origin: center bottom;
+  will-change: transform, opacity;
+}
+
 .overlay-card__media {
   position: relative;
   aspect-ratio: 16 / 8.2;
   overflow: hidden;
   background: rgba(18, 8, 9, 0.1);
+}
+
+@keyframes overlay-card-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+
+  68% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.012);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .overlay-card__media img {

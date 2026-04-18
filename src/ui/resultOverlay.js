@@ -1,5 +1,7 @@
 let rootElement = null;
 
+import { hideOverlay, showOverlay } from "./overlayMotion";
+
 function escapeHtml(value) {
   return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
@@ -22,7 +24,6 @@ export function showResults({
     return;
   }
 
-  rootElement.classList.add("is-active");
   const routeMarkup = routeStops
     .map(
       (stop) => `
@@ -34,8 +35,8 @@ export function showResults({
       `,
     )
     .join("");
-  rootElement.innerHTML = `
-    <div class="overlay-card">
+  showOverlay(rootElement, `
+    <div class="overlay-card overlay-card--enter">
       <div class="overlay-card__body">
         <span>${escapeHtml(resultMapping.kicker)}</span>
         <h2>${escapeHtml(program.label)}</h2>
@@ -72,7 +73,7 @@ export function showResults({
         </div>
       </div>
     </div>
-  `;
+  `);
 
   rootElement.querySelector('[data-action="continue"]').addEventListener("click", () => {
     hideResults();
@@ -88,10 +89,5 @@ export function showResults({
 }
 
 export function hideResults() {
-  if (!rootElement) {
-    return;
-  }
-
-  rootElement.classList.remove("is-active");
-  rootElement.innerHTML = "";
+  hideOverlay(rootElement);
 }

@@ -22,6 +22,7 @@ import { hideResults, showResults } from "../ui/resultOverlay";
 const ROUTE_GREEN = 0x5f8b3d;
 const ROUTE_GREEN_DARK = 0x3f6124;
 const PLAYER_MOVE_SPEED = 400;
+const FINAL_RESULTS_DELAY_MS = 1400;
 
 function getLandmarkTextureKeys(isVisited) {
   return {
@@ -36,6 +37,7 @@ export class CampusScene extends Phaser.Scene {
     this.activeTrigger = null;
     this.isBusy = false;
     this.markerMap = new Map();
+    this.resultStateTimer = null;
   }
 
   create() {
@@ -67,6 +69,10 @@ export class CampusScene extends Phaser.Scene {
     this.input.keyboard.on("keydown-ESC", this.handleEscapeKey);
     this.events.once("shutdown", () => {
       this.input.keyboard.off("keydown-ESC", this.handleEscapeKey);
+      if (this.resultStateTimer) {
+        this.resultStateTimer.remove(false);
+        this.resultStateTimer = null;
+      }
     });
 
     setActionHandler(() => this.tryInteract());
@@ -320,6 +326,8 @@ export class CampusScene extends Phaser.Scene {
   completeInteraction(trigger) {
     const result = applyInteraction(trigger);
     const stage = resolveSwoopStage(result.session.growthPoints);
+    const previousStage = resolveSwoopStage(Math.max(0, result.session.growthPoints - (result.countedTowardRoute ? 1 : 0)));
+    const shouldDelayResults = result.newlyCompleted && previousStage.id === "teen" && stage.id === "adult";
 
     this.refreshMarkers(result.session);
     this.syncSwoopSprite(stage.id);
@@ -340,7 +348,14 @@ export class CampusScene extends Phaser.Scene {
     });
 
     if (result.newlyCompleted) {
-      this.showResultState(result.session);
+      if (shouldDelayResults) {
+        this.resultStateTimer = this.time.delayedCall(FINAL_RESULTS_DELAY_MS, () => {
+          this.resultStateTimer = null;
+          this.showResultState(result.session);
+        });
+      } else {
+        this.showResultState(result.session);
+      }
     }
   }
 
@@ -363,6 +378,7 @@ export class CampusScene extends Phaser.Scene {
 
     this.isBusy = true;
     this.player.setVelocity(0, 0);
+    playSoundEffect(audioAssets.ui.finalCheer.key, { volume: 0.68 });
 
     showResults({
       program,

@@ -13,6 +13,7 @@ import swoopTeenRightUrl from "../../assets/sprites/swoop/directional/Teenage_Sw
 import backgroundMusicUrl from "../../assets/audio/music/Chiptune Wonderland Loop.wav";
 import uiCloseSoundUrl from "../../assets/audio/ui/Close.mp3";
 import uiOpenSoundUrl from "../../assets/audio/ui/Open.mp3";
+import finalCheerSoundUrl from "../../assets/audio/win/Final Cheer.mp3";
 import swoopAdultSoundUrl from "../../assets/audio/swoop_evolution/Adult.mp3";
 import swoopAdolescentSoundUrl from "../../assets/audio/swoop_evolution/adolecent-chirp.mp3";
 import swoopEggHatchSoundUrl from "../../assets/audio/swoop_evolution/egg-hatch.wav";
@@ -105,6 +106,10 @@ export const audioAssets = {
     close: {
       key: "ui-close",
       url: uiCloseSoundUrl,
+    },
+    finalCheer: {
+      key: "ui-final-cheer",
+      url: finalCheerSoundUrl,
     },
   },
   swoopEvolution: {

@@ -1,5 +1,7 @@
 let rootElement = null;
 
+import { hideOverlay, showOverlay } from "./overlayMotion";
+
 export function mountDialogueOverlay(root) {
   rootElement = root;
 }
@@ -9,9 +11,8 @@ export function showDialogue({ trigger, eventData, onSelect }) {
     return;
   }
 
-  rootElement.classList.add("is-active");
-  rootElement.innerHTML = `
-    <div class="overlay-card">
+  showOverlay(rootElement, `
+    <div class="overlay-card overlay-card--enter">
       ${eventData.image
         ? `
           <div class="overlay-card__media">
@@ -30,7 +31,7 @@ export function showDialogue({ trigger, eventData, onSelect }) {
         </div>
       </div>
     </div>
-  `;
+  `);
 
   rootElement.querySelectorAll("[data-action='continue']").forEach((button) => {
     button.addEventListener("click", () => {
@@ -40,10 +41,5 @@ export function showDialogue({ trigger, eventData, onSelect }) {
 }
 
 export function hideDialogue() {
-  if (!rootElement) {
-    return;
-  }
-
-  rootElement.classList.remove("is-active");
-  rootElement.innerHTML = "";
+  hideOverlay(rootElement);
 }
