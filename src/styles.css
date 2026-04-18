@@ -983,7 +983,7 @@ select {
 
 .route-checklist__item {
   display: grid;
-  grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
   gap: 0.45rem;
   align-items: center;
   font-size: 0.92rem;
@@ -1026,13 +1026,6 @@ select {
   min-width: 0;
 }
 
-.route-checklist__state {
-  color: rgba(18, 8, 9, 0.56);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .route-checklist__item.is-visited .route-checklist__marker {
   background: color-mix(in srgb, var(--route-green) 88%, white 12%);
   color: var(--white);
@@ -1040,10 +1033,6 @@ select {
 
 .route-checklist__item.is-visited .route-checklist__label {
   color: rgba(18, 8, 9, 0.72);
-}
-
-.route-checklist__item.is-visited .route-checklist__state {
-  color: color-mix(in srgb, var(--route-green-dark) 72%, var(--ink) 28%);
 }
 
 .intel-list--compact {

@@ -69,7 +69,6 @@ function renderHud() {
                     data-marker="${stop.visited ? "✓" : stop.index + 1}"
                   ></span>
                   <span class="route-checklist__label">${stop.label}</span>
-                  <span class="route-checklist__state">${stop.visited ? "Visited" : "Pending"}</span>
                 </li>`,
             )
             .join("")}
